@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import TenantSidebar from './TenantSidebar.jsx';
 import PaymentForm from '../Payment/PaymentForm.jsx';
 import Modal from 'react-modal';
+import { sendMessage } from '../../actions/messageGetters';
 
 // import { bindActionCreators } from 'redux';
 const customStyles = {
@@ -33,8 +35,7 @@ class TenantMessages extends Component {
 
     this.state = {
       modalIsOpen: true,
-      sendTo: '',
-      message: ''
+      sendTo: ''
     }
     this.openModal = this.openModal.bind(this)
     this.handleSendTo = this.handleSendTo.bind(this)
@@ -61,23 +62,23 @@ class TenantMessages extends Component {
   }
 
   sendMessage() {
-  	let message = this.state.message;
-  	let sendTo = this.state.sendTo;
-
-  	this.props.sendMessage()
+  	this.setState({
+  		modalIsOpen: false
+  	})
+  	var obj = {
+	  	sendFrom: this.props.userId,
+	  	sendTo: this.state.sendTo.tenant_id,
+	  	message: document.getElementById('messageTextInput').value
+    }
+  	this.props.sendMessage(obj)
   }
 
   deleteMessage() {
   	document.getElementById('messageTextInput').value = ''
   	this.setState({
-  		message: '',
-  		sendTo: {}
+  		sendTo: {},
+  		modalIsOpen: false
   	})
-  }
-
-  keyPress() {
-  	var message = document.getElementById('messageTextInput').value
-  	this.setState({message: message})
   }
 
   render() {
@@ -103,7 +104,7 @@ class TenantMessages extends Component {
         > 
         	<div>
         	  <button onClick={this.sendMessage} className="messageIcons"><i className="fa fa-paper-plane-o fa-fw" aria-hidden="true"></i></button>
-        	  <button className="messageIcons"><i className="fa fa-trash-o fa-fw" aria-hidden="true"></i></button>
+        	  <button onClick={this.deleteMessage} className="messageIcons"><i className="fa fa-trash-o fa-fw" aria-hidden="true"></i></button>
         		<p>From: {this.props.email}</p>
         		<p>To: {this.state.sendTo.email}</p>
         		<div className="dropdown">
@@ -129,8 +130,14 @@ function mapStateToProps(state) {
 		propTenants: [{email: 'empty', tenant_id: 5}], //state.tenantData && state.tenantData.tenants
     media: state.selectedTenantMedia,
     email: state.user && state.user.email,
+    userId: state.user && state.user.user_id,
+    messages: [{content: 'l;kasdfasf'}, {content: 'hey there'}, {content: 'what the fuck'}] //state.messages
 	}
 }
 
-export default connect(mapStateToProps)(TenantMessages)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({sendMessage}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TenantMessages)
 
