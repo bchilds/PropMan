@@ -32,9 +32,9 @@ class TenantSideBar extends Component {
 	render() {
 		return (
 			<div id="tenantSidebar">
-			  <h3>Broadcasts</h3>
+			  <h3 className="sidebarTitle">Broadcasts</h3>
 	        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
-				<h3>Documents</h3>
+				<h3 className="sidebarTitle">Documents</h3>
 				 {this.props.docs ? this.renderDocs(): 'No docs'}
 			</div>
 		)

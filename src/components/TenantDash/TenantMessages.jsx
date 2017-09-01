@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import TenantSidebar from './TenantSidebar.jsx';
 import PaymentForm from '../Payment/PaymentForm.jsx';
+import MessageSidebar from './MessagesSidebar.jsx';
 import Modal from 'react-modal';
 import { sendMessage } from '../../actions/messageGetters';
+import { sortMessages } from '../../actions/sortMessages';
 
 // import { bindActionCreators } from 'redux';
 const customStyles = {
@@ -34,8 +36,8 @@ class TenantMessages extends Component {
     super()
 
     this.state = {
-      modalIsOpen: true,
-      sendTo: ''
+      modalIsOpen: false,
+      sendTo: -1
     }
     this.openModal = this.openModal.bind(this)
     this.handleSendTo = this.handleSendTo.bind(this)
@@ -43,7 +45,12 @@ class TenantMessages extends Component {
     this.deleteMessage = this.deleteMessage.bind(this)
   }
 
+  // componentDidUpdate() {
+  // 	console.log('recipient', this.props.mesgRecipient)
+  // }
+
   componentDidMount() {
+  	this.props.sortMessages(this.props.messages, this.props.userId)
     this.setState({
       modalIsOpen: false
     })
@@ -57,8 +64,13 @@ class TenantMessages extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  handleSendTo(contact) {
-  	this.setState({sendTo: contact});
+  handleSendTo(e) {
+  	e.preventDefault()
+  	if (this.props.mesgRecipient === null) {
+  		alert('Must add recipient before sending you big dummy!')
+  	}
+  	this.props.sendMessage(e.target.message.value, this.props.mesgRecipient)
+
   }
 
   sendMessage() {
@@ -81,20 +93,40 @@ class TenantMessages extends Component {
   	})
   }
 
+  renderConvo() {
+  	// *** Sender_id needs to be the actual sender. That will be set up with a get request
+  	return (
+  		<tbody>
+  		  {this.props.currentConvo.map(v => {
+	  		  	if (v.sender_id === this.props.userId) {
+	  		  	  return (<tr className="messageRight"><td>{v.message_content}</td></tr>)
+	  		    } else {
+	  		    	return (<tr className="messageLeft"><td>{v.message_content}</td></tr>)
+	  		    }
+	  		  }
+  		  )}
+  		</tbody>
+  	)
+  }
+
   render() {
+  	console.log('messages rendered')
   	return (
       <div>
         <h2 className="pageTitle"> Your Messages </h2>
-        <TenantSidebar />
+        <MessageSidebar />
 
         <div id="tenantWindow">
-          <button href="`${hvrDesrpCDN}`" title="Send new message" className="messageIcons" onClick={this.openModal}><i className="fa fa-envelope fa-fw" aria-hidden="true"></i></button>
-          <p> {this.props.media} </p>
+          <tr>
+            <button href="`${hvrDesrpCDN}`" title="Create new message" className="messageIcons" onClick={this.openModal}><i className="fa fa-envelope fa-fw" aria-hidden="true"></i></button>
+          </tr>
+          <table className="table table-hover">{this.renderConvo()}</table>
         </div>
-
-        <div id="centerTenantDash">
-     
-        </div>
+          <div className="newMessage">
+	          <form onSubmit={this.handleSendTo.bind(this)}>
+	    				<input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+	          </form>
+          </div>
 
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -103,8 +135,8 @@ class TenantMessages extends Component {
           contentLabel="Payment Modal"
         > 
         	<div>
-        	  <button onClick={this.sendMessage} className="messageIcons"><i className="fa fa-paper-plane-o fa-fw" aria-hidden="true"></i></button>
-        	  <button onClick={this.deleteMessage} className="messageIcons"><i className="fa fa-trash-o fa-fw" aria-hidden="true"></i></button>
+        	  <button href="`${hvrDesrpCDN}`" title="Send message" className="messageIcons"  onClick={this.sendMessage} className="messageIcons"><i className="fa fa-paper-plane-o fa-fw" aria-hidden="true"></i></button>
+        	  <button href="`${hvrDesrpCDN}`" title="Throw this dank message in the trash!" className="messageIcons" onClick={this.deleteMessage} className="messageIcons"><i className="fa fa-trash-o fa-fw" aria-hidden="true"></i></button>
         		<p>From: {this.props.email}</p>
         		<p>To: {this.state.sendTo.email}</p>
         		<div className="dropdown">
@@ -131,12 +163,14 @@ function mapStateToProps(state) {
     media: state.selectedTenantMedia,
     email: state.user && state.user.email,
     userId: state.user && state.user.user_id,
-    messages: [{content: 'l;kasdfasf'}, {content: 'hey there'}, {content: 'what the fuck'}] //state.messages
+    messages: [],
+    currentConvo: state.currentConvo,
+    mesgRecipient: state.messageRecipient
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({sendMessage}, dispatch)
+  return bindActionCreators({sendMessage, sortMessages}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TenantMessages)

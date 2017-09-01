@@ -34,7 +34,7 @@ export function loginUser(credentials) {
       email: credentials.email,
       password: credentials.password
   })
-
+  
   return {
     type: USER_LOGIN,
     payload: request

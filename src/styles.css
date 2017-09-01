@@ -96,16 +96,20 @@
 
 #tenantWindow {
   width: 70%;
-  height: 500px;
+  height: 450px;
   margin: 10px;
   display: inline-block;
   border: 1px solid black;
   vertical-align: top;
 }
 
+.sidebarTitle {
+  text-align: center;
+}
+
 #tenantSidebar {
-  width: 25%;
-  height: 500px;
+  width: 20%;
+  height: 450px;
   margin: 10px;
   display: inline-block;
   border: 1px solid black;
@@ -126,13 +130,13 @@
 }
 
 #centerTenantDash {
-    width: 500px;
-    margin: 0 auto;
-    margin-bottom: 30px;
+  width: 500px;
+  margin: 0 auto;
+  margin-bottom: 30px;
 }
 
 #truncate {
-  font-size: 12px;
+  font-size: 18px;
   border-bottom: 1px solid lightgray;
   max-width: 100%;
   margin: 5px;
@@ -143,6 +147,27 @@
 
 .addContact {
 
+}
+
+.messageLeft {
+  text-align: left;
+}
+
+.messageRight {
+  text-align: right;
+}
+
+.newMessage {
+  width: 70%;
+  bottom: 0;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.centerMessage {
+  width: 80%;
+  height: 50px;
+  font-size: 18px;
 }
 
 .messageInput {
