@@ -1,6 +1,6 @@
 .splash {
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../src/images/splash.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('../src/images/splash.png');
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -15,14 +15,15 @@
 }
 
 .loginForm, .signupForm {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   position: absolute;
   top:0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
+  padding: 20px;
 }
 
 .loginInput, .signupInput {
@@ -108,7 +109,7 @@ input:-webkit-autofill:active {
 
 .termsOfService {
   width: 40%;
-  margin: 0 auto;
+  margin: 50px auto;
 }
 
 .transactionsTable {
@@ -256,14 +257,9 @@ input:-webkit-autofill:active {
   text-align: center;
 }
 
-.fa-university {
-  color: black;
-  font-size: 20px;
-}
-
 .paymentOption img {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   background-color: rgba(236, 240, 241,1.0);
   padding: 10px;
   border-radius: 5px;
