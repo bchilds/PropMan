@@ -1,7 +1,7 @@
 export const SORT_MESSAGES = 'sort_messages'
 export const CURRENT_CONVO = 'current_convo'
 
-var arr = ['Sorting is fun', 'sorting isnt so fun', 'who needs sorting anyways', 'features features features', 'efficiency']
+var arr = ['Sorting is fun', 'sorting isnt so fun', 'who needs sorting anyways', 'features features features features features features features features features features features features features features features features features features features features features features features features', 'efficiency']
 var stuff = [
 {sender_id: 1, recipient_id: 2, recipient_name: 'Ben', message_content: arr[0], is_read: true},
 {sender_id: 1, recipient_id: 3, recipient_name: 'Shebaz', message_content: arr[1], is_read: true},

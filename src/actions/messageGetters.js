@@ -6,10 +6,12 @@ const ROOT_URL = 'http://localhost:8000'
 
 export function sendMessage(info) {
 	console.log(info)
-  const request = axios.post(`${ROOT_URL}/api/messages/direct/${info.userId}`, {
+  const request = axios.post(`${ROOT_URL}/api/messages/`, {
       sender_id: info.sendFrom,
       recipient_id: info.sendTo,
-      message_content: info.message
+      message_content: info.message,
+      sender_name: '',
+      recipient_name: ''
   })
 
   return {

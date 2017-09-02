@@ -39,15 +39,8 @@ class TenantMessages extends Component {
       modalIsOpen: false,
       sendTo: -1
     }
-    this.openModal = this.openModal.bind(this)
     this.handleSendTo = this.handleSendTo.bind(this)
-    this.sendMessage = this.sendMessage.bind(this)
-    this.deleteMessage = this.deleteMessage.bind(this)
   }
-
-  // componentDidUpdate() {
-  // 	console.log('recipient', this.props.mesgRecipient)
-  // }
 
   componentDidMount() {
   	this.props.sortMessages(this.props.messages, this.props.userId)
@@ -56,41 +49,17 @@ class TenantMessages extends Component {
     })
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
-
   handleSendTo(e) {
   	e.preventDefault()
   	if (this.props.mesgRecipient === null) {
   		alert('Must add recipient before sending you big dummy!')
   	}
-  	this.props.sendMessage(e.target.message.value, this.props.mesgRecipient)
-
-  }
-
-  sendMessage() {
-  	this.setState({
-  		modalIsOpen: false
-  	})
   	var obj = {
-	  	sendFrom: this.props.userId,
-	  	sendTo: this.state.sendTo.tenant_id,
-	  	message: document.getElementById('messageTextInput').value
-    }
-  	this.props.sendMessage(obj)
-  }
-
-  deleteMessage() {
-  	document.getElementById('messageTextInput').value = ''
-  	this.setState({
-  		sendTo: {},
-  		modalIsOpen: false
-  	})
+  		content: e.target.message.value,
+  		recipId: this.props.mesgRecipient,
+  		userId: this.props.userId
+  	}
+  	this.props.sendMessage(obj) //needs names
   }
 
   renderConvo() {
@@ -99,9 +68,9 @@ class TenantMessages extends Component {
   		<tbody>
   		  {this.props.currentConvo.map(v => {
 	  		  	if (v.sender_id === this.props.userId) {
-	  		  	  return (<tr className="messageRight"><td>{v.message_content}</td></tr>)
+	  		  	  return (<div className="messageRight" ><div className="mesRight">{v.message_content}</div></div>)
 	  		    } else {
-	  		    	return (<tr className="messageLeft"><td>{v.message_content}</td></tr>)
+	  		    	return (<div className="messageLeft"><div className="mesLeft">{v.message_content}</div></div>)
 	  		    }
 	  		  }
   		  )}
@@ -110,47 +79,19 @@ class TenantMessages extends Component {
   }
 
   render() {
-  	console.log('messages rendered')
   	return (
       <div>
         <h2 className="pageTitle"> Your Messages </h2>
         <MessageSidebar />
 
         <div id="tenantWindow">
-          <tr>
-            <button href="`${hvrDesrpCDN}`" title="Create new message" className="messageIcons" onClick={this.openModal}><i className="fa fa-envelope fa-fw" aria-hidden="true"></i></button>
-          </tr>
           <table className="table table-hover">{this.renderConvo()}</table>
         </div>
-          <div className="newMessage">
-	          <form onSubmit={this.handleSendTo.bind(this)}>
-	    				<input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
-	          </form>
-          </div>
-
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal.bind(this)}
-          style={customStyles}
-          contentLabel="Payment Modal"
-        > 
-        	<div>
-        	  <button href="`${hvrDesrpCDN}`" title="Send message" className="messageIcons"  onClick={this.sendMessage} className="messageIcons"><i className="fa fa-paper-plane-o fa-fw" aria-hidden="true"></i></button>
-        	  <button href="`${hvrDesrpCDN}`" title="Throw this dank message in the trash!" className="messageIcons" onClick={this.deleteMessage} className="messageIcons"><i className="fa fa-trash-o fa-fw" aria-hidden="true"></i></button>
-        		<p>From: {this.props.email}</p>
-        		<p>To: {this.state.sendTo.email}</p>
-        		<div className="dropdown">
-      		    <button className="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">Add Contact
-      		    <span className="caret"></span></button>
-      		    <ul className="dropdown-menu">
-      		      {this.props.propTenants.map(v => {
-      		      	return (<li><a onClick={() => {this.handleSendTo(v)}}>{v.email}</a></li>)
-      		      })}
-      		    </ul>
-        		</div>
-        		<textarea onKeyPress={this.keyPress} id="messageTextInput" className="messageInput" rows="15" cols="60"> </textarea>
-        	</div>
-        </Modal>
+	      <div className="newMessage">
+	        <form onSubmit={this.handleSendTo.bind(this)}>
+	  				<input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+	        </form>
+	      </div>
       </div>
   	)
   }
@@ -165,7 +106,9 @@ function mapStateToProps(state) {
     userId: state.user && state.user.user_id,
     messages: [],
     currentConvo: state.currentConvo,
-    mesgRecipient: state.messageRecipient
+    mesgRecipient: state.messageRecipient,
+    userId: state.user && state.user.user_id,
+    userName: state.user && state.user.user_name
 	}
 }
 
