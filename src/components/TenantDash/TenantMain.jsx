@@ -5,13 +5,8 @@ import TenantDashboard from './TenantDashboard.jsx'
 import Profile from '../UserProfile/UserProfile.jsx'
 import TenantMessages from './TenantMessages.jsx'
 import Login from '../Splash/Login.jsx'
-<<<<<<< HEAD
 import Transactions from './TenantTransactions.jsx'
-=======
-import Transactions from './Transactions.jsx'
 import PaymentSetup from '../Payment/PaymentSetup.jsx'
->>>>>>> commit for rebase
-
 
 class TenantMain extends React.Component {
 

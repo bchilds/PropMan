@@ -29,13 +29,9 @@ class MessagesSidebar extends Component {
 		return (
 			<div id="tenantSidebar">
 			  <h3 className="sidebarTitle">Direct Messages</h3>
-			    {this.props.isLandlord ? 
-			      <MessageSidebarLandlord />
-			    :
-		        <table className="table table-hover">
-		        	{this.renderPropTenants()}
-		        </table>
-	        }
+	        <table className="table table-hover">
+	        	{this.renderPropTenants()}
+	        </table>
 			</div>
 		)
 	}

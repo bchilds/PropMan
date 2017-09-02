@@ -43,18 +43,15 @@ class TenantMessages extends Component {
 	  		recipient_id: this.props.mesgRecipient,
 	  		sender_id: this.props.userId
 	  	}
+  	  e.target.message.value = ''
+  	  console.log('sent obj', obj)
   	  this.props.sendMessage(obj)
   	    .then(() => {
-  	    	e.target.message.value = ''
   	    	this.props.sortMessages(this.props.messages, this.props.userId)
   	    })
   	    .then(()=>{
   	    	var recip = this.props.mesgRecipient
-  	    	var user = this.props.userId
-  	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], user)
-  	    })
-  	    .catch(()=>{
-  	    	alert("Failure to send message....Rip")
+  	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip)
   	    })
     }
   }
@@ -106,6 +103,8 @@ function mapStateToProps(state) {
     userId: state.user && state.user.user_id,
     userName: state.user && state.user.user_name,
     sortedMesgs: state.sortedMessages,
+    landlordId: state.landlordData && state.landlordData.landlord_id,
+    landlordTenants: state.landlordTenants
 	}
 }
 

@@ -5,7 +5,7 @@ import { selectedTenantMedia, setCurrentConvo, messageRecipient } from './tenant
 import { tenantPaidRent } from './paymentReducer'
 import { broadcasts } from './broadcastsReducer'
 import { sortedMessages } from './sortMesgsReducer'
-import { propertyTenants } from './propertyTenantsReducer'
+import { propertyTenants, sortedTenantsByProp } from './propertyTenantsReducer'
 
 const rootReducer = combineReducers({
   selectedTenantMedia,
@@ -24,7 +24,8 @@ const rootReducer = combineReducers({
   sortedMessages,
   setCurrentConvo,
   messageRecipient,
-  tenantsLandlord
+  tenantsLandlord,
+  sortedTenByProp: sortedTenantsByProp
 });
 
 export default rootReducer;

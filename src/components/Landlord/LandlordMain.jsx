@@ -5,6 +5,7 @@ import LandlordDashboard from './LandlordDashboard.jsx'
 import Profile from '../UserProfile/UserProfile.jsx'
 import Properties  from './LandlordProperties.jsx'
 import LandlordPropertyComponent from './LandlordPropertyComponent.jsx'
+import LandlordMessages from './LandlordMessages.jsx'
 import Login from '../Splash/Login.jsx'
 import Tenants  from './LandlordTenants.jsx'
 import PaymentSetup from '../Payment/PaymentSetup.jsx'
@@ -27,6 +28,7 @@ class LandlordMain extends React.Component {
             <Route exact path='/proprietor/payments' component={Transactions} />
             <Route exact path='/proprietor/paymentsetup' component={PaymentSetup} />
             <Route exact path='/proprietor/termsofservice' component={TermsOfService} />
+            <Route exact path='/proprietor/messages' component={LandlordMessages} />
             <Route path='/proprietor' component={LandlordDashboard} />
           </Switch>
           </main>

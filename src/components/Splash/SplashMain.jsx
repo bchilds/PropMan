@@ -1,6 +1,5 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-
 import SplashNavBar from './SplashNavBar.jsx'
 import Login from './Login.jsx'
 import Signup from './Signup.jsx'

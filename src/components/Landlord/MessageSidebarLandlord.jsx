@@ -13,17 +13,19 @@ class MessagesSidebarLandlord extends Component {
 	}
 
 	tenantClicked(tenant) {
-		console.log(tenant)
+		console.log(tenant, this.props.sortedMesgs)
+		this.props.setCurrentConvo(this.props.sortedMesgs[tenant.user_id], tenant.user_id)
 	}
 
-	renderPropTenants() {
+	renderPropTenants(propertyId) {
 		return (
 			<table className="table table-hover">
 				<tbody>
-		    {this.props.propertyTenants.map(t => {
+
+		    {this.props.sortedTenByProp[propertyId].map(t => {
 		    	return (
 	    			<tr onClick={() => {this.tenantClicked(t)}}>
-				      <td>{t.name}</td>
+				      <td>{t.user_name}</td>
 	    			</tr>
 		      )
 		     })}	
@@ -34,12 +36,14 @@ class MessagesSidebarLandlord extends Component {
 
 	render() {
 		return (
-			<div className="paymentSetup">
+			<div id="tenantSidebar">
+				<h3 className="sidebarTitle">Direct Messages</h3>
 	      <Accordion>
+	      {console.log(this.props.landlordProperties)}
 				  {this.props.landlordProperties.map((v, i) => {
 				  	return (
 				  		<Panel header={v.property_name} eventKey={i}>
-				  			{this.renderPropTenants()}
+				  			{this.renderPropTenants(v.property_id)}
 				  		</Panel>
 			  		)
 					})}
@@ -54,11 +58,10 @@ function mapStateToProps(state) {
 	return{
 		sortedMesgs: state.sortedMessages,
 		landlordProperties: state.landlordProperties,
-		messages: [],
 		userId: state.user && state.user.user_id,
 		contacts: state.tenantData,
 		propId: state.tenantData && state.tenantData.property_id,
-		propertyTenants: [{name:'Shebaz', id: 4}, {name: 'Jordan', id: 3}, {name: 'Ben', id: 2}] //state.propertyTenants
+		sortedTenByProp: state.sortedTenByProp
 
 	}
 }

@@ -96,7 +96,9 @@ export function messages(state = null, action) {
       return action.payload.messages
 
     case DIRECT_MESSAGES: 
+    console.log('message reducer ', action.payload.data)
       var newArray = [...state, action.payload.data]
+      console.log('message reducer ', newArray)
       return newArray
 
     case USER_LOGOUT: 

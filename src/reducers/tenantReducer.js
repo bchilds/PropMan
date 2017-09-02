@@ -29,6 +29,7 @@ export function setCurrentConvo(state = [], action) {
 export function messageRecipient(state = null, action) {
 	switch(action.type) {
 	  case CURRENT_CONVO:
+	  console.log('in reducer', action.payload.id)
 	    return action.payload.id
 
 	  default:
