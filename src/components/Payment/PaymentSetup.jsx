@@ -6,6 +6,9 @@ import { Accordion, Panel } from 'react-bootstrap'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import venmo from '../../images/venmo_logo.png'
+import bank from '../../images/bank-icon.png'
+
 class PaymentSetup extends React.Component {
   constructor(props) {
     super(props)
@@ -178,7 +181,7 @@ class PaymentSetup extends React.Component {
                   <h5>Select your desired payment method</h5>
                   <div className="paymentOption">
                     <label>
-                      <img src="http://www.freeiconspng.com/uploads/bank-icon-5.png" /><br/>
+                      <img src={bank} /><br/>
                       <input className="paymentOption"
                         type="radio" 
                         value="bank" 
@@ -189,7 +192,7 @@ class PaymentSetup extends React.Component {
                   </div>
                   <div className="paymentOption">
                     <label>
-                      <img className="venmo" src="http://brand.venmo.com/img/logo-mark.png" /><br/>
+                      <img className="venmo" src={venmo} /><br/>
                       <input className="paymentOption"
                         type="radio" 
                         value="venmo" 
