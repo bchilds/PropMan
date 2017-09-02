@@ -1,17 +1,69 @@
-.loginForm, .signupForm {
-  display: inline-block;
-  border: 1px solid black;
-  padding: 10px 30px 10px 30px;
+.splash {
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../src/images/splash.png');
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+.splash h1 {
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 20px;
   text-align: center;
+}
+
+.loginForm, .signupForm {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .loginInput, .signupInput {
   display: block;
-  margin: 0px;
+  margin-bottom: 5px;
+  padding-left: 2px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid white; 
+  color: white;
+/*  border-radius: 5px;*/
+}
+
+.signupForm label {
+  color: white;
+  font-weight: light;
 }
 
 .loginButton, .signupButton {
   width: 100%;
+  border: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}
+
+.redirectButton {
+  float: right;
+  border: none;
+  margin: 5px;
+  padding: 5px;
+}
+
+.redirectButton a {
+  color: black;
 }
 
 .signup label {
@@ -20,6 +72,11 @@
 
 .signupSelect {
   text-align: left;
+  margin-bottom: 5px;
+}
+
+.signupSelect select {
+  background-color: white;
 }
 
 .paymentForm {
@@ -223,4 +280,18 @@
 }
 .paymentOption label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
   border:2px solid #f00;
+}
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: white;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: white;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: white;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: white;
 }
