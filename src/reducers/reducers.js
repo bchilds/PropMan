@@ -96,8 +96,11 @@ export function messages(state = null, action) {
       return action.payload.messages
 
     case DIRECT_MESSAGES: 
-      var newArray = [...state, action.payload.message]
+      var newArray = [...state, action.payload.data]
       return newArray
+
+    case USER_LOGOUT: 
+      return []
 
     default:
       return state;

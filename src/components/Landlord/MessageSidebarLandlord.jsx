@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Accordion, Panel } from 'react-bootstrap'
+import { setCurrentConvo } from '../../actions/sortMessages';
 
 
 class MessagesSidebarLandlord extends Component {
@@ -63,7 +64,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({currentConvo}, dispatch)
+  return bindActionCreators({setCurrentConvo}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesSidebarLandlord);

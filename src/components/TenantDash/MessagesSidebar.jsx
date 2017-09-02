@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getPropertyTenants } from '../../actions/getPropertyTenants';
-import { currentConvo } from '../../actions/sortMessages';
+import { setCurrentConvo } from '../../actions/sortMessages';
 import { Accordion, Panel } from 'react-bootstrap'
 import MessageSidebarLandlord from '../Landlord/MessageSidebarLandlord.jsx'
 
@@ -16,9 +16,11 @@ class MessagesSidebar extends Component {
 	renderPropTenants() {
 		return (
 			<tbody>
-			  {this.props.propertyTenants.map(t => {
-			  	return (<tr onClick={() => {this.props.currentConvo(this.props.sortedMesgs[t.user_id], t.user_id)}}><td>{t.user_name}</td></tr>)
-				})}
+			  {this.props.propertyTenants.map((t, i) => {
+			  	return (<tr onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id)}}>
+			  		<td>{i === 0 ? "Landlord: " + t.user_name: t.user_name}</td></tr>)
+			  	}
+				)}
 			</tbody>
 		)
 	}
@@ -49,13 +51,13 @@ function mapStateToProps(state) {
 		isLandlord: state.user && state.user.is_landlord,
 		contacts: state.tenantData,
 		propId: state.tenantData && state.tenantData.property_id,
-		propertyTenants: [...state.otherTenants, state.tenantsLandlord.user_name]
+		propertyTenants: [state.tenantsLandlord].concat(state.otherTenants)
 
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({currentConvo, getPropertyTenants}, dispatch)
+  return bindActionCreators({setCurrentConvo, getPropertyTenants}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesSidebar);

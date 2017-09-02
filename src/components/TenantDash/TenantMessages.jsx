@@ -8,7 +8,7 @@ import PaymentForm from '../Payment/PaymentForm.jsx';
 import MessageSidebar from './MessagesSidebar.jsx';
 import Modal from 'react-modal';
 import { sendMessage } from '../../actions/messageGetters';
-import { sortMessages } from '../../actions/sortMessages';
+import { sortMessages, setCurrentConvo } from '../../actions/sortMessages';
 
 const hvrDesrpCDN = 'https://stackoverflow.com/questions/3559467/description-box-on-mouseover'
 
@@ -20,38 +20,58 @@ class TenantMessages extends Component {
   }
 
   componentDidMount() {
+  	var elem = document.getElementById('tenantWindow');
+  	elem.scrollTop = elem.scrollHeight;
   	this.props.sortMessages(this.props.messages, this.props.userId)
     this.setState({
       modalIsOpen: false
     })
   }
 
+  componentWillUpdate() {
+    var elem = document.getElementById('tenantWindow');
+    elem.scrollTop = elem.scrollHeight;
+  }
+
   handleSendTo(e) {
   	e.preventDefault()
   	if (this.props.mesgRecipient === null) {
   		alert('Must add recipient before sending you big dummy!')
-  	}
-  	var obj = {
-  		content: e.target.message.value,
-  		recipId: this.props.mesgRecipient,
-  		userId: this.props.userId
-  	}
-  	this.props.sendMessage(obj) //needs names
+  	} else {
+	  	var obj = {
+	  		message_content: e.target.message.value,
+	  		recipient_id: this.props.mesgRecipient,
+	  		sender_id: this.props.userId
+	  	}
+  	  this.props.sendMessage(obj)
+  	    .then(() => {
+  	    	e.target.message.value = ''
+  	    	this.props.sortMessages(this.props.messages, this.props.userId)
+  	    })
+  	    .then(()=>{
+  	    	var recip = this.props.mesgRecipient
+  	    	var user = this.props.userId
+  	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], user)
+  	    })
+  	    .catch(()=>{
+  	    	alert("Failure to send message....Rip")
+  	    })
+    }
   }
 
   renderConvo() {
   	// *** Sender_id needs to be the actual sender. That will be set up with a get request
   	return (
-  		<tbody>
+  		<div>
   		  {this.props.currentConvo.map(v => {
-	  		  	if (v.sender_id === 1) { // replace 1 with this.props.userId
+	  		  	if (v.sender_id === this.props.userId) { 
 	  		  	  return (<div className="messageRight" ><div className="mesRight">{v.message_content}</div></div>)
 	  		    } else {
 	  		    	return (<div className="messageLeft"><div className="mesLeft">{v.message_content}</div></div>)
 	  		    }
 	  		  }
   		  )}
-  		</tbody>
+  		</div>
   	)
   }
 
@@ -60,9 +80,8 @@ class TenantMessages extends Component {
       <div>
         <h2 className="pageTitle"> Your Messages </h2>
         <MessageSidebar />
-
         <div id="tenantWindow">
-          <table className="table table-hover">{this.renderConvo()}</table>
+          <div>{this.renderConvo()}</div>
         </div>
 	      <div className="newMessage">
 	        <form onSubmit={this.handleSendTo.bind(this)}>
@@ -81,16 +100,17 @@ function mapStateToProps(state) {
     media: state.selectedTenantMedia,
     email: state.user && state.user.email,
     userId: state.user && state.user.user_id,
-    messages: [],
-    currentConvo: state.currentConvo,
+    messages: state.messages,
+    currentConvo: state.setCurrentConvo,
     mesgRecipient: state.messageRecipient,
     userId: state.user && state.user.user_id,
-    userName: state.user && state.user.user_name
+    userName: state.user && state.user.user_name,
+    sortedMesgs: state.sortedMessages,
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({sendMessage, sortMessages}, dispatch)
+  return bindActionCreators({sendMessage, sortMessages, setCurrentConvo}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TenantMessages)
