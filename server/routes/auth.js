@@ -62,13 +62,15 @@ auth
 			ctx.body = 'No user exists'
 		}
 
-		if(user && user.is_landlord) {
+		passwordCheck = await Users.checkUserPass(ctx)
+
+		if(user && user.is_landlord && passwordCheck) {
 			output = await landlords.getLandlordData(ctx, user)
 			output.user = user
 			ctx.session.isLoggedIn = true
 			ctx.response.status = 200
 			ctx.body = output
-		} else if(user) {
+		} else if(user && passwordCheck) {
 			tenant = await tenants.checkForActiveTenant(ctx, user)
 			if(tenant) {
 				//all gucci

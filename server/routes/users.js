@@ -1,5 +1,5 @@
 let router = require('koa-router')()
-let bcrypt = require('bcrypt-nodejs')
+let bcrypt = require('bcrypt')
 //responds to /users, /users/:email
 
 const getUserById = async (ctx, user_id) => {
@@ -19,14 +19,44 @@ const getUserByEmail = async (ctx, email) => {
 }
 exports.getUserByEmail = getUserByEmail
 
-const createUser = async (ctx) => {
+const createUser = async (ctx, password) => {
 	//ctx.request.body = {user_name, email, user_password, isLandlord}
 	let userRows, user
-	userRows = await ctx.db.query(`INSERT INTO users (user_name, email, user_password, is_landlord) VALUES ('${ctx.request.body.user_name}', '${ctx.request.body.email}', '${ctx.request.body.password}', ${ctx.request.body.isLandlord}) RETURNING *;`)
+	let bcryptPass
+	if(!password && ctx.request.body.password) password = ctx.request.body.password
+	await bcrypt.hash(password, 10)
+		.then((res) => {
+			bcryptPass = res
+		})
+		.catch((err) => {
+			throw err
+		})
+
+	userRows = await ctx.db.query(`INSERT INTO users (user_name, email, user_password, is_landlord) VALUES ('${ctx.request.body.user_name}', '${ctx.request.body.email}', '${bcryptPass}', ${ctx.request.body.isLandlord}) RETURNING *;`)
 	user = userRows.rows[0]
 	return user
 }
 exports.createUser = createUser
+
+const checkUserPass = async (ctx, email, password) => {
+	let userRows, user
+	let passwordCheck
+	if(!email && ctx.request.body.email) email = ctx.request.body.email
+	if(!password && ctx.request.body.password) password = ctx.request.body.password
+	userRows = await ctx.db.query(`SELECT user_password FROM users WHERE email = '${email}';`)
+	let storedPassword = userRows.rows[0].user_password
+	await bcrypt.compare(password, storedPassword)
+		.then((res) => {
+			passwordCheck = res
+		})
+		.catch((err) => {
+			throw err
+		})
+
+	return passwordCheck
+
+}
+exports.checkUserPass = checkUserPass
 
 router
 	.get('/:id', async (ctx, next) => {
