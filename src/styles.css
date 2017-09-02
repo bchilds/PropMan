@@ -145,10 +145,6 @@
   text-overflow: ellipsis;
 }
 
-.addContact {
-
-}
-
 .mesRight {
   width: 70%;
   float: right;
@@ -163,13 +159,13 @@
 }
 
 .messageLeft {
-  margin-left: 10px;
+  margin-left: 20px;
   font-size: 18px;
   text-align: left;
 }
 
 .messageRight {
-  margin-right: 10px;
+  margin-right: 20px;
   font-size: 18px;
   text-align: right;
 }

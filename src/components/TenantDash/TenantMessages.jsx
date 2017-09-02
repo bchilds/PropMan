@@ -10,35 +10,12 @@ import Modal from 'react-modal';
 import { sendMessage } from '../../actions/messageGetters';
 import { sortMessages } from '../../actions/sortMessages';
 
-// import { bindActionCreators } from 'redux';
-const customStyles = {
-  content : {
-    top             : '50%',
-    left            : '50%',
-    right           : '70%',
-    bottom          : 'auto',
-    marginRight     : '-50%',
-    transform       : 'translate(-50%, -50%)',
-    maxHeight       : '600px',
-    minHeight       : '400px', // This sets the max height
-    width           : '600px',
-    overflow        : 'scroll', // This tells the modal to scroll
-    border          : '1px solid black',
-    //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
-    borderRadius    : '0px'
-  }
-};
-
 const hvrDesrpCDN = 'https://stackoverflow.com/questions/3559467/description-box-on-mouseover'
 
 class TenantMessages extends Component {
   constructor() {
     super()
-
-    this.state = {
-      modalIsOpen: false,
-      sendTo: -1
-    }
+    
     this.handleSendTo = this.handleSendTo.bind(this)
   }
 
@@ -67,7 +44,7 @@ class TenantMessages extends Component {
   	return (
   		<tbody>
   		  {this.props.currentConvo.map(v => {
-	  		  	if (v.sender_id === this.props.userId) {
+	  		  	if (v.sender_id === 1) { // replace 1 with this.props.userId
 	  		  	  return (<div className="messageRight" ><div className="mesRight">{v.message_content}</div></div>)
 	  		    } else {
 	  		    	return (<div className="messageLeft"><div className="mesLeft">{v.message_content}</div></div>)

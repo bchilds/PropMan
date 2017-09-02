@@ -45,6 +45,34 @@ export function tenantData(state = null, action) {
   }
 }
 
+export function otherTenants(state = null, action) {
+  switch(action.type) {
+    case USER_LOGIN: 
+      if (action.payload.data.otherTenants) {
+        return action.payload.data.otherTenants
+      } else {
+        return state
+      }
+
+    default:
+      return state;
+  }
+}
+
+export function tenantsLandlord(state = null, action) {
+  switch(action.type) {
+    case USER_LOGIN: 
+      if (action.payload.data.landlord) {
+        return action.payload.data.landlord
+      } else {
+        return state
+      }
+
+    default:
+      return state;
+  }
+}
+
 export function landlordData(state = null, action) {
   switch(action.type) {
     case USER_LOGIN: 

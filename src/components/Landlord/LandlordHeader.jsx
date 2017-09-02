@@ -41,7 +41,11 @@ class Header extends Component {
             <Link to='/proprietor/tenants' className="link">Tenants</Link>
           </NavItem>
           <NavItem>
+<<<<<<< HEAD
             <Link to='/proprietor/payments' className="link">Payments</Link>
+=======
+            <Link to='/tenant/messages' className="link">Messages</Link>
+>>>>>>> commit for rebase
           </NavItem>
         </Nav>
         <Nav pullRight>

@@ -11,9 +11,9 @@ var stuff = [
 ]
 export function sortMessages(messages, userId) {
 	var mesgObj = {}
-console.log('userId is ', userId)
+console.log('userId is ', 1)
 	stuff.forEach(obj => {
-		if (obj.recipient_id !== userId) {
+		if (obj.recipient_id !== 1) {
 			mesgObj[obj.recipient_id] = mesgObj[obj.recipient_id] || []
 			mesgObj[obj.recipient_id].push(obj)
 	  } else {
@@ -26,7 +26,6 @@ console.log('userId is ', userId)
 	// 	mesgObj[key].sort(function (a, b) {
 	//   return new Date(a.created_date).getTime() - new Date(b.created_date).getTime() 
 	// }
-
 	return {
 		type: SORT_MESSAGES,
 		payload: mesgObj
@@ -39,6 +38,7 @@ export function currentConvo(convoArray, recipId) {
 		convo: convoArray,
 		id: recipId
 	}
+	console.log(convoArray)
 	return {
 		type: CURRENT_CONVO,
 		payload: obj

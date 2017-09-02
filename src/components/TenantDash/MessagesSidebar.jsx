@@ -3,26 +3,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getPropertyTenants } from '../../actions/getPropertyTenants';
 import { currentConvo } from '../../actions/sortMessages';
+import { Accordion, Panel } from 'react-bootstrap'
+import MessageSidebarLandlord from '../Landlord/MessageSidebarLandlord.jsx'
 
 
 class MessagesSidebar extends Component {
 	constructor() {
 		super()
 
-		this.state = {
-			directMesgs: []
-		}
-	}
-
-	componentDidMount() {
-		// this.props.getPropertyTenants(this.props.propId)
 	}
 
 	renderPropTenants() {
 		return (
 			<tbody>
-			  {this.props.propertyTenants.map(v => {
-			  	return (<tr onClick={() => {this.props.currentConvo(this.props.sortedMesgs[v.id], v.id)}}><td>{v.name}</td></tr>)
+			  {this.props.propertyTenants.map(t => {
+			  	return (<tr onClick={() => {this.props.currentConvo(this.props.sortedMesgs[t.user_id], t.user_id)}}><td>{t.user_name}</td></tr>)
 				})}
 			</tbody>
 		)
@@ -32,9 +27,13 @@ class MessagesSidebar extends Component {
 		return (
 			<div id="tenantSidebar">
 			  <h3 className="sidebarTitle">Direct Messages</h3>
-	        <table className="table table-hover">
-	        	{this.renderPropTenants()}
-	        </table>
+			    {this.props.isLandlord ? 
+			      <MessageSidebarLandlord />
+			    :
+		        <table className="table table-hover">
+		        	{this.renderPropTenants()}
+		        </table>
+	        }
 			</div>
 		)
 	}
@@ -44,11 +43,13 @@ function mapStateToProps(state) {
 
 	return{
 		sortedMesgs: state.sortedMessages,
+		landlordProperties: state.landlordProperties,
 		messages: [],
 		userId: state.user && state.user.user_id,
+		isLandlord: state.user && state.user.is_landlord,
 		contacts: state.tenantData,
 		propId: state.tenantData && state.tenantData.property_id,
-		propertyTenants: [{name:'Shebaz', id: 4}, {name: 'Jordan', id: 3}, {name: 'Ben', id: 2}] //state.propertyTenants
+		propertyTenants: [...state.otherTenants, state.tenantsLandlord.user_name]
 
 	}
 }
