@@ -7,7 +7,6 @@ const ROOT_URL = 'http://localhost:8000'
 export function tenantPayment(payment) {
   const request = axios.post(`${ROOT_URL}/api/payments/payRent`, {
     nonce: payment.nonce
-    
   })
 
   return {
