@@ -26,11 +26,15 @@ class LandlordTransactions extends React.Component {
     }
   }
 
+  componentWillMount() {
+    console.log(this.props)
+  }
+
   render() {
-    if (this.props.merchant_id) {
+    {console.log(this.props.landlordData.merchant_id)}
+    if (this.props.landlordData.merchant_id) {
       return (
         <div className="transactionsTable">
-          {console.log(this.props.landlordData)}
           <h2>Past Payments</h2>
           <BootstrapTable data={ this.state.transactions } striped={ true } hover={ true } condensed={ true }>
             <TableHeaderColumn dataField='id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
