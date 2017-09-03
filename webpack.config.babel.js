@@ -1,13 +1,13 @@
-const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-// const CleanWebpackPlugin = require('clean-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+import { resolve } from 'path'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+// import CleanWebpackPlugin from 'clean-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin'
 
-const config = {
+export default {
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/'
   },
@@ -31,5 +31,3 @@ const config = {
     })
   ]
 }
-
-module.exports = config
