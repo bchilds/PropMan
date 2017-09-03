@@ -2,11 +2,7 @@ let router = require('koa-router')()
 let props = require('./props.js')
 let payments = require('./payments.js')
 let messages = require('./messages.js')
-<<<<<<< HEAD
-let tenants = require('./tenants.js')
-=======
 let Tenants = require('./tenants.js')
->>>>>>> props testing and route
 let Promise = require('bluebird')
 
 
