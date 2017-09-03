@@ -2,7 +2,11 @@ let router = require('koa-router')()
 let props = require('./props.js')
 let payments = require('./payments.js')
 let messages = require('./messages.js')
+<<<<<<< HEAD
 let tenants = require('./tenants.js')
+=======
+let Tenants = require('./tenants.js')
+>>>>>>> props testing and route
 let Promise = require('bluebird')
 
 
@@ -41,19 +45,19 @@ const updateMerchant = async (ctx, landlord_id) => {
 exports.updateMerchant = updateMerchant
 
 const getLandlordData = async (ctx, user) => {
-    let landlord, properties, transactions, msgs, activeTenants
-    landlord = await getLandlord(ctx, user.user_id)
-    if(landlord) {
-        [properties, transactions, msgs, activeTenants] = await Promise.all([
-            props.getLandlordProperties(ctx, landlord.landlord_id),
-            payments.getUserTransactions(ctx, landlord),
-            messages.getUserMessages(ctx, landlord.user_id),
-            tenants.getLandlordTenants(ctx, landlord.landlord_id, 'act')
-            ])
-        return {landlord: landlord, properties: properties, transactions: transactions, messages:msgs, activeTenants:activeTenants}
-    } else {
-        return null
-    }
+	let landlord, properties, transactions, msgs, activeTenants
+	landlord = await getLandlord(ctx, user.user_id)
+	if(landlord) {
+		[properties, transactions, msgs, activeTenants] = await Promise.all([
+			props.getLandlordProperties(ctx, landlord.landlord_id),
+			payments.getUserTransactions(ctx, landlord),
+			messages.getUserMessages(ctx, landlord.user_id),
+			Tenants.getLandlordTenants(ctx, landlord.landlord_id, 'act')
+			])
+		return {landlord: landlord, properties: properties, transactions: transactions, messages:msgs, activeTenants:activeTenants}
+	} else {
+		return null
+	}
 }
 exports.getLandlordData = getLandlordData
 

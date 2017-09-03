@@ -26,6 +26,7 @@ const addProperty = async (ctx, landlord_id) => {
 exports.addProperty = addProperty
 
 const getPropertyTenants = async (ctx, property_id, tenant_id) => {
+	//gets active tenants
 	let tenantsRows, tenants
 	if(tenant_id) {
 		tenantsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id WHERE tenants.property_id = ${property_id} AND tenants.is_active = true AND tenants.tenant_id <> ${tenant_id};`)
