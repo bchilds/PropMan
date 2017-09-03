@@ -6,6 +6,7 @@ import { Accordion, Panel } from 'react-bootstrap'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import PaymentSetupSuccess from './PaymentSetupSuccess.jsx'
 import venmo from '../../images/venmo_logo.png'
 import bank from '../../images/bank-icon.png'
 
@@ -14,7 +15,7 @@ class PaymentSetup extends React.Component {
     super(props)
     this.state = {
       bankIsSelected: true,
-      fireRedirect: false,
+      openModal: false,
       user: this.props.user
     }
   }
@@ -80,7 +81,7 @@ class PaymentSetup extends React.Component {
       })
       .then((res) => {
         this.setState({
-          fireRedirect: true
+          openModal: true
         })
       })
   }
@@ -210,6 +211,7 @@ class PaymentSetup extends React.Component {
               <button type="submit"> Submit</button>
             </div>
           </form>
+          {this.state.openModal && <PaymentSetupSuccess />}
       </div>
     )
   }
