@@ -2,122 +2,89 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import TenantSidebar from './TenantSidebar.jsx';
 import PaymentForm from '../Payment/PaymentForm.jsx';
+import MessageSidebar from './MessagesSidebar.jsx';
 import Modal from 'react-modal';
-
-// import { bindActionCreators } from 'redux';
-const customStyles = {
-  content : {
-    top             : '50%',
-    left            : '50%',
-    right           : '70%',
-    bottom          : 'auto',
-    marginRight     : '-50%',
-    transform       : 'translate(-50%, -50%)',
-    maxHeight       : '600px',
-    minHeight       : '400px', // This sets the max height
-    width           : '600px',
-    overflow        : 'scroll', // This tells the modal to scroll
-    border          : '1px solid black',
-    //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
-    borderRadius    : '0px'
-  }
-};
+import { sendMessage } from '../../actions/messageGetters';
+import { sortMessages, setCurrentConvo } from '../../actions/sortMessages';
 
 const hvrDesrpCDN = 'https://stackoverflow.com/questions/3559467/description-box-on-mouseover'
 
 class TenantMessages extends Component {
   constructor() {
     super()
-
-    this.state = {
-      modalIsOpen: true,
-      sendTo: '',
-      message: ''
-    }
-    this.openModal = this.openModal.bind(this)
+    
     this.handleSendTo = this.handleSendTo.bind(this)
-    this.sendMessage = this.sendMessage.bind(this)
-    this.deleteMessage = this.deleteMessage.bind(this)
   }
 
   componentDidMount() {
+  	var elem = document.getElementById('tenantWindow');
+  	elem.scrollTop = elem.scrollHeight;
+  	this.props.sortMessages(this.props.messages, this.props.userId)
     this.setState({
       modalIsOpen: false
     })
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
+  componentWillUpdate() {
+    var elem = document.getElementById('tenantWindow');
+    elem.scrollTop = elem.scrollHeight;
   }
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
+  handleSendTo(e) {
+  	e.preventDefault()
+  	if (this.props.mesgRecipient === null) {
+  		alert('Must add recipient before sending you big dummy!')
+  	} else {
+	  	var obj = {
+	  		message_content: e.target.message.value,
+	  		recipient_id: this.props.mesgRecipient,
+	  		sender_id: this.props.userId
+	  	}
+  	  e.target.message.value = ''
+  	  console.log('sent obj', obj)
+  	  this.props.sendMessage(obj)
+  	    .then(() => {
+  	    	this.props.sortMessages(this.props.messages, this.props.userId)
+  	    })
+  	    .then(()=>{
+  	    	var recip = this.props.mesgRecipient
+  	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip)
+  	    })
+    }
   }
 
-  handleSendTo(contact) {
-  	this.setState({sendTo: contact});
-  }
-
-  sendMessage() {
-  	let message = this.state.message;
-  	let sendTo = this.state.sendTo;
-
-  	this.props.sendMessage()
-  }
-
-  deleteMessage() {
-  	document.getElementById('messageTextInput').value = ''
-  	this.setState({
-  		message: '',
-  		sendTo: {}
-  	})
-  }
-
-  keyPress() {
-  	var message = document.getElementById('messageTextInput').value
-  	this.setState({message: message})
+  renderConvo() {
+  	// *** Sender_id needs to be the actual sender. That will be set up with a get request
+  	return (
+  		<div>
+  		  {this.props.currentConvo.map(v => {
+	  		  	if (v.sender_id === this.props.userId) { 
+	  		  	  return (<div className="messageRight" ><div className="mesRight">{v.message_content}</div></div>)
+	  		    } else {
+	  		    	return (<div className="messageLeft"><div className="mesLeft">{v.message_content}</div></div>)
+	  		    }
+	  		  }
+  		  )}
+  		</div>
+  	)
   }
 
   render() {
   	return (
       <div>
         <h2 className="pageTitle"> Your Messages </h2>
-        <TenantSidebar />
-
+        <MessageSidebar />
         <div id="tenantWindow">
-          <button href="`${hvrDesrpCDN}`" title="Send new message" className="messageIcons" onClick={this.openModal}><i className="fa fa-envelope fa-fw" aria-hidden="true"></i></button>
-          <p> {this.props.media} </p>
+          <div>{this.renderConvo()}</div>
         </div>
-
-        <div id="centerTenantDash">
-     
-        </div>
-
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal.bind(this)}
-          style={customStyles}
-          contentLabel="Payment Modal"
-        > 
-        	<div>
-        	  <button onClick={this.sendMessage} className="messageIcons"><i className="fa fa-paper-plane-o fa-fw" aria-hidden="true"></i></button>
-        	  <button className="messageIcons"><i className="fa fa-trash-o fa-fw" aria-hidden="true"></i></button>
-        		<p>From: {this.props.email}</p>
-        		<p>To: {this.state.sendTo.email}</p>
-        		<div className="dropdown">
-      		    <button className="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">Add Contact
-      		    <span className="caret"></span></button>
-      		    <ul className="dropdown-menu">
-      		      {this.props.propTenants.map(v => {
-      		      	return (<li><a onClick={() => {this.handleSendTo(v)}}>{v.email}</a></li>)
-      		      })}
-      		    </ul>
-        		</div>
-        		<textarea onKeyPress={this.keyPress} id="messageTextInput" className="messageInput" rows="15" cols="60"> </textarea>
-        	</div>
-        </Modal>
+	      <div className="newMessage">
+	        <form onSubmit={this.handleSendTo.bind(this)}>
+	  				<input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+	        </form>
+	      </div>
       </div>
   	)
   }
@@ -129,8 +96,21 @@ function mapStateToProps(state) {
 		propTenants: [{email: 'empty', tenant_id: 5}], //state.tenantData && state.tenantData.tenants
     media: state.selectedTenantMedia,
     email: state.user && state.user.email,
+    userId: state.user && state.user.user_id,
+    messages: state.messages,
+    currentConvo: state.setCurrentConvo,
+    mesgRecipient: state.messageRecipient,
+    userId: state.user && state.user.user_id,
+    userName: state.user && state.user.user_name,
+    sortedMesgs: state.sortedMessages,
+    landlordId: state.landlordData && state.landlordData.landlord_id,
+    landlordTenants: state.landlordTenants
 	}
 }
 
-export default connect(mapStateToProps)(TenantMessages)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({sendMessage, sortMessages, setCurrentConvo}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TenantMessages)
 

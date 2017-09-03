@@ -7,7 +7,6 @@ import TenantMessages from './TenantMessages.jsx'
 import Login from '../Splash/Login.jsx'
 import Transactions from './TenantTransactions.jsx'
 
-
 class TenantMain extends React.Component {
 
   render() {

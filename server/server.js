@@ -37,15 +37,15 @@ app.use(bodyParser())
 app.keys = ['ironmen']
 app.use(session(app))
 
-// app.use(function* (next) {
-//   this.session.isLoggedIn = this.session.isLoggedIn || false
-//   if (!this.session.isLoggedIn) {
-//     console.log('redirecting')
-//     this.redirect('/')
-//   }  
+app.use(function* (next) {
+  this.session.isLoggedIn = this.session.isLoggedIn || false
+  if (!this.session.isLoggedIn) {
+    console.log('redirecting')
+    this.redirect('/')
+  }  
    
-//   yield next
-// });
+  yield next
+});
 
 // app.use(async (ctx, next) => {
 //   const start = Date.now();

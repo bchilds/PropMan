@@ -1,4 +1,6 @@
 import { FETCH_SELECTED_MEDIA } from '../actions/tenantDashboardGetters.js';
+import { CURRENT_CONVO } from '../actions/sortMessages'
+import { USER_LOGOUT } from '../actions/authGetters'
 
 export function selectedTenantMedia(state = null, action) {
 	switch(action.type) {
@@ -8,5 +10,29 @@ export function selectedTenantMedia(state = null, action) {
 
 		default:
 			return state;
+	}
+}
+
+export function setCurrentConvo(state = [], action) {
+	switch(action.type) {
+	  case CURRENT_CONVO:
+	    return action.payload.convo
+
+    case USER_LOGOUT: 
+      return []
+
+	  default:
+	  	return state;
+	}
+}
+
+export function messageRecipient(state = null, action) {
+	switch(action.type) {
+	  case CURRENT_CONVO:
+	  console.log('in reducer', action.payload.id)
+	    return action.payload.id
+
+	  default:
+	  	return state;
 	}
 }

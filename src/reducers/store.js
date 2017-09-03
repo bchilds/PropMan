@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
-import { userData, tenantData, landlordData, messages, docs, isLoggedIn} from './reducers'
+import { userData, tenantData, otherTenants, tenantsLandlord, landlordData, messages, docs, isLoggedIn} from './reducers'
 import { landlordProperties, landlordTenants } from './landlordReducer';
-import { selectedTenantMedia } from './tenantReducer';
+import { selectedTenantMedia, setCurrentConvo, messageRecipient } from './tenantReducer';
 import { tenantPaidRent } from './paymentReducer'
 import { broadcasts } from './broadcastsReducer'
+import { sortedMessages } from './sortMesgsReducer'
+import { propertyTenants, sortedTenantsByProp } from './propertyTenantsReducer'
 
 const rootReducer = combineReducers({
   selectedTenantMedia,
@@ -12,11 +14,18 @@ const rootReducer = combineReducers({
   landlordTenants,
   user: userData,
   tenantData,
+  otherTenants,
+  propertyTenants, // tenants for one property
   landlordData,
   messages,
   docs,
   loggedIn: isLoggedIn,
-  broadcasts
+  broadcasts,
+  sortedMessages,
+  setCurrentConvo,
+  messageRecipient,
+  tenantsLandlord,
+  sortedTenByProp: sortedTenantsByProp
 });
 
 export default rootReducer;

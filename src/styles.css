@@ -96,16 +96,21 @@
 
 #tenantWindow {
   width: 70%;
-  height: 500px;
+  height: 450px;
   margin: 10px;
   display: inline-block;
   border: 1px solid black;
   vertical-align: top;
+  overflow: scroll;
+}
+
+.sidebarTitle {
+  text-align: center;
 }
 
 #tenantSidebar {
-  width: 25%;
-  height: 500px;
+  width: 20%;
+  height: 450px;
   margin: 10px;
   display: inline-block;
   border: 1px solid black;
@@ -126,13 +131,13 @@
 }
 
 #centerTenantDash {
-    width: 500px;
-    margin: 0 auto;
-    margin-bottom: 30px;
+  width: 500px;
+  margin: 0 auto;
+  margin-bottom: 30px;
 }
 
 #truncate {
-  font-size: 12px;
+  font-size: 18px;
   border-bottom: 1px solid lightgray;
   max-width: 100%;
   margin: 5px;
@@ -141,8 +146,42 @@
   text-overflow: ellipsis;
 }
 
-.addContact {
+.mesRight {
+  width: 70%;
+  float: right;
+  word-wrap: break-word;
+}
 
+.mesLeft {
+  width: 70%;
+  margin-right: 30px;
+  float: left;
+  word-wrap: break-word;
+}
+
+.messageLeft {
+  margin-left: 20px;
+  font-size: 18px;
+  text-align: left;
+}
+
+.messageRight {
+  margin-right: 20px;
+  font-size: 18px;
+  text-align: right;
+}
+
+.newMessage {
+  width: 70%;
+  bottom: 0;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.centerMessage {
+  width: 80%;
+  height: 50px;
+  font-size: 18px;
 }
 
 .messageInput {
