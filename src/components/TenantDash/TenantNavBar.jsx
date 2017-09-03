@@ -39,9 +39,6 @@ class TenantNavBar extends Component {
             <Link to='/tenant/payments' className="link">Payments</Link>
           </NavItem>
           <NavItem>
-            <Link to='/paymentsetup' className="link"> Payment Setup </Link>
-          </NavItem>
-          <NavItem>
             <Link to='/tenant/messages' className="link">Messages</Link>
           </NavItem>
         </Nav>
