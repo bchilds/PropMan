@@ -5,25 +5,23 @@ import { submerchantCreation } from '../../actions/paymentGetters'
 import { Accordion, Panel } from 'react-bootstrap'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+
+import PaymentSetupSuccess from './actionSuccess.jsx'
+import venmo from '../../images/venmo_logo.png'
+import bank from '../../images/bank-icon.png'
 
 class PaymentSetup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       bankIsSelected: true,
-      fireRedirect: false,
       user: this.props.user
     }
   }
 
-  componentWillMount() {
-    // console.log(this.props.user.user_name)
-    // console.log(this.props.user.email)
-  }
-
   handleSubmit(e) {
     e.preventDefault()
-    console.log(this.props.landlordData, '1111111')
     let monthNum = months.indexOf(e.target.month.value) + 1
 
     let destination, accountNum, routingNum, phoneNum, venmoEmail
@@ -71,15 +69,7 @@ class PaymentSetup extends React.Component {
       tosAccepted: true, // need to do a terms of service thing
       masterMerchantAccountId: "" // inside of braintree.config.js
     }
-    submerchantCreation(params, this.props.landlordData.landlord_id)
-      .catch((err) => {
-        alert(err.data)
-      })
-      .then((res) => {
-        this.setState({
-          fireRedirect: true
-        })
-      })
+    this.props.submerchantCreation(params, this.props.landlordData.landlord_id)
   }
 
   handleOptionChange(e) {
@@ -168,7 +158,7 @@ class PaymentSetup extends React.Component {
                 <label>Street Address</label><br/><input name="street" className="paymentInput"></input><br/>
                 <label>City</label><br/><input name="city" className="paymentInput"></input><br/>
                 <label>State</label><br/>
-                <select name="state">
+                <select name="state" className="statesSelect">
                   {this.renderStates()}
                 </select>
                 <br/>
@@ -178,7 +168,7 @@ class PaymentSetup extends React.Component {
                   <h5>Select your desired payment method</h5>
                   <div className="paymentOption">
                     <label>
-                      <img src="http://www.freeiconspng.com/uploads/bank-icon-5.png" /><br/>
+                      <img src={bank} /><br/>
                       <input className="paymentOption"
                         type="radio" 
                         value="bank" 
@@ -189,7 +179,7 @@ class PaymentSetup extends React.Component {
                   </div>
                   <div className="paymentOption">
                     <label>
-                      <img className="venmo" src="http://brand.venmo.com/img/logo-mark.png" /><br/>
+                      <img className="venmo" src={venmo} /><br/>
                       <input className="paymentOption"
                         type="radio" 
                         value="venmo" 
@@ -207,6 +197,7 @@ class PaymentSetup extends React.Component {
               <button type="submit"> Submit</button>
             </div>
           </form>
+          {this.props.landlordData.payment_set_up && <PaymentSetupSuccess />}
       </div>
     )
   }
@@ -217,7 +208,10 @@ function mapStateToProps(state) {
     user: state.user,
     landlordData: state.landlordData
   }
-
 }
 
-export default connect(mapStateToProps, null)(PaymentSetup)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({submerchantCreation}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentSetup)

@@ -15,7 +15,8 @@ export default {
   module: {
     rules: [
      { test: /\.(js|jsx)$/, use: 'babel-loader', exclude: /node_modules/ },
-     { test: /\.css$/, use: [{ loader: 'style-loader' }, { loader: 'css-loader' }] }
+     { test: /\.css$/, use: [{ loader: 'style-loader' }, { loader: 'css-loader' }] },
+     { test: /\.(jpe?g|png|gif|svg)$/,use: [{loader: 'url-loader',options: { limit: 40000 }},'image-webpack-loader']}
    ],
   },
   plugins: [
