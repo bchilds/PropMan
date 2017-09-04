@@ -249,7 +249,9 @@ input:-webkit-autofill:active {
 }
 
 .paymentSetupWarning {
-  text-align: center
+  margin: auto;
+  padding: 20px;
+  text-align: center;
 }
 
 .paymentOption {

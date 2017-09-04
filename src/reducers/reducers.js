@@ -31,7 +31,7 @@ export function isLoggedIn(state = null, action) {
   }
 }
 
-export function tenantData(state = null, action) {
+export function tenantData(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
       if (action.payload.data.tenant) {
@@ -73,7 +73,7 @@ export function tenantsLandlord(state = null, action) {
   }
 }
 
-export function landlordData(state = null, action) {
+export function landlordData(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
       if (action.payload.data.landlord) {
