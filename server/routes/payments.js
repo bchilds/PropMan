@@ -88,7 +88,7 @@ router
       let landlord = await Landlords.updateMerchant(ctx, ctx.params.landlord_id)  
       if(landlord) {
         ctx.response.status = 201
-        ctx.body = 'Succesful payment setup'   
+        ctx.body = landlord   
       } else {
         ctx.response.status = 400
         ctx.body = 'Error updating Landlord'

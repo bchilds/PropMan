@@ -300,3 +300,14 @@
 .paymentOption label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
   border:2px solid #f00;
 }
+
+.actionSuccessUpper, .actionSuccessLower {
+  text-align: center;
+  background-color: rgba(0, 177, 106,1.0);
+  padding: 30px;
+  border: none;
+}
+
+.actionSuccessLower {
+  background-color: white;
+}

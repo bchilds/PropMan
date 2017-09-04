@@ -5,8 +5,9 @@ import { submerchantCreation } from '../../actions/paymentGetters'
 import { Accordion, Panel } from 'react-bootstrap'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 
-import PaymentSetupSuccess from './PaymentSetupSuccess.jsx'
+import PaymentSetupSuccess from './actionSuccess.jsx'
 import venmo from '../../images/venmo_logo.png'
 import bank from '../../images/bank-icon.png'
 
@@ -15,19 +16,12 @@ class PaymentSetup extends React.Component {
     super(props)
     this.state = {
       bankIsSelected: true,
-      openModal: false,
       user: this.props.user
     }
   }
 
-  componentWillMount() {
-    // console.log(this.props.user.user_name)
-    // console.log(this.props.user.email)
-  }
-
   handleSubmit(e) {
     e.preventDefault()
-    console.log(this.props.landlordData, '1111111')
     let monthNum = months.indexOf(e.target.month.value) + 1
 
     let destination, accountNum, routingNum, phoneNum, venmoEmail
@@ -75,15 +69,7 @@ class PaymentSetup extends React.Component {
       tosAccepted: true, // need to do a terms of service thing
       masterMerchantAccountId: "" // inside of braintree.config.js
     }
-    submerchantCreation(params, this.props.landlordData.landlord_id)
-      .catch((err) => {
-        alert(err.data)
-      })
-      .then((res) => {
-        this.setState({
-          openModal: true
-        })
-      })
+    this.props.submerchantCreation(params, this.props.landlordData.landlord_id)
   }
 
   handleOptionChange(e) {
@@ -211,7 +197,7 @@ class PaymentSetup extends React.Component {
               <button type="submit"> Submit</button>
             </div>
           </form>
-          {this.state.openModal && <PaymentSetupSuccess />}
+          {this.props.landlordData.payment_set_up && <PaymentSetupSuccess />}
       </div>
     )
   }
@@ -222,7 +208,10 @@ function mapStateToProps(state) {
     user: state.user,
     landlordData: state.landlordData
   }
-
 }
 
-export default connect(mapStateToProps, null)(PaymentSetup)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({submerchantCreation}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentSetup)

@@ -3,6 +3,7 @@ import { DIRECT_MESSAGES } from '../actions/messageGetters'
 import { USER_LOGIN, USER_LOGOUT, TENANT_LOGIN, LL_LOGIN } from '../actions/authGetters'
 import { FETCH_RENT, FETCH_MESSAGES, FETCH_DOCS, FETCH_SELECTED_MEDIA } 
 	from '../actions/tenantDashboardGetters.js';
+import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
 
 export function userData(state = {}, action) {
   switch(action.type) {
@@ -81,7 +82,8 @@ export function landlordData(state = [], action) {
       } else {
         return state
       }
-
+    case SUBMERCHANT_CREATION:
+      return action.payload.data
     default:
       return state;
   }
