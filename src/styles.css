@@ -1,6 +1,6 @@
 .splash {
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('../src/images/splash.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../src/images/splash.png');
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -12,11 +12,13 @@
   margin-top: 0px;
   margin-bottom: 20px;
   text-align: center;
+  font-family: 'Lobster', cursive;
+  font-size: 100px;
 }
 
-.loginForm, .signupForm {
-  width: 250px;
-  height: 250px;
+.loginFormParent, .signupFormParent {
+  width: 400px;
+  height: 400px;
   position: absolute;
   top:0;
   bottom: 0;
@@ -24,6 +26,13 @@
   right: 0;
   margin: auto;
   padding: 20px;
+  text-align: center;
+}
+
+.loginFormChild, .signupFormChild {
+  /*background-color: blue;*/
+  width: 50%;
+  margin: 0 auto;
 }
 
 .loginInput, .signupInput {
@@ -35,23 +44,33 @@
   border: none;
   border-bottom: 1px solid white; 
   color: white;
+  margin: 10px auto;
 /*  border-radius: 5px;*/
 }
 
-.signupForm label {
+.splash ::-webkit-input-placeholder {
   color: white;
-  font-weight: light;
+}
+.splah ::-moz-placeholder {
+  color: white;
+}
+.splash :-ms-input-placeholder {
+  color: white;
+}
+.splash :-moz-placeholder { 
+  color: white;
 }
 
 .loginButton, .signupButton {
   width: 100%;
   border: none;
+  margin: 0 auto;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.splash input:-webkit-autofill,
+.splash input:-webkit-autofill:hover,
+.splash input:-webkit-autofill:focus,
+.splash input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: #fff !important;
 }
@@ -253,7 +272,9 @@ input:-webkit-autofill:active {
   padding: 20px;
   text-align: center;
 }
-
+.statesSelect {
+  margin-bottom: 5px; 
+}
 .paymentOption {
   display: inline-block;
   text-align: center;
@@ -278,18 +299,4 @@ input:-webkit-autofill:active {
 }
 .paymentOption label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
   border:2px solid #f00;
-}
-
-
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: white;
-}
-::-moz-placeholder { /* Firefox 19+ */
-  color: white;
-}
-:-ms-input-placeholder { /* IE 10+ */
-  color: white;
-}
-:-moz-placeholder { /* Firefox 18- */
-  color: white;
 }

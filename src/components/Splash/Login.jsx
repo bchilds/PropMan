@@ -23,13 +23,16 @@ class Login extends React.Component {
     return (
       <div className="splash">
         <button className="redirectButton"><Link to='/signup' className="link">Sign up</Link></button>
-        <div className="loginForm">
-          <h1>Rentopia</h1>
-          <form onSubmit={this.handleLogin.bind(this)}>
-            <input className="loginInput" name="email" placeholder="Email"></input>
-            <input className="loginInput" name="password" type="password" placeholder="Password"></input>
-            <button className="loginButton" type="submit">Log in</button>
-          </form>
+        <br/>
+        <div className="loginFormParent">
+          <h1>Rentopia</h1> 
+          <div className="loginFormChild">
+            <form onSubmit={this.handleLogin.bind(this)}>
+              <input className="loginInput" name="email" placeholder="Email"></input>
+              <input className="loginInput" name="password" type="password" placeholder="Password"></input>
+              <button className="loginButton" type="submit">Log in</button>
+            </form>
+          </div>
         </div>
           {this.props.isLoggedIn && (this.props.isLandlord ? <Redirect to="/proprietor" /> : <Redirect to="/tenant" />)}
       </div>

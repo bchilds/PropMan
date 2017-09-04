@@ -171,7 +171,7 @@ class PaymentSetup extends React.Component {
                 <label>Street Address</label><br/><input name="street" className="paymentInput"></input><br/>
                 <label>City</label><br/><input name="city" className="paymentInput"></input><br/>
                 <label>State</label><br/>
-                <select name="state">
+                <select name="state" className="statesSelect">
                   {this.renderStates()}
                 </select>
                 <br/>

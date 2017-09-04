@@ -31,8 +31,7 @@ class LandlordTransactions extends React.Component {
   }
 
   render() {
-    {console.log(this.props.landlordData.merchant_id)}
-    if (this.props.landlordData.merchant_id) {
+    if (this.props.landlordData.payment_set_up) {
       return (
         <div className="transactionsTable">
           <h2>Past Payments</h2>

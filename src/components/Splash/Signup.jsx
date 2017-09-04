@@ -33,20 +33,22 @@ class Signup extends React.Component {
     return (
       <div className="splash">
         <button className="redirectButton"><Link to='/' className="link">Log in</Link></button>
-        <div className="signupForm">
+        <div className="signupFormParent">
           <h1>Rentopia</h1>
-          <form onSubmit={this.handleSignup.bind(this)}>
-            <input className="signupInput" name="name" placeholder="Full Name"></input>
-            <input className="signupInput" name="email" placeholder="Email"></input>
-            <input className="signupInput" name="password" type="password" placeholder="Password"></input>
-            <div className="signupSelect">
-              <select name="userType">
-                <option value="landlord">Landlord</option>
-                <option value="tenant">Tenant</option>
-              </select>
-            </div>
-            <button className="signupButton" type="submit">Create Account</button>
-          </form>
+          <div className="signupFormChild">
+            <form onSubmit={this.handleSignup.bind(this)}>
+              <input className="signupInput" name="name" placeholder="Full Name"></input>
+              <input className="signupInput" name="email" placeholder="Email"></input>
+              <input className="signupInput" name="password" type="password" placeholder="Password"></input>
+              <div className="signupSelect">
+                <select name="userType">
+                  <option value="landlord">Landlord</option>
+                  <option value="tenant">Tenant</option>
+                </select>
+              </div>
+              <button className="signupButton" type="submit">Create Account</button>
+            </form>
+          </div>
         </div>
         {this.props.loggedIn ? (this.props.isLandlord ? <Redirect to="/proprietor" /> : <Redirect to="/tenant" />) : null}
       </div>
