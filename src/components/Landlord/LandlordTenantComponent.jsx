@@ -3,9 +3,6 @@ import { connect } from 'react-redux'
 
 function mapStateToProps(state, match) {
   const url = [...match.match.url.split('/')]
-  console.log(url)
-  // const property_id = Number(match.match.params.id);
-  console.log('match', match.match)
   return {
     property: state.landlordProperties.filter(property => property.property_id === Number(url[3]))[0],
     tenant: state.landlordTenants.filter(tenant => tenant.tenant_id === Number(url[4]))[0]
@@ -18,8 +15,6 @@ class Tenant extends React.Component {
   }
 
   render() {
-    console.log('property', this.props.property)
-    console.log('tenant', this.props.tenant)
     const property = this.props.property;
     const tenant = this.props.tenant;
     return (

@@ -8,10 +8,6 @@ import { sortedMessages } from './sortMesgsReducer'
 import { propertyTenants, sortedTenantsByProp } from './propertyTenantsReducer'
 import { propertyTenants2 } from './propertyReducer'
 
-const properties = {}
-properties.tenants = propertyTenants2
-console.log(JSON.stringify(properties))
-
 const rootReducer = combineReducers({
   selectedTenantMedia,
   tenantPaidRent,

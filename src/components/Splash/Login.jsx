@@ -9,7 +9,6 @@ class Login extends React.Component {
 
   handleLogin(e) {
     e.preventDefault()
-    console.log(this)
     this.props.loginUser({
       email: e.target.email.value,
       password: e.target.password.value
@@ -41,7 +40,6 @@ class Login extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     isLandlord: state.user && state.user.is_landlord,
     isLoggedIn: state.loggedIn

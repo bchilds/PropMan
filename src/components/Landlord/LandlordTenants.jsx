@@ -49,7 +49,7 @@ class Tenants extends React.Component {
   render() {
     const options = {
       onRowClick: (row, columnIndex, rowIndex) => {
-        console.log(`/proprietor/properties/${row.property_id}/${row.tenant_id}`)
+        // console.log(`/proprietor/properties/${row.property_id}/${row.tenant_id}`)
         this.props.history.push(`/proprietor/properties/${row.property_id}/${row.tenant_id}`);
       }
     }
