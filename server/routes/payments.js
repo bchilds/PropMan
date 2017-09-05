@@ -52,12 +52,12 @@ router
     ctx.body = await paymentRows.rows[0]
   })
   .post('/payRent', async ctx => {
-    // ctx.request.body = {transaction_amount, sender_id, recipient_id}  ID's are user_id's
+    // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id} ID's are user_id's
     let nonceFromClient = ctx.request.body.nonce
 
     let result = await gateway.transaction.sale({
-      merchantAccountId: 'jordan_hoang_instant_8n6sfbpx',
-      amount: "500.00",
+      merchantAccountId: ctx.request.body.merchant_id,
+      amount: ctx.request.body.transaction_amount,
       paymentMethodNonce: 'fake-valid-nonce',
       options: {
         submitForSettlement: true

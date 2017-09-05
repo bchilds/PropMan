@@ -36,12 +36,24 @@ class PaymentForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showPayRentButton: true
+      showPayRentButton: true,
     }
   }
 
+  componentWillMount() {
+    console.log('hello', this.props.tenantData)
+    console.log('world', this.props.user)
+    console.log('!!!!!', this.props.tenantsLandlord)
+  }
+
   handlePaymentMethod(payload) {
-    this.props.tenantPayment(payload)
+    this.props.tenantPayment({
+      payload: payload, 
+      rentDue: this.props.tenantData.rent, 
+      senderId: this.props.user.user_id, 
+      recipientId: this.props.tenantsLandlord.user_id, 
+      merchantId: this.props.tenantsLandlord.merchant_id}
+    )
     this.setState({
       showPayRentButton: false
     })
@@ -85,8 +97,16 @@ class PaymentForm extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+    tenantData: state.tenantData,
+    tenantsLandlord: state.tenantsLandlord
+  }
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({tenantPayment: tenantPayment}, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(PaymentForm)
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm)

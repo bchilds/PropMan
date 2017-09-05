@@ -25,8 +25,6 @@ export function isLoggedIn(state = false, action) {
       return true
     case USER_LOGOUT:
       return false
-    // case CHECK_SESSION:
-    //   return action.payload.data
     default:
       return state;
   }
@@ -126,3 +124,14 @@ export function docs(state = [], action) {
       return state;
   }
 }
+
+// export function transactions(state=[], action) {
+//   switch(action.type) {
+//     case USER_LOGIN:
+//       if (action.payload.data.transactions) {
+//         return action.payload.data.transactions
+//       } else {
+//         return state
+//       }
+//   }
+// }
