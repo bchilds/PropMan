@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Revolutionize real-estate leasing",
   "main": "index.js",
+  "jest": {
+    "setupFiles": ["./__test__/setup.js"]
+  },
   "dependencies": {
     "axios": "^0.16.2",
     "bcrypt-nodejs": "0.0.3",
@@ -12,6 +15,7 @@
     "braintree-dropin-react": "0.0.2",
     "braintree-web": "^3.22.2",
     "braintree-web-drop-in": "^1.7.0",
+    "dotenv": "^4.0.0",
     "font": "0.0.4",
     "hard-source-webpack-plugin": "^0.4.9",
     "image-webpack-loader": "^3.4.0",
@@ -39,7 +43,8 @@
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-persist": "^4.9.1",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "speakeasy": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

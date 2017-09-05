@@ -10,6 +10,8 @@ CREATE TABLE users (
 	creditcard           text  ,
 	created_date         date DEFAULT current_date ,
 	is_landlord          bool  NOT NULL,
+	twofactor_auth			 text,
+	use_twofactor        bool DEFAULT false ,
 	CONSTRAINT pk_users PRIMARY KEY ( user_id )
 	-- CONSTRAINT uniq_email unique ( email )
  );

@@ -2,3 +2,4 @@
 /dist/
 braintreeConfig.js
 /db/db_config_credentials.js
+.env
