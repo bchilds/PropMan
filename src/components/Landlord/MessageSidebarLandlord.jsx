@@ -14,15 +14,14 @@ class MessagesSidebarLandlord extends Component {
 
 	tenantClicked(tenant) {
 		console.log(tenant, this.props.sortedMesgs)
-		this.props.setCurrentConvo(this.props.sortedMesgs[tenant.user_id], tenant.user_id)
+		this.props.setCurrentConvo(this.props.sortedMesgs[tenant.user_id], tenant.user_id, tenant.user_name)
 	}
 
 	renderPropTenants(propertyId) {
 		return (
 			<table className="table table-hover">
 				<tbody>
-
-		    {this.props.sortedTenByProp[propertyId].map(t => {
+		    {this.props.sortedTenByProp[propertyId] && this.props.sortedTenByProp[propertyId].map(t => {
 		    	return (
 	    			<tr onClick={() => {this.tenantClicked(t)}}>
 				      <td>{t.user_name}</td>
@@ -39,7 +38,6 @@ class MessagesSidebarLandlord extends Component {
 			<div id="tenantSidebar">
 				<h3 className="sidebarTitle">Direct Messages</h3>
 	      <Accordion>
-	      {console.log(this.props.landlordProperties)}
 				  {this.props.landlordProperties.map((v, i) => {
 				  	return (
 				  		<Panel header={v.property_name} eventKey={i}>

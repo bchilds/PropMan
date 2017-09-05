@@ -1,8 +1,6 @@
 import axios from 'axios'
 
 export const USER_LOGIN = 'user_login'
-export const LL_LOGIN = 'landlord_login'
-export const TENANT_LOGIN = 'tenant_login'
 export const USER_LOGOUT = 'user_logout'
 export const CHECK_SESSION = 'check_session'
 

@@ -8,11 +8,11 @@ import { FETCH_PROPERTY_TENANT, ADD_PROPERTY_TENANT } from '../actions/propertyG
 export function landlordProperties(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
-      return action.payload.data.properties || null
+      return action.payload.data.properties || []
     case FETCH_LL_PROPERTIES:
       return action.payload.data
     case ADD_LL_PROPERTY:
-      return [...state, action.payload.data] || null
+      return [...state, action.payload.data] || []
     default:
       return state
   }
@@ -21,13 +21,13 @@ export function landlordProperties(state = [], action) {
 export function landlordTenants(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
-      return action.payload.data.activeTenants || null
+      return action.payload.data.activeTenants || []
     case FETCH_LL_TENANTS:
       return action.payload.data
     case ADD_LL_TENANT:
-      return [...state, action.payload.data] || null
+      return [...state, action.payload.data] || []
     case ADD_PROPERTY_TENANT:
-      return [...state, action.payload.data] || null
+      return [...state, action.payload.data] || []
     default:
       return state
   }

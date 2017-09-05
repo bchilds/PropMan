@@ -1,6 +1,6 @@
 import { SET_PROFILE } from '../actions/setEditedProfileInfo'
 import { DIRECT_MESSAGES } from '../actions/messageGetters'
-import { USER_LOGIN, USER_LOGOUT, TENANT_LOGIN, LL_LOGIN } from '../actions/authGetters'
+import { USER_LOGIN, USER_LOGOUT} from '../actions/authGetters'
 import { FETCH_RENT, FETCH_MESSAGES, FETCH_DOCS, FETCH_SELECTED_MEDIA } 
 	from '../actions/tenantDashboardGetters.js';
 import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
@@ -19,7 +19,7 @@ export function userData(state = {}, action) {
   }
 }
 
-export function isLoggedIn(state = null, action) {
+export function isLoggedIn(state = false, action) {
   switch(action.type) {
     case USER_LOGIN:
       return true
@@ -46,7 +46,7 @@ export function tenantData(state = [], action) {
   }
 }
 
-export function otherTenants(state = null, action) {
+export function otherTenants(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
       if (action.payload.data.otherTenants) {
@@ -54,13 +54,15 @@ export function otherTenants(state = null, action) {
       } else {
         return state
       }
+    case USER_LOGOUT:
+      return []
 
     default:
       return state;
   }
 }
 
-export function tenantsLandlord(state = null, action) {
+export function tenantsLandlord(state = {}, action) {
   switch(action.type) {
     case USER_LOGIN: 
       if (action.payload.data.landlord) {
@@ -89,7 +91,7 @@ export function landlordData(state = [], action) {
   }
 }
 
-export function messages(state = null, action) {
+export function messages(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
       return action.payload.data.messages
@@ -98,9 +100,7 @@ export function messages(state = null, action) {
       return action.payload.messages
 
     case DIRECT_MESSAGES: 
-    console.log('message reducer ', action.payload.data)
       var newArray = [...state, action.payload.data]
-      console.log('message reducer ', newArray)
       return newArray
 
     case USER_LOGOUT: 

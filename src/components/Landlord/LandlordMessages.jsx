@@ -38,7 +38,6 @@ class LandlordMessages extends Component {
     if (this.props.mesgRecipient === null) {
       alert('Must add recipient before sending you big dummy!')
     } else {
-      console.log('form submit', this.props.mesgRecipient, this.props.userId, e.target.message.value)
       var obj = {
         message_content: e.target.message.value,
         recipient_id: this.props.mesgRecipient,
@@ -51,10 +50,19 @@ class LandlordMessages extends Component {
         })
         .then(()=>{
           var recip = this.props.mesgRecipient
-          this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip)
+          this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip, this.props.convoPersonsName)
         })
   
     }
+  }
+
+  messageContent(content, date, side, sideFull, style) {
+    return (
+      <div className={sideFull}>
+        <div className={style}>{date}</div>
+        <div className={side}>{content}</div>
+      </div>
+    )
   }
 
   renderConvo() {
@@ -62,10 +70,11 @@ class LandlordMessages extends Component {
     return (
       <div>
         {this.props.currentConvo.map(v => {
+            var date = new Date(v.created_date).toLocaleDateString()
             if (v.sender_id === this.props.userId) { 
-              return (<div className="messageRight" ><div className="mesRight">{v.message_content}</div></div>)
+              return this.messageContent(v.message_content, date, 'mesRight', 'messageRight', 'mesRight dateStyle')
             } else {
-              return (<div className="messageLeft"><div className="mesLeft">{v.message_content}</div></div>)
+              return this.messageContent(v.message_content, date, 'mesLeft', 'messageLeft', 'mesLeft dateStyle')
             }
           }
         )}
@@ -77,6 +86,7 @@ class LandlordMessages extends Component {
     return (
       <div>
         <h2 className="pageTitle"> Your Messages </h2>
+        <div className="convoPersName"> <h3>{this.props.convoPersonsName} </h3></div>
         <MessagesSidebarLandlord />
         <div id="tenantWindow">
           <div>{this.renderConvo()}</div>
@@ -101,7 +111,8 @@ function mapStateToProps(state) {
     messages: state.messages,
     sortedMesgs: state.sortedMessages,
     landlordId: state.landlordData && state.landlordData.landlord_id,
-    landlordTenants: state.landlordTenants
+    landlordTenants: state.landlordTenants,
+    convoPersonsName: state.convoPersonsName
   }
 }
 
