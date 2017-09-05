@@ -27,9 +27,21 @@ class LandlordTransactions extends React.Component {
   }
 
   componentWillReceiveProps() {
-    console.log('receiving props')
+    // created object where key is user id and value is user name
+    let userNames = this.props.landlordTenants.reduce((obj, item) => {
+      obj[item.user_id] = item.user_name
+      return obj
+    }, {})
+
+    // add user name to each transaction
+    let convertedTransactions = this.props.transactions.map((transaction) => {
+      let cTransaction = Object.assign({}, transaction)
+      cTransaction.sender_name = userNames[transaction.sender_id]
+      return cTransaction
+    })
+
     this.setState({
-      transactions: this.props.transactions
+      transactions: convertedTransactions
     })
   }
 
@@ -40,8 +52,8 @@ class LandlordTransactions extends React.Component {
           <h2>Past Payments</h2>
           <BootstrapTable data={ this.state.transactions } striped={ true } hover={ true } condensed={ true }>
             <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
-            <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
-            <TableHeaderColumn dataField='recipient_id' dataSort={ true }>Tenant</TableHeaderColumn>
+            <TableHeaderColumn dataField='created_date' dataSort={ true }>Transaction Date</TableHeaderColumn>
+            <TableHeaderColumn dataField='sender_name' dataSort={ true }>Tenant</TableHeaderColumn>
             <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
           </BootstrapTable>
         </div>
@@ -59,7 +71,8 @@ class LandlordTransactions extends React.Component {
 function mapStateToProps(state) {
   return {
     landlordData: state.landlordData,
-    transactions: state.receivedTransactions
+    transactions: state.receivedTransactions,
+    landlordTenants: state.landlordTenants
   }
 
 }
