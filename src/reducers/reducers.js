@@ -8,7 +8,7 @@ import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
 export function userData(state = {}, action) {
   switch(action.type) {
     case USER_LOGIN: 
-    console.log('login request is ', action.payload)
+    // console.log('login request is ', action.payload)
       return action.payload.data.user
     case SET_PROFILE:
     	return Object.assign({}, state, action.payload.data)
