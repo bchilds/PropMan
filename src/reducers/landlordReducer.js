@@ -1,34 +1,33 @@
-
 import { USER_LOGIN } from '../actions/authGetters'
-import { FETCH_LL_PROPERTIES, FETCH_LL_TENANTS, ADD_PROPERTY } from '../actions/landlordDashboardGetters'
+import { FETCH_LL_PROPERTIES, ADD_PROPERTY } from '../actions/landlordDashboardGetters'
+import { ADD_LL_PROPERTY, FETCH_LL_TENANTS,ADD_LL_TENANT } from '../actions/landlordGetters'
+import { FETCH_PROPERTY_TENANT, ADD_PROPERTY_TENANT } from '../actions/propertyGetters.js'
 
-// const properties = [
-//   {property_id: 1, property_name: "RnM", address: "123 Fake Street", city: "Atlantis", state_abbrv: "DNR"},
-//   {property_id: 2, property_name: "Fleabag Motel", address: "456 Fake Street", city: "Atlantis", state_abbrv: "DNR"},
-//   {property_id: 3, property_name: "742 Evergreen Terrace", address: "742 Evergreen Terrace", city: "Springfield", state_abbrv: "MA"},
-//   {property_id: 4, property_name: "Retirement Home", address: "789 Fake Street", city: "Springfield", state_abbrv: "MA"},
-//   {property_id: 5, property_name: "Winterfell", address: "0 Castle Lane", city: "Westeros", state_abbrv: "GoT"}
-// ]
+
 
 export function landlordProperties(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
-    console.log('refreshing login', state)
       return action.payload.data.properties || null
-    case ADD_PROPERTY:
+    case FETCH_LL_PROPERTIES:
+      return action.payload.data
+    case ADD_LL_PROPERTY:
       return [...state, action.payload.data] || null
     default:
-    console.log('refreshing', state)
       return state
   }
 }
 
-export function landlordTenants(state = null, action) {
+export function landlordTenants(state = [], action) {
   switch(action.type) {
     case USER_LOGIN: 
       return action.payload.data.activeTenants || null
     case FETCH_LL_TENANTS:
       return action.payload.data
+    case ADD_LL_TENANT:
+      return [...state, action.payload.data] || null
+    case ADD_PROPERTY_TENANT:
+      return [...state, action.payload.data] || null
     default:
       return state
   }

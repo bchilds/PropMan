@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
-import { addProperty } from '../../actions/landlordDashboardGetters'
+import { addProperty } from '../../actions/landlordGetters'
 
 function mapStateToProps(state) {
   return {
