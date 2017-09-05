@@ -6,7 +6,6 @@ export const SUBMERCHANT_CREATION = 'submerchant_creation'
 const ROOT_URL = 'http://localhost:8000'
 
 export function tenantPayment(params) {
-  console.log('PARAMS', params)
   const request = axios.post(`${ROOT_URL}/api/payments/payRent`, {
     nonce: params.payload.nonce,
     transaction_amount: params.rentDue,

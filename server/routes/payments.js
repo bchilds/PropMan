@@ -12,12 +12,12 @@ let gateway = braintree.connect({
 })
 
 const getSenderTransactions = async (ctx, tenantOrLandlord) => {
-  let results = ctx.db.query(`SELECT * FROM transactions WHERE sender_id = ${tenantOrLandlord.user_id};`)
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE sender_id = ${tenantOrLandlord.user_id};`)
   return results.rows
 }
 
 const getRecipientTransactions = async (ctx, tenantOrLandlord) => {
-  let results = ctx.db.query(`SELECT * FROM transactions WHERE recipient_id = ${tenantOrLandlord.user_id};`)
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE recipient_id = ${tenantOrLandlord.user_id};`)
   return results.rows
 }
 
@@ -34,6 +34,7 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
   // output = { sentPayments: sent }
   output.sentPayments = sent
   output.receivedPayments = received
+  console.log('output', output)
   return output
 }
 exports.getUserTransactions = getUserTransactions
@@ -41,6 +42,7 @@ exports.getUserTransactions = getUserTransactions
 const createTransaction = async (ctx, paymentIdentifier) => {
   let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}) RETURNING *;`)
   results = results.rows[0]
+  console.log('henlo', results)
   return results
 }
 exports.createTransaction = createTransaction
@@ -69,6 +71,7 @@ router
     let paymentIdentifier = result.transaction.id
     if (result.success) {
       //create transaction record here
+      console.log('creating transaction in DB')
       let transaction = await createTransaction(ctx, paymentIdentifier)
       if(transaction) {
         ctx.response.status = 201

@@ -40,12 +40,6 @@ class PaymentForm extends React.Component {
     }
   }
 
-  componentWillMount() {
-    console.log('hello', this.props.tenantData)
-    console.log('world', this.props.user)
-    console.log('!!!!!', this.props.tenantsLandlord)
-  }
-
   handlePaymentMethod(payload) {
     this.props.tenantPayment({
       payload: payload, 
