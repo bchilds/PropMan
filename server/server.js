@@ -37,15 +37,22 @@ app.use(bodyParser())
 app.keys = ['ironmen']
 app.use(session(app))
 
-app.use(function* (next) {
-  this.session.isLoggedIn = this.session.isLoggedIn || false
-  if (!this.session.isLoggedIn) {
-    console.log('redirecting')
-    this.redirect('/')
-  }  
-   
-  yield next
-});
+const authFunc = async (ctx, next) => {
+	console.log(ctx.session)
+	ctx.session.isLoggedIn = ctx.session.isLoggedIn || false
+	if (!ctx.session.isLoggedIn) {
+	  await send(ctx, '/index.html', { root: 'dist' }) 
+	}
+	  await next()
+}
+
+const redirToIndex = async (ctx, next) => {
+	ctx.redirect('/') 
+}
+
+app.use(authFunc)
+app.use(redirToIndex)
+
 
 // app.use(async (ctx, next) => {
 //   const start = Date.now();
@@ -70,10 +77,6 @@ api.use('/api/messages', messages.routes.routes())
 api.use('/api/payments', payments.routes.routes())
 api.use('/api/auth', auth.routes.routes())
 api.use('/api/landlords', landlords.routes.routes())
-
-// app.use(async (ctx, next) => {
-// 	//ctx.body = await ctx.db.query(`SELECT * FROM pg_catalog.pg_tables WHERE schemaname = 'public'; `)
-// })
 
 // use router
 app

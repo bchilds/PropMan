@@ -24,9 +24,11 @@ const getLandlord = async (ctx, user_id) => {
 exports.getLandlord = getLandlord
 
 const getLandlordById = async (ctx, landlord_id) => {
+	// =========================
 	// MIGHT NOT BE WORKING
+	// =========================
 	let ll, llRows
-	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name FROM landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = ${landlord_id}`)
+	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name FROM landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = ${landlord_id};`)
 	ll = llRows.rows[0]
 	return ll
 }
@@ -39,6 +41,14 @@ const updateMerchant = async (ctx, landlord_id) => {
 	return ll
 }
 exports.updateMerchant = updateMerchant
+
+const getLandlordByPropId = async (ctx, prop_id) => {
+	let ll, llRows
+	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name from landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = ${prop_id};`)
+	ll = llRows.rows[0]
+	return ll
+}
+exports.getLandlordByPropId = getLandlordByPropId
 
 const getLandlordData = async (ctx, user) => {
 	let landlord, properties, transactions, msgs, activeTenants
@@ -102,6 +112,17 @@ router
 		} else {
 			ctx.response.status = 400
 			ctx.body = `There was an error updating merchant_id`
+		}
+	})
+	.get('/property/:prop_id', async (ctx, next) => {
+		let ll
+		ll = await getLandlordByPropId(ctx, ctx.params.prop_id)
+		if(ll) {
+			ctx.response.status = 302
+			ctx.body = ll
+		} else {
+			ctx.response.status = 404
+			ctx.body = 'No landlord found for that property ID'
 		}
 	})
 exports.routes = router
