@@ -25,8 +25,6 @@ export function isLoggedIn(state = false, action) {
       return true
     case USER_LOGOUT:
       return false
-    // case CHECK_SESSION:
-    //   return action.payload.data
     default:
       return state;
   }

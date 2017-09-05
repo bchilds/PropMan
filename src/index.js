@@ -12,7 +12,7 @@ import styles from './styles.css';
 import { persistStore, autoRehydrate } from 'redux-persist'
 
 // const persistedState = loadState()
-const createStoreWithMiddleware = composeWithDevTools(autoRehydrate(), applyMiddleware(promise))(createStore);
+const createStoreWithMiddleware = composeWithDevTools(applyMiddleware(promise), autoRehydrate())(createStore);
 
 const store = createStoreWithMiddleware(reducers)
 
@@ -30,7 +30,7 @@ persistStore(store)
 render((
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <App store={store}/>
     </BrowserRouter>
   </Provider>
 ), document.getElementById('app'))

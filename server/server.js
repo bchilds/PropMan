@@ -51,7 +51,7 @@ const redirToIndex = async (ctx, next) => {
 }
 
 app.use(authFunc)
-app.use(redirToIndex)
+// app.use(redirToIndex)
 
 
 // app.use(async (ctx, next) => {

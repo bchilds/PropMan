@@ -12,12 +12,12 @@ let gateway = braintree.connect({
 })
 
 const getSenderTransactions = async (ctx, tenantOrLandlord) => {
-  let results = ctx.db.query(`SELECT * FROM transactions WHERE sender_id = ${tenantOrLandlord.user_id};`)
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE sender_id = ${tenantOrLandlord.user_id};`)
   return results.rows
 }
 
 const getRecipientTransactions = async (ctx, tenantOrLandlord) => {
-  let results = ctx.db.query(`SELECT * FROM transactions WHERE recipient_id = ${tenantOrLandlord.user_id};`)
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE recipient_id = ${tenantOrLandlord.user_id};`)
   return results.rows
 }
 
@@ -27,10 +27,8 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
     sentPayments: [],
     receivedPayments: []
   }
-  [sent, received] = await Promise.all([
-    getSenderTransactions(ctx, tenantOrLandlord),
-    getRecipientTransactions(ctx, tenantOrLandlord)
-  ])
+  sent = await getSenderTransactions(ctx, tenantOrLandlord)
+  received = await getRecipientTransactions(ctx, tenantOrLandlord)
   // output = { sentPayments: sent }
   output.sentPayments = sent
   output.receivedPayments = received
@@ -52,12 +50,12 @@ router
     ctx.body = await paymentRows.rows[0]
   })
   .post('/payRent', async ctx => {
-    // ctx.request.body = {transaction_amount, sender_id, recipient_id}  ID's are user_id's
+    // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id} ID's are user_id's
     let nonceFromClient = ctx.request.body.nonce
 
     let result = await gateway.transaction.sale({
-      merchantAccountId: 'jordan_hoang_instant_8n6sfbpx',
-      amount: "500.00",
+      merchantAccountId: ctx.request.body.merchant_id,
+      amount: ctx.request.body.transaction_amount,
       paymentMethodNonce: 'fake-valid-nonce',
       options: {
         submitForSettlement: true
@@ -69,10 +67,11 @@ router
     let paymentIdentifier = result.transaction.id
     if (result.success) {
       //create transaction record here
+      console.log('creating transaction in DB')
       let transaction = await createTransaction(ctx, paymentIdentifier)
       if(transaction) {
         ctx.response.status = 201
-        ctx.body = 'Successful payment'
+        ctx.body = transaction
       } else {
         ctx.response.status = 400
         ctx.body = 'Error creating transaction'
