@@ -72,7 +72,7 @@ router
       let transaction = await createTransaction(ctx, paymentIdentifier)
       if(transaction) {
         ctx.response.status = 201
-        ctx.body = 'Successful payment'
+        ctx.body = transaction
       } else {
         ctx.response.status = 400
         ctx.body = 'Error creating transaction'

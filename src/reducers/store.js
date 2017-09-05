@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { userData, tenantData, otherTenants, tenantsLandlord, landlordData, messages, docs, isLoggedIn, receivedTransactions, sentTransactions} from './reducers'
+import { userData, tenantData, otherTenants, tenantsLandlord, landlordData, messages, docs, isLoggedIn} from './reducers'
 import { landlordProperties, landlordTenants } from './landlordReducer'
 import { selectedTenantMedia, setCurrentConvo, messageRecipient, convoPersonsName } from './tenantReducer'
-import { tenantPaidRent } from './paymentReducer'
+import { tenantPaidRent, receivedTransactions, sentTransactions } from './paymentReducer'
 import { broadcasts } from './broadcastsReducer'
 import { sortedMessages } from './sortMesgsReducer'
 import { propertyTenants, sortedTenantsByProp } from './propertyTenantsReducer'

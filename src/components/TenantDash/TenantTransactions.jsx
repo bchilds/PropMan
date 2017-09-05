@@ -4,20 +4,6 @@ import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-a
 
 import { connect } from 'react-redux'
 
-// const transactions = [
-//     {id: 1, date: "01/01/2017", type: "Rent", amt: "$800"},
-//     {id: 2, date: "02/01/2017", type: "Rent", amt: "$800"},
-//     {id: 3, date: "03/01/2017", type: "Rent", amt: "$800"},
-//     {id: 4, date: "04/01/2017", type: "Rent", amt: "$800"},
-//     {id: 5, date: "05/01/2017", type: "Rent", amt: "$800"},
-//     {id: 6, date: "06/01/2017", type: "Rent", amt: "$800"},
-//     {id: 7, date: "07/01/2017", type: "Rent", amt: "$900"},
-//     {id: 8, date: "08/01/2017", type: "Rent", amt: "$900"},
-//     {id: 9, date: "09/01/2017", type: "Rent", amt: "$900"},
-//     {id: 10, date: "10/01/2017", type: "Rent", amt: "$900"}
-// ];
-
-
 class Transactions extends React.Component {
   constructor(props) {
     super(props)
@@ -27,7 +13,6 @@ class Transactions extends React.Component {
   }
 
   componentWillReceiveProps() {
-    console.log(this.state.transactions)
     this.setState({
       transactions: this.props.transactions
     })

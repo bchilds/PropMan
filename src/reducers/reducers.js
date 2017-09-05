@@ -124,29 +124,3 @@ export function docs(state = [], action) {
       return state;
   }
 }
-
-export function receivedTransactions(state=[], action) {
-  switch(action.type) {
-    case USER_LOGIN:
-      if (action.payload.data.transactions) {
-        return action.payload.data.transactions.receivedPayments
-      } else {
-        return state
-      }
-    default:
-      return state
-  }
-}
-
-export function sentTransactions(state=[], action) {
-  switch(action.type) {
-    case USER_LOGIN:
-      if (action.payload.data.transactions) {
-        return action.payload.data.transactions.sentPayments
-      } else {
-        return state
-      }
-    default:
-      return state
-  }
-}
