@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Navbar, Nav, NavItem, NavDropdown } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 import { connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -34,24 +35,27 @@ class Header extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
-          <NavItem>
-            <Link to='/proprietor/properties' className="link">Properties</Link>
-          </NavItem>
-          <NavItem>
-            <Link to='/proprietor/tenants' className="link">Tenants</Link>
-          </NavItem>
-          <NavItem>
-            <Link to='/proprietor/payments' className="link">Payments</Link>
-          </NavItem>
-          <NavItem>
-            <Link to='/proprietor/messages' className="link">Messages</Link>
-          </NavItem>
+          <LinkContainer to='/proprietor/properties' className="link">
+            <NavItem>Properties</NavItem>
+          </LinkContainer>
+          <LinkContainer to='/proprietor/tenants' className="link">
+            <NavItem>Tenants</NavItem>
+          </LinkContainer>
+          <LinkContainer to='/proprietor/payments' className="link">
+            <NavItem>Payments</NavItem>
+          </LinkContainer>
+          <LinkContainer to='/proprietor/messages' className="link">
+            <NavItem>Messages</NavItem>
+          </LinkContainer>
         </Nav>
         <Nav pullRight>
-          <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)}
-            open={this.state.dropdownIsOpen}>
-            <Link onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/proprietor/profile"> Your Profile </Link><br/>
-            <a href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" > Logout </a>
+          <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)} open={this.state.dropdownIsOpen}>
+            <LinkContainer onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/proprietor/profile"> 
+              <NavItem>Your Profile</NavItem>
+            </LinkContainer>
+            <LinkContainer href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" >
+              <NavItem>Logout</NavItem>
+            </LinkContainer>
           </NavDropdown>
         </Nav>
       </Navbar>

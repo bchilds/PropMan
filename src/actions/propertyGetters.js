@@ -16,7 +16,6 @@ const ROOT_URL = 'http://localhost:8000'
 
 export function getPropertyTenants2(property_id) {
   const request = axios.get(`${ROOT_URL}/api/tenants/property/${property_id}`)
-  console.log('getPropertyTenants function:', `${ROOT_URL}/api/tenants/property/${property_id}`)
   return {
     type: FETCH_PROPERTY_TENANT,
     payload: request 
@@ -24,7 +23,6 @@ export function getPropertyTenants2(property_id) {
 }
 
 export function addPropertyTenant(tenantInfo, cb) {
-  console.log('addTenant function', JSON.stringify(tenantInfo));
   const associatedTenant = axios.post(`${ROOT_URL}/api/tenants/bylandlord/create`, {
     property_id: tenantInfo.property_id,
     tenant_email: tenantInfo.tenant_email,

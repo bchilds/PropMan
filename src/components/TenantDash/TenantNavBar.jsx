@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Navbar, Nav, NavItem, NavDropdown } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -35,18 +36,21 @@ class TenantNavBar extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
-          <NavItem>
-            <Link to='/tenant/payments' className="link">Payments</Link>
-          </NavItem>
-          <NavItem>
-            <Link to='/tenant/messages' className="link">Messages</Link>
-          </NavItem>
+          <LinkContainer to='/tenant/payments' className="link">
+            <NavItem>Payments</NavItem>
+          </LinkContainer>
+          <LinkContainer to='/tenant/messages' className="link">
+            <NavItem>Messages</NavItem>
+          </LinkContainer>
         </Nav>
         <Nav pullRight>
-          <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)}
-            open={this.state.dropdownIsOpen}>
-            <Link onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/tenant/profile"> Your Profile </Link><br/>
-            <a href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" > Logout </a>
+          <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)} open={this.state.dropdownIsOpen}>
+            <LinkContainer onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/proprietor/profile"> 
+              <NavItem>Your Profile</NavItem>
+            </LinkContainer>
+            <LinkContainer href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" >
+              <NavItem>Logout</NavItem>
+            </LinkContainer>
           </NavDropdown>
         </Nav>
       </Navbar>
