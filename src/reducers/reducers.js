@@ -8,7 +8,7 @@ import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
 export function userData(state = {}, action) {
   switch(action.type) {
     case USER_LOGIN: 
-    // console.log('login request is ', action.payload)
+    console.log('login request is ', action.payload)
       return action.payload.data.user
     case SET_PROFILE:
     	return Object.assign({}, state, action.payload.data)
@@ -125,13 +125,28 @@ export function docs(state = [], action) {
   }
 }
 
-// export function transactions(state=[], action) {
-//   switch(action.type) {
-//     case USER_LOGIN:
-//       if (action.payload.data.transactions) {
-//         return action.payload.data.transactions
-//       } else {
-//         return state
-//       }
-//   }
-// }
+export function receivedTransactions(state=[], action) {
+  switch(action.type) {
+    case USER_LOGIN:
+      if (action.payload.data.transactions) {
+        return action.payload.data.transactions.receivedPayments
+      } else {
+        return state
+      }
+    default:
+      return state
+  }
+}
+
+export function sentTransactions(state=[], action) {
+  switch(action.type) {
+    case USER_LOGIN:
+      if (action.payload.data.transactions) {
+        return action.payload.data.transactions.sentPayments
+      } else {
+        return state
+      }
+    default:
+      return state
+  }
+}

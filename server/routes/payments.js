@@ -30,10 +30,8 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
   sent = await getSenderTransactions(ctx, tenantOrLandlord)
   received = await getRecipientTransactions(ctx, tenantOrLandlord)
   // output = { sentPayments: sent }
-  console.log('output', output)
   output.sentPayments = sent
   output.receivedPayments = received
-  console.log('output', output)
   return output
 }
 exports.getUserTransactions = getUserTransactions

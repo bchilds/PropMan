@@ -6,8 +6,20 @@ import { getMessages, getDocs, getRentDue } from '../actions/tenantDashboardGett
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import { persistStore, autoRehydrate } from 'redux-persist'
+
 
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  componentWillMount () {
+    persistStore(this.props.store, () => {
+      this.setState({ rehydrated: true })
+    })
+  }
+
   render() {
     return(
       <div>
