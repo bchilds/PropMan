@@ -2,7 +2,7 @@ import { FETCH_SELECTED_MEDIA } from '../actions/tenantDashboardGetters.js';
 import { CURRENT_CONVO } from '../actions/sortMessages'
 import { USER_LOGOUT } from '../actions/authGetters'
 
-export function selectedTenantMedia(state = null, action) {
+export function selectedTenantMedia(state = '', action) {
 	switch(action.type) {
 
 		case FETCH_SELECTED_MEDIA:
@@ -29,8 +29,19 @@ export function setCurrentConvo(state = [], action) {
 export function messageRecipient(state = null, action) {
 	switch(action.type) {
 	  case CURRENT_CONVO:
-	  console.log('in reducer', action.payload.id)
 	    return action.payload.id
+
+	  default:
+	  	return state;
+	}
+}
+
+export function convoPersonsName(state = '', action) {
+	switch(action.type) {
+	  case CURRENT_CONVO:
+	    return action.payload.name
+    case USER_LOGOUT: 
+      return ''
 
 	  default:
 	  	return state;

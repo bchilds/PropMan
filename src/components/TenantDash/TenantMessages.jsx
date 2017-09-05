@@ -24,7 +24,8 @@ class TenantMessages extends Component {
   	elem.scrollTop = elem.scrollHeight;
   	this.props.sortMessages(this.props.messages, this.props.userId)
     this.setState({
-      modalIsOpen: false
+      modalIsOpen: false,
+      convoPerson: ''
     })
   }
 
@@ -51,31 +52,42 @@ class TenantMessages extends Component {
   	    })
   	    .then(()=>{
   	    	var recip = this.props.mesgRecipient
-  	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip)
+  	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip, this.props.convoPersonsName)
   	    })
     }
   }
 
+  messageContent(content, date, side, sideFull, style) {
+    return (
+      <div className={sideFull}>
+        <div className={style}>{date}</div>
+        <div className={side}>{content}</div>
+      </div>
+    )
+  }
+
   renderConvo() {
-  	// *** Sender_id needs to be the actual sender. That will be set up with a get request
-  	return (
-  		<div>
-  		  {this.props.currentConvo.map(v => {
-	  		  	if (v.sender_id === this.props.userId) { 
-	  		  	  return (<div className="messageRight" ><div className="mesRight">{v.message_content}</div></div>)
-	  		    } else {
-	  		    	return (<div className="messageLeft"><div className="mesLeft">{v.message_content}</div></div>)
-	  		    }
-	  		  }
-  		  )}
-  		</div>
-  	)
+    // *** Sender_id needs to be the actual sender. That will be set up with a get request
+    return (
+      <div>
+        {this.props.currentConvo.map(v => {
+            var date = new Date(v.created_date).toLocaleDateString()
+            if (v.sender_id === this.props.userId) { 
+              return this.messageContent(v.message_content, date, 'mesRight', 'messageRight', 'mesRight dateStyle')
+            } else {
+              return this.messageContent(v.message_content, date, 'mesLeft', 'messageLeft', 'mesLeft dateStyle')
+            }
+          }
+        )}
+      </div>
+    )
   }
 
   render() {
   	return (
       <div>
         <h2 className="pageTitle"> Your Messages </h2>
+        <div className="convoPersName"> <h3>{this.props.convoPersonsName} </h3></div>
         <MessageSidebar />
         <div id="tenantWindow">
           <div>{this.renderConvo()}</div>
@@ -104,7 +116,8 @@ function mapStateToProps(state) {
     userName: state.user && state.user.user_name,
     sortedMesgs: state.sortedMessages,
     landlordId: state.landlordData && state.landlordData.landlord_id,
-    landlordTenants: state.landlordTenants
+    landlordTenants: state.landlordTenants,
+    convoPersonsName: state.convoPersonsName
 	}
 }
 

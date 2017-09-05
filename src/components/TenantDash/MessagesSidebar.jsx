@@ -16,8 +16,8 @@ class MessagesSidebar extends Component {
 	renderPropTenants() {
 		return (
 			<tbody>
-			  {this.props.propertyTenants.map((t, i) => {
-			  	return (<tr onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id)}}>
+			  {this.props.propertyTenants && this.props.propertyTenants.map((t, i) => {
+			  	return (<tr onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
 			  		<td>{i === 0 ? "Landlord: " + t.user_name: t.user_name}</td></tr>)
 			  	}
 				)}

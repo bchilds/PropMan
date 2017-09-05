@@ -23,10 +23,11 @@ export function sortMessages(messages, userId) {
 }
 // sortMessages(stuff, 1)
 
-export function setCurrentConvo(convoArray, recipId) {
+export function setCurrentConvo(convoArray, recipId, convoPersonName) {
 	var obj = {
 		convo: convoArray || [{message_content: "You have no messages with this contact"}],
-		id: recipId
+		id: recipId,
+		name: convoPersonName
 	}
 	return {
 		type: CURRENT_CONVO,
