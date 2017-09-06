@@ -1,13 +1,14 @@
 let speakeasy = require("speakeasy")
 
 const genSecretKey = async (ctx, next) => {
-	return await speakeasy.generateSecret()
+	return await speakeasy.generateSecret({length: 5, name: 'Rentopia'})
 }
-exports.genSecretKey = generateSecret
+exports.genSecretKey = genSecretKey
 
-const genTimeToken = async (ctx, next) => {
+const genTimeToken = async (ctx, key, next) => {
 	//let secret = /////retrieve secret here
-	
+	let secret
+	if(key) secret = key
 	let token = speakeasy.totp({
 		secret: secret.base32,
 		encoding: 'base32',
@@ -17,17 +18,18 @@ const genTimeToken = async (ctx, next) => {
 }
 exports.genTimeToken = genTimeToken
 
-let validateToken = async(ctx, token, next) => {
+let validateToken = async(ctx, token, secret, next) => {
+	let validates
 
-	//let secret = /////retrieve secret here
-	let validates = await speakeasy.totp.verify({
+	//secret = /////retrieve secret here
+	validates = await speakeasy.totp.verify({
 		secret: secret.base32,
 		encoding: 'base32',
 		token: token,
 		window: 10,
 		algorithm: 'sha256'
 	})
-	
+	return validates
 }
 exports.validateToken = validateToken
 

@@ -1,6 +1,6 @@
 let router = require('koa-router')()
 let braintree = require('braintree')
-let config = require('../.././braintreeConfig.js')
+let config = require('../../braintreeConfig.js')
 let Landlords = require('./landlords.js')
 let Promise = require('bluebird')
 
