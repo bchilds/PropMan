@@ -197,7 +197,7 @@ class PaymentSetup extends React.Component {
               <button type="submit"> Submit</button>
             </div>
           </form>
-          {this.props.landlordData.payment_set_up && <PaymentSetupSuccess />}
+          {this.props.landlordData.payment_set_up && <PaymentSetupSuccess message={'You successfully set up your payment information.'} redirectLink={'/proprietor'} />}
       </div>
     )
   }
