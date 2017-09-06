@@ -320,3 +320,23 @@
 .actionSuccessLower {
   background-color: white;
 }
+
+.addPropertyForm, .addTenantForm {
+  /*background-color: blue;*/
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.addPropertyInput, .addTenantInput {
+  width: 80%;
+}
+
+.BootstrapTableFull {
+  width: 98%;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  text-align: center;
+}
