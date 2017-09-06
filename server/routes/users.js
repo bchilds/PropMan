@@ -4,6 +4,7 @@ let bcrypt = require('bcrypt-nodejs')
 //responds to /users, /users/:email
 
 const getUserById = async (ctx, user_id) => {
+	if(!ctx.db) return 'failure'
 	let userRows, user
 	userRows = await ctx.db.query(`SELECT * FROM users WHERE user_id = ${user_id};`)
 	user = userRows.rows[0]
@@ -63,6 +64,7 @@ router
 		ctx.body = user
 	})
 	.put('/:id', async (ctx, next) => {
+		// ==================   user_password IS A REQUIRED CONTEXT FIELD
 		// ctx.request.body  {user_name, email, user_password, new_password, creditcard}
 		let user, userRows, req, query, values, count, match
 		user = await ctx.db.query(`SELECT * FROM users where user_id = ${ctx.params.id};`)

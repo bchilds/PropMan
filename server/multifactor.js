@@ -2,8 +2,7 @@ let speakeasy = require('speakeasy')
 let qrcode = require('qrcode')
 
 const genSecretKey = async (ctx, next) => {
-	await speakeasy.generateSecret({length: 5, name: 'Rentopia'})
-	return 
+	return await speakeasy.generateSecret({length: 5, name: 'Rentopia'})
 }
 exports.genSecretKey = genSecretKey
 

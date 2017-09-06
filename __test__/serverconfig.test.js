@@ -1,8 +1,8 @@
-let server = require('./setup.js')
+let app = require('./setup.js')
 // const { Pool, Client } = require('pg')
 // const bodyParser = require('koa-bodyparser');
 let supertest = require('supertest')
-let request//, server, db
+let request, server, db
 // db = new Pool()
 // app.context.db = db
 
@@ -13,7 +13,11 @@ let request//, server, db
 // })
 
 beforeAll( () => {
-	// server = app.listen()
+	app.use( async ctx => {
+		ctx.body = 'Hello, world'
+	})
+
+	server = app.listen()
 	request = supertest(server)
 })
 
