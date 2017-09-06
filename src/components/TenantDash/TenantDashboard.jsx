@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import TenantSidebar from './TenantSidebar.jsx';
 import PaymentForm from '../Payment/PaymentForm.jsx';
 import Modal from 'react-modal';
+import { getBroadcasts } from '../../actions/broadcastsGetter'
+import { bindActionCreators } from 'redux';
 
 // import { bindActionCreators } from 'redux';
 const customStyles = {
@@ -32,6 +34,10 @@ class TenantDashboard extends Component {
     this.state = {
       modalIsOpen: true,
     }
+  }
+
+  componentWillMount() {
+    this.props.getBroadcasts(this.props.tenantData.property_id)
   }
 
   componentDidMount() {
@@ -82,9 +88,14 @@ class TenantDashboard extends Component {
 function mapStateToProps(state) {
 	return {
 		tenantRentDue: state.tenantData && state.tenantData.rent,
-    media: state.selectedTenantMedia
+    media: state.selectedTenantMedia,
+    tenantData: state.tenantData
 	}
 }
 
-export default connect(mapStateToProps)(TenantDashboard)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({getBroadcasts}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TenantDashboard)
 

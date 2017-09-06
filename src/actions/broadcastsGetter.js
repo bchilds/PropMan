@@ -5,11 +5,11 @@ export const FETCH_BROADCASTS = 'fetch_broadcasts';
 const ROOT_URL = 'http://localhost:8000'
 
 export function getBroadcasts(propertyId) {
-	//const request = axios.post(`${ROOT_URL}/api/props/broadcasts/${propertyId}`)
-	console.log(propertyId)
-	var data = {data: {broadcasts: ['Beware of zombies on property. They\'ll get ya.', 'No garbage allowed outside of a can from now on', 'stop being terrible tenants']}}
+	console.log('property id is', propertyId)
+	const request = axios.get(`${ROOT_URL}/api/props/broadcasts/${propertyId}`)
+
 	return {
 	  type: FETCH_BROADCASTS,
-	  payload: data
+	  payload: request
 	}
 }

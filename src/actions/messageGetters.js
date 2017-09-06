@@ -19,3 +19,16 @@ export function sendMessage(info) {
 
   // **** request should have userData, tenant info, messages, docs, media
 }
+
+
+export function sendBroadcast(info) {
+  console.log('broadcast action', info)
+  const request = axios.post(`${ROOT_URL}/api/messages/`, info)
+
+  return {
+    type: DIRECT_MESSAGES,
+    payload: request
+  }
+
+  // **** request should have userData, tenant info, messages, docs, media
+}
