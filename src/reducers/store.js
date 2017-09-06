@@ -8,7 +8,10 @@ import { sortedMessages } from './sortMesgsReducer'
 import { propertyTenants, sortedTenantsByProp } from './propertyTenantsReducer'
 import { propertyTenants2 } from './propertyReducer'
 
-const rootReducer = combineReducers({
+import { USER_LOGOUT } from '../actions/authGetters'
+
+
+const appReducer = combineReducers({
   selectedTenantMedia,
   tenantPaidRent,
   landlordProperties,
@@ -32,5 +35,13 @@ const rootReducer = combineReducers({
   receivedTransactions,
   sentTransactions
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === USER_LOGOUT) {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
 
 export default rootReducer;

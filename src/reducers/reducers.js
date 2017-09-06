@@ -12,8 +12,6 @@ export function userData(state = {}, action) {
       return action.payload.data.user
     case SET_PROFILE:
     	return Object.assign({}, state, action.payload.data)
-    case USER_LOGOUT:
-      return {}
     default:
       return state;
   }
@@ -23,8 +21,6 @@ export function isLoggedIn(state = false, action) {
   switch(action.type) {
     case USER_LOGIN:
       return true
-    case USER_LOGOUT:
-      return false
     default:
       return state;
   }
@@ -52,9 +48,6 @@ export function otherTenants(state = [], action) {
       } else {
         return state
       }
-    case USER_LOGOUT:
-      return []
-
     default:
       return state;
   }
@@ -100,10 +93,6 @@ export function messages(state = [], action) {
     case DIRECT_MESSAGES: 
       var newArray = [...state, action.payload.data]
       return newArray
-
-    case USER_LOGOUT: 
-      return []
-
     default:
       return state;
   }

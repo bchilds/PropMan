@@ -33,7 +33,6 @@ export function sentTransactions(state=[], action) {
         return state
       }
     case SEND_PAYMENT: 
-      console.log('send that money', action.payload.data)
       if (action.payload.data) {
         return [...state, action.payload.data]
       }
