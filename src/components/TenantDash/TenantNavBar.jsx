@@ -45,7 +45,7 @@ class TenantNavBar extends Component {
         </Nav>
         <Nav pullRight>
           <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)} open={this.state.dropdownIsOpen}>
-            <LinkContainer onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/proprietor/profile"> 
+            <LinkContainer onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/tenant/profile"> 
               <NavItem>Your Profile</NavItem>
             </LinkContainer>
             <LinkContainer href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" >
