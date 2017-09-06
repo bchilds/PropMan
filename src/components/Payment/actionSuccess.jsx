@@ -23,8 +23,8 @@ const customStyles = {
 };
 
 class PaymentSetupSuccess extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       modalIsOpen: true,
@@ -58,8 +58,8 @@ class PaymentSetupSuccess extends React.Component {
         </div>
         <div className="actionSuccessLower">
           <h4>Great!</h4>
-          <h6>You successfully set up your payment information.</h6>
-          <Link to='/proprietor'>Return to dashboard</Link>
+          <h6>{this.props.message}</h6>
+          <Link to={this.props.redirectLink}>Return to dashboard</Link>
         </div>
       </Modal>
     )
