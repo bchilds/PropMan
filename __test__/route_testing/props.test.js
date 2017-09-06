@@ -1,11 +1,29 @@
-let Props = require('../../server/routes/props.js')
+
+//server setup
 const { Pool, Client } = require('pg')
-let db, tenant, tenant2, ctx, user, landlord, property
-let request = require('supertest')
-request = request('localhost:8000')
+const bodyParser = require('koa-bodyparser');
+
+let db, tenant, tenant2, ctx, user, landlord, property, server, request
+db = new Pool()
+let supertest = require('supertest')
+let app = require('../setup.js')
+app.context.db = db
+
+
+// use router
+let Props = require('../../server/routes/props.js')
+let api = require('koa-router')()
+app.use(bodyParser())
+api.use('/api/props', Props.routes.routes())
+app
+	.use(api.routes())
+	.use(api.allowedMethods())
+
 
 beforeAll( async () => {
-	db = new Pool()
+	server = app.listen()
+	request = supertest(server)
+
 	let testUser = {
 		user_name: 'Bob The Tester',
 		email: 'jest@test.com',
@@ -48,6 +66,7 @@ afterAll( async () => {
 	db.query(`DELETE FROM messages WHERE property_id = ${property.property_id};`)
 		])
 	db.end()
+  server.close()
 })
 
 beforeEach ( () => {
