@@ -1,10 +1,10 @@
 import { SEND_PAYMENT } from '../actions/paymentGetters'
 import { USER_LOGIN } from '../actions/authGetters'
 
-export function tenantPaidRent(state = null, action) {
+export function tenantPaidRent(state = false, action) {
   switch(action.type) {
     case SEND_PAYMENT: 
-      return action.payload.data;
+      return true
 
     default:
       return state;

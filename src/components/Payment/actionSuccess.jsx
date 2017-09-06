@@ -22,7 +22,7 @@ const customStyles = {
   }
 };
 
-class PaymentSetupSuccess extends React.Component {
+class ActionSuccess extends React.Component {
   constructor(props) {
     super(props)
 
@@ -66,4 +66,4 @@ class PaymentSetupSuccess extends React.Component {
   }
 }
 
-export default PaymentSetupSuccess
+export default ActionSuccess
