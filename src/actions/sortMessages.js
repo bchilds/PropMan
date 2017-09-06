@@ -5,7 +5,6 @@ export function sortMessages(messages, userId) {
 	var mesgObj = {}
 	messages.forEach((obj, i) => {
 		if (obj !== null && obj !== undefined) {
-			console.log('obj is ', obj === null)
 			if (obj.recipient_id !== userId) {
 				mesgObj[obj.recipient_id] = mesgObj[obj.recipient_id] || []
 				mesgObj[obj.recipient_id].push(obj)
