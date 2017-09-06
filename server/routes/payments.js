@@ -56,14 +56,14 @@ router
     let result = await gateway.transaction.sale({
       merchantAccountId: ctx.request.body.merchant_id,
       amount: ctx.request.body.transaction_amount,
-      paymentMethodNonce: 'fake-valid-nonce',
+      paymentMethodNonce: nonceFromClient,
       options: {
         submitForSettlement: true
       },
       serviceFeeAmount: "00.00"
     })
 
-    // console.log(result)
+    console.log(result)
     let paymentIdentifier = result.transaction.id
     if (result.success) {
       //create transaction record here

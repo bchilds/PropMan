@@ -2,7 +2,7 @@ export const statesList = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA
 
 export const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-const getDays = () => {
+export const getDays = () => {
   let daysArray = []
   for (let i=1; i<=31; i++) {
     daysArray.push(i.toString())
@@ -12,7 +12,7 @@ const getDays = () => {
 
 export const days = getDays()
 
-const getYears = () => {
+export const getYears = () => {
   let yearsArray = []
   let currentYear = new Date().getFullYear()
   for (let i=currentYear; i>=1950; i--) {
