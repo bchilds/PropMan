@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -19,19 +20,22 @@ class TenantMessages extends Component {
     this.handleSendTo = this.handleSendTo.bind(this)
   }
 
+  setScrollToBottom() {
+    var myDiv = document.getElementById('tenantWindow');
+    myDiv.scrollTop = myDiv.scrollHeight;
+  }
+
   componentDidMount() {
-  	var elem = document.getElementById('tenantWindow');
-  	elem.scrollTop = elem.scrollHeight;
-  	this.props.sortMessages(this.props.messages, this.props.userId)
+    this.props.sortMessages(this.props.messages, this.props.userId)
+    this.setScrollToBottom()
     this.setState({
       modalIsOpen: false,
       convoPerson: ''
     })
   }
 
-  componentWillUpdate() {
-    var elem = document.getElementById('tenantWindow');
-    elem.scrollTop = elem.scrollHeight;
+  componentWillReceiveProps() {
+    setTimeout(() => {this.setScrollToBottom()}, 0)
   }
 
   handleSendTo(e) {
@@ -45,7 +49,6 @@ class TenantMessages extends Component {
 	  		sender_id: this.props.userId
 	  	}
   	  e.target.message.value = ''
-  	  console.log('sent obj', obj)
   	  this.props.sendMessage(obj)
   	    .then(() => {
   	    	this.props.sortMessages(this.props.messages, this.props.userId)
@@ -53,11 +56,15 @@ class TenantMessages extends Component {
   	    .then(()=>{
   	    	var recip = this.props.mesgRecipient
   	    	this.props.setCurrentConvo(this.props.sortedMesgs[recip], recip, this.props.convoPersonsName)
+          this.setScrollToBottom()
   	    })
     }
   }
 
   messageContent(content, date, side, sideFull, style) {
+    if (date === "Invalid Date") {
+      date = ''
+    }
     return (
       <div className={sideFull}>
         <div className={style}>{date}</div>
@@ -92,11 +99,11 @@ class TenantMessages extends Component {
         <div id="tenantWindow">
           <div>{this.renderConvo()}</div>
         </div>
-	      <div className="newMessage">
-	        <form onSubmit={this.handleSendTo.bind(this)}>
-	  				<input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
-	        </form>
-	      </div>
+        <div className="newMessage">
+          <form onSubmit={this.handleSendTo.bind(this)}>
+            <input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+          </form>
+        </div>
       </div>
   	)
   }
