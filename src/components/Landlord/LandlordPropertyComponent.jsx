@@ -1,19 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-<<<<<<< HEAD
 import { Accordion, Panel } from 'react-bootstrap'
 
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-
 import { months, days, years } from '../Payment/formHelperData'
-=======
 import Modal from 'react-modal';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import BroadcastModal from './BroadcastMessageModal.jsx';
->>>>>>> commit for rebase
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
 
 const customStyles = {

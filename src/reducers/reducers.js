@@ -11,7 +11,8 @@ export function userData(state = {}, action) {
     console.log('login request is ', action.payload)
       return action.payload.data.user
     case SET_PROFILE:
-    	return Object.assign({}, state, action.payload.data)
+    console.log('set profile reducer', action.payload)
+    	return action.payload.data
     default:
       return state;
   }
