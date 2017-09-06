@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Accordion, Panel } from 'react-bootstrap'
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
+import { months, days, years } from '../Payment/formHelperData'
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
 
 function mapStateToProps(state, match) {
@@ -27,12 +29,12 @@ class Property extends React.Component {
 
   addTenantButton(e) {
     e.preventDefault()
-    // console.log(JSON.stringify(this.props.property.property_id))
+    let monthNum = months.indexOf(e.target.month.value) + 1
     let res = this.props.addPropertyTenant({
       "property_id": this.props.property.property_id,
       "tenant_email": e.target.tenant_email.value,
       "rent": e.target.rent.value,
-      "due_date": e.target.due_date.value
+      "due_date": `${monthNum}/${e.target.day.value}/${e.target.year.value}`
     }, (res, data) => {
       if (res) {
         console.log(res, data)
@@ -42,7 +44,30 @@ class Property extends React.Component {
     })
     e.target.tenant_email.value = ''
     e.target.rent.value = ''
-    e.target.due_date.value = ''
+  }
+
+  renderMonths() {
+    return months.map((month, i) => {
+      return (
+        <option key={i}> {month} </option>
+      )
+    })
+  }
+
+  renderDays() {
+    return days.map((day, i) => {
+      return (
+        <option key={i}> {day} </option>
+      )
+    })
+  }
+
+  renderYears() {
+    return years.map((year, i) => {
+      return (
+        <option key={i}> {year} </option>
+      )
+    })
   }
 
   render() {
@@ -59,14 +84,34 @@ class Property extends React.Component {
         <p>Address: {property.address}</p>
         <p>City: {property.city}</p>
         <p>State: {property.state_abbrv}</p>
-        <h3>Tenants</h3>
         <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
-          <input className="addTenantInput" name="tenant_email" placeholder="Tenant Email"></input>
-          <input className="addTenantInput" name="rent" placeholder="Rent Amount"></input>
-          <input className="addTenantInput" name="due_date" placeholder="Rent Due"></input>
-          <button className="" type="submit">Add Tenant</button>
+          <Accordion>
+            <Panel header="Add a Tenant" eventKey="1">
+              <label>Email</label>
+              <br />
+              <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
+              <br /><br />
+              <label>Rent Amount</label>
+              <br />
+              <input className="addTenantInput" name="rent" placeholder="1200"></input>
+              <br /><br />
+              <label>Rent Due Date</label>
+              <br />
+              <select name="month">
+                {this.renderMonths()}
+              </select>
+              <select name="day">
+                {this.renderDays()}
+              </select>
+              <select name="year">
+                  {this.renderYears()}
+                </select>
+              <br /><br />
+              <button className="" type="submit">Add Tenant</button>
+            </Panel>
+          </Accordion>
         </form>
-        <BootstrapTable data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
+        <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='tenant_id' dataSort={ true } isKey={ true } hidden={ true }>ID</TableHeaderColumn>
           <TableHeaderColumn dataField='tenant_email' dataSort={ true }>Email</TableHeaderColumn>
           <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
