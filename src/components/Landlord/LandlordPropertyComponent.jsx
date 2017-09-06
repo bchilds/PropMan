@@ -3,15 +3,35 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Accordion, Panel } from 'react-bootstrap'
 
+import { months, days, years } from '../Payment/formHelperData'
+import Modal from 'react-modal';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-
-import { months, days, years } from '../Payment/formHelperData'
+import BroadcastModal from './BroadcastMessageModal.jsx';
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
+
+const customStyles = {
+  content : {
+    top             : '50%',
+    left            : '50%',
+    right           : '70%',
+    bottom          : 'auto',
+    marginRight     : '-50%',
+    transform       : 'translate(-50%, -50%)',
+    maxHeight       : '600px',
+    minHeight       : '400px', // This sets the max height
+    width           : '600px',
+    overflow        : 'scroll', // This tells the modal to scroll
+    border          : '1px solid black',
+    //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
+    borderRadius    : '0px'
+  }
+};
 
 function mapStateToProps(state, match) {
   const property_id = Number(match.match.params.id);
   return {
+    property_id: property_id,
     property: state.landlordProperties.filter(property => property.property_id === property_id)[0],
     tenants: state.propertyTenants2
   }
@@ -24,7 +44,25 @@ function mapDispatchToProps(dispatch) {
 class Property extends React.Component {
   constructor(props) {
     super()
-    props.getPropertyTenants2(props.property.property_id)
+
+    this.state = {
+      modalIsOpen: false,
+      sendTo: -1
+    }
+    this.openModal = this.openModal.bind(this)
+  }
+
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+
+  componentWillReceiveProps() {
+    this.props.getPropertyTenants2(this.props.property_id)
   }
 
   addTenantButton(e) {
@@ -80,10 +118,25 @@ class Property extends React.Component {
     const property = this.props.property;
     return (
       <div>
-        <h2 className="pageTitle">{property.property_name}</h2>
-        <p>Address: {property.address}</p>
-        <p>City: {property.city}</p>
-        <p>State: {property.state_abbrv}</p>
+        <h2 className="pageTitle">{property && property.property_name}</h2>
+        <p>Address: {property && property.address}</p>
+        <p>City: {property && property.city}</p>
+        <p>State: {property && property.state_abbrv}</p>
+        <button onClick={this.openModal}> Create Broadcast </button>
+        {this.state.modalIsOpen &&
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal.bind(this)}
+            style={customStyles}
+            contentLabel="Payment Modal"
+          > 
+            <BroadcastModal 
+              onRequestClose={this.closeModal.bind(this)}
+              propertyId={this.props.property.property_id}
+              tenants={this.props.tenants} />
+          </Modal>  
+        }
+        <h3>Tenants</h3>
         <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
           <Accordion>
             <Panel header="Add a Tenant" eventKey="1">

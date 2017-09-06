@@ -8,15 +8,14 @@ import { getBroadcasts } from '../../actions/broadcastsGetter';
 class TenantSideBar extends Component {
 
 	componentDidMount() {
-		console.log('componentDidMount', this.props.userId)
-		this.props.getBroadcasts(this.props.userId)
+		// this.props.getBroadcasts(this.props.userId)
 		// this.props.getDocs(this.props.userId)
 	}
 
 	renderBroadcasts() {
 		return this.props.broadcasts.map((bcast, i) => {
 			return (
-				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast)}> {bcast} </div>
+				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_content)}> {bcast.message_content} </div>
 			)
 		})
 	}

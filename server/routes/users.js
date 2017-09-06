@@ -67,9 +67,9 @@ router
 		// ==================   user_password IS A REQUIRED CONTEXT FIELD
 		// ctx.request.body  {user_name, email, user_password, new_password, creditcard}
 		let user, userRows, req, query, values, count, match
+		console.log('ctx', ctx.request.body)
 		user = await ctx.db.query(`SELECT * FROM users where user_id = ${ctx.params.id};`)
 		user = user.rows[0]
-		console.log(user)
 		//if user found with this id
 		if(user && ctx.request.body.user_password) {
 			//check password
