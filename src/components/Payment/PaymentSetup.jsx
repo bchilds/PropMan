@@ -92,9 +92,6 @@ class PaymentSetup extends React.Component {
       return (
         <option key={i}> {month} </option>
       )
-      return (
-        <div>HELLO</div>
-      )
     })
   }
 
