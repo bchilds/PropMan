@@ -39,20 +39,20 @@ app.use(bodyParser())
 app.keys = ['ironmen']
 app.use(session(app))
 
-const authFunc = async (ctx, next) => {
-	console.log(ctx.session)
-	ctx.session.isLoggedIn = ctx.session.isLoggedIn || false
-	if (!ctx.session.isLoggedIn) {
-	  await send(ctx, '/index.html', { root: 'dist' }) 
-	}
-	  await next()
-}
-
 const redirToIndex = async (ctx, next) => {
 	ctx.redirect('/') 
 }
 
+const authFunc = async (ctx, next) => {
+	console.log(ctx.session)
+	ctx.session.isLoggedIn = ctx.session.isLoggedIn || false
+	if (!ctx.session.isLoggedIn) {
+	  //redirToIndex(ctx, next) 
+	}
+	  await next()
+}
 app.use(authFunc)
+
 // app.use(redirToIndex)
 
 
@@ -94,4 +94,3 @@ app.use(async (ctx) => {
 app.listen(port, () => {
 	console.log('Listening on port: ', port)
 })
-

@@ -1,6 +1,6 @@
 let Tenants = require('../../server/routes/tenants.js')
 const { Pool, Client } = require('pg')
-let db, tenant, ctx, user, landlord, property
+let db, tenant,user, landlord, property//, ctx 
 let request = require('supertest')
 request = request('localhost:8000')
 
