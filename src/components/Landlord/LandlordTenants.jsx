@@ -134,7 +134,6 @@ class Tenants extends React.Component {
           </Panel>
         </Accordion>
       </form>
-{ console.log('render props tenants', this.props.tenants) }
       <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
         <TableHeaderColumn dataField='tenant_email' dataSort={ true } isKey={ true }>Email</TableHeaderColumn>
         <TableHeaderColumn dataField='property_name' dataSort={ true }>Property</TableHeaderColumn>
