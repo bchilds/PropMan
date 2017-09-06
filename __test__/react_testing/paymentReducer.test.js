@@ -44,6 +44,14 @@ describe('>>> REDUCER ---TEST paymentReducer', () => {
       let state = paymentReducer.receivedTransactions(state, action)
       expect(Array.isArray(state)).toEqual(true)
     })
+    it(`case default`, () => {
+      let action = {
+        type: 'an incorrect action type'
+      }
+      let state = paymentReducer.sentTransactions(state, action)
+      expect(Array.isArray(state)).toEqual(true)
+      expect(state.length).toEqual(0)
+    })
   })
 
   describe('>>> sentTransactions', () => {
@@ -78,6 +86,14 @@ describe('>>> REDUCER ---TEST paymentReducer', () => {
         }
       let state = paymentReducer.sentTransactions(state, action)
       expect(Array.isArray(state)).toEqual(true)
+    })
+    it(`case default`, () => {
+      let action = {
+        type: 'an incorrect action type'
+      }
+      let state = paymentReducer.sentTransactions(state, action)
+      expect(Array.isArray(state)).toEqual(true)
+      expect(state.length).toEqual(0)
     })
   })
 })
