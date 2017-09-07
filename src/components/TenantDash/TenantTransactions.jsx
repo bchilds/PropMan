@@ -11,7 +11,8 @@ class Transactions extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      transactions: this.props.transactions
+      completedTransactions: [],
+      incompleteTransactions: []
     }
   }
 
@@ -23,12 +24,17 @@ class Transactions extends React.Component {
       newObj.transaction_amount = `$${newObj.transaction_amount}`
       return newObj
     })
-    alteredTransactions = alteredTransactions.filter((transaction) => {
+    let completedTransactions = [...alteredTransactions].filter((transaction) => {
       return transaction.is_completed
     })
 
+    let incompleteTransactions = [...alteredTransactions].filter((transaction) => {
+      return !transaction.is_completed
+    })
+
     this.setState({
-      transactions: alteredTransactions
+      completedTransactions: completedTransactions,
+      incompleteTransactions: incompleteTransactions
     })
   }
 
@@ -69,9 +75,12 @@ class Transactions extends React.Component {
   }
 
   render() {
+    const options = {
+      sortName: 'transaction_id',
+      sortOrder: 'desc'
+    }
     return (
       <div className="transactionsTable">
-        <h2>Transactions</h2>
         <form onSubmit={this.handleBillAdd.bind(this)}>
           <Accordion className="addBillAccordion">
             <Panel header="Add bill" eventKey="1">
@@ -85,7 +94,19 @@ class Transactions extends React.Component {
             </Panel>
           </Accordion>
         </form>
-        <BootstrapTable data={ this.state.transactions } striped={ true } hover={ true } condensed={ true }>
+        <h4>Incomplete Transactions</h4>
+        <Accordion>
+          <Panel header="Click to view" eventKey="1">
+            <BootstrapTable options={options} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
+              <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
+              <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
+              <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
+              <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
+            </BootstrapTable>
+          </Panel>
+        </Accordion>
+        <h4>Completed Transactions</h4>
+        <BootstrapTable options={options} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
           <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
           <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
@@ -99,7 +120,7 @@ class Transactions extends React.Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
-    transactions: state.sentTransactions,
+    transactions: state.sentTransactions.concat(state.receivedTransactions),
     otherTenants: state.otherTenants
   }
 }

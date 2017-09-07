@@ -37,7 +37,6 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
 exports.getUserTransactions = getUserTransactions
 
 const createTransaction = async (ctx, paymentIdentifier, is_completed = true) => {
-  console.log('is_completed', is_completed)
   let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}', ${is_completed}) RETURNING *;`)
   results = results.rows[0]
   return results
@@ -80,17 +79,18 @@ router
   })
   .post('/addBill', async ctx => {
     ctx.request.body.sender_id = ctx.request.body.requester_userId
-    console.log(ctx.request.body)
     let newTransactions = []
     ctx.request.body.recipient_id = null
     let transaction = await createTransaction(ctx, null)
     newTransactions.push(transaction)
     if(transaction) {
+      // split the amount amongst all the users (bill sharer creator plus all sharers)
+      ctx.request.body.transaction_amount = ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)  
+      // edit payment name to have '(split)'
+      ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share)`
       for (var sharer of ctx.request.body.sharers) {
-        ctx.request.body.recipient_id = sharer
-        console.log('bill split')
+        ctx.request.body.recipient_id = sharer 
         let transaction = await createTransaction(ctx, null, false)
-        console.log('transaction', transaction)
         newTransactions.push(transaction)
       }
       ctx.response.status = 201
