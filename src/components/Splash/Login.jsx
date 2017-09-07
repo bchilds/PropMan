@@ -11,11 +11,13 @@ class Login extends React.Component {
     e.preventDefault()
     this.props.loginUser({
       email: e.target.email.value,
-      password: e.target.password.value
+      password: e.target.password.value,
+      multi: e.target.multi.value
     })
 
     e.target.email.value = ''
     e.target.password.value = ''
+    e.target.multi.value = ''
   }
 
   render() {
@@ -29,6 +31,8 @@ class Login extends React.Component {
             <form onSubmit={this.handleLogin.bind(this)}>
               <input className="loginInput" name="email" placeholder="Email"></input>
               <input className="loginInput" name="password" type="password" placeholder="Password"></input>
+              <input className="loginInput" name="multi" placeholder="Multifactor Key"></input>
+
               <button className="loginButton" type="submit">Log in</button>
             </form>
           </div>

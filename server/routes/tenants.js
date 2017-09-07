@@ -33,22 +33,24 @@ exports.checkForActiveTenant = checkForActiveTenant
 
 const createNewTenant = async (ctx, user, property_id) => {
 	let tenant
-	if(user && property_id) {
-		// created by landlord
-		// ctx.request.body = {property_id, tenant_email, rent, due_date}
-		// first check to see if user has active record
-			//if he does and it has no prop_id, update that
-			//if he does and it has prop_id, return error
-			//if he doesn't, create
-		tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active, rent, due_date, property_id) VALUES (${user.user_id}, '${ctx.request.body.tenant_email}', true, ${ctx.request.body.rent}, TO_DATE('${ctx.request.body.due_date}', 'DD/MM/YYYY'), ${property_id}) RETURNING *;`)
-	} else if (!user && property_id) {
-		// Tenant has no user, so we create a tenant record for them to claim
-		tenant = await ctx.db.query(`INSERT INTO tenants (tenant_email, is_active, rent, due_date, property_id) VALUES ('${ctx.request.body.tenant_email}', true, ${ctx.request.body.rent}, TO_DATE('${ctx.request.body.due_date}', 'DD/MM/YYYY'), ${property_id}) RETURNING *;`)
-	} else if (user && !property_id){
-		// created by user signing up with no active tenants for email address
-		tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active) VALUES ('${user.user_id}', '${user.email}', true) RETURNING *;`)
-	} else {
-		console.log('error, no tenant created')
+	if(ctx.request.body.tenant_email) {
+		if(user && property_id) {
+			// created by landlord
+			// ctx.request.body = {property_id, tenant_email, rent, due_date}
+			// first check to see if user has active record
+				//if he does and it has no prop_id, update that
+				//if he does and it has prop_id, return error
+				//if he doesn't, create
+			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active, rent, due_date, property_id) VALUES (${user.user_id}, '${ctx.request.body.tenant_email}', true, ${ctx.request.body.rent}, TO_DATE('${ctx.request.body.due_date}', 'DD/MM/YYYY'), ${property_id}) RETURNING *;`)
+		} else if (!user && property_id) {
+			// Tenant has no user, so we create a tenant record for them to claim
+			tenant = await ctx.db.query(`INSERT INTO tenants (tenant_email, is_active, rent, due_date, property_id) VALUES ('${ctx.request.body.tenant_email}', true, ${ctx.request.body.rent}, TO_DATE('${ctx.request.body.due_date}', 'DD/MM/YYYY'), ${property_id}) RETURNING *;`)
+		} else if (user && !property_id){
+			// created by user signing up with no active tenants for email address
+			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active) VALUES ('${user.user_id}', '${user.email}', true) RETURNING *;`)
+		} else {
+			console.log('error, no tenant created')
+		}
 	}
 	if(tenant) {
 		return tenant.rows[0]
@@ -151,8 +153,13 @@ router
 				// if no active tenant, create tenant and return it
 				console.log('bylandlord - creating tenant')
 				tenant = await createNewTenant(ctx, user, obj.property_id)
-				ctx.response.status = 201
-				ctx.body = tenant
+				if(tenant){
+					ctx.response.status = 201
+					ctx.body = tenant
+				} else {
+					ctx.response.status = 400
+					ctx.body = 'Error creating tenant'
+				}
 			}
 	})
 	.get('/activedata/:tenant_id', async (ctx, next) => {
