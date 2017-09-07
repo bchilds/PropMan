@@ -32,7 +32,8 @@ class Transactions extends React.Component {
     this.state = {
       completedTransactions: [],
       incompleteTransactions: [],
-      modalIsOpen: false
+      modalIsOpen: false,
+      selectedIncompleteTransactionId: null
     }
   }
 
@@ -42,7 +43,7 @@ class Transactions extends React.Component {
     })
   }
 
-  openModal() {
+  openModal(row, columnIndex, rowIndex) {
     this.setState({modalIsOpen: true});
   }
 
@@ -112,7 +113,13 @@ class Transactions extends React.Component {
     const incompleteOptions = {
       sortName: 'transaction_id',
       sortOrder: 'asc',
-      onRowClick: this.openModal.bind(this)
+      onRowClick: (row, columnIndex, rowIndex) => {
+        this.setState({
+          selectedIncompleteTransactionId: row.transaction_id
+        })
+
+        this.openModal.bind(this)
+      }
     }
     const completedOptions = {
       sortName: 'transaction_id',
@@ -157,7 +164,14 @@ class Transactions extends React.Component {
           style={customStyles}
           contentLabel="Payment Modal"
         > 
-          <PaymentForm paymentType={'Turtles'}/>
+          {console.log(this.state.selectedIncompleteTransactionId)}
+          <PaymentForm paymentParams=
+          {
+            {
+
+            }
+          }
+          />
         </Modal>
       </div>
     )

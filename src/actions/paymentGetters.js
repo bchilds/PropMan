@@ -6,20 +6,32 @@ export const ADD_BILL = 'add_bill'
 
 const ROOT_URL = 'http://localhost:8000'
 
-export function tenantPayment(params) {
-  const request = axios.post(`${ROOT_URL}/api/payments/braintreePayment`, 
-  {
-    nonce: params.payload.nonce,
-    transaction_amount: params.amountDue,
-    sender_id: params.senderId,
-    recipient_id: params.recipientId,
-    merchant_id: params.merchantId,
-    payment_type: params.paymentType
-  })
+export function tenantPayment(payload, params, httpMethod) {
+  if (httpMethod === 'post') {
+    const request = axios.post(`${ROOT_URL}/api/payments/braintreePayment`, 
+    {
+      nonce: payload.nonce,
+      transaction_amount: params.amountDue,
+      sender_id: params.senderId,
+      recipient_id: params.recipientId,
+      merchant_id: params.merchantId,
+      payment_type: params.paymentType
+    })
 
-  return {
-    type: SEND_PAYMENT,
-    payload: request
+    return {
+      type: SEND_PAYMENT,
+      payload: request
+    }    
+  } else if (httpMethod === 'put') {
+    const request = axios.post(`${ROOT_URL}/api/payments/billSplit`, 
+    {
+
+    })
+
+    return {
+      type: SEND_PAYMENT,
+      payload: request
+    }
   }
 }
 

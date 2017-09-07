@@ -85,7 +85,8 @@ class TenantDashboard extends Component {
                 senderId: this.props.user.user_id, 
                 recipientId: this.props.tenantsLandlord.user_id, 
                 merchantId: this.props.tenantsLandlord.merchant_id,
-                paymentType: 'Rent'
+                paymentType: 'Rent',
+                httpMethod: 'post'
               }
             }/>
         </Modal>

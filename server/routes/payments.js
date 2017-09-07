@@ -77,6 +77,9 @@ router
       }
     }
   })
+  .put('/billSplit', async ctx => {
+    
+  })
   .post('/addBill', async ctx => {
     ctx.request.body.sender_id = ctx.request.body.requester_userId
     let newTransactions = []
