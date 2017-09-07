@@ -95,9 +95,18 @@ router
 				query = query + `) =` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
 				console.log(query)
 				userRows = await ctx.db.query(query)
-				// req = ctx.request.body
 				// userRows = await ctx.db.query(`UPDATE users SET (user_name, email, user_password, creditcard) = ('${req.user_name}', '${req.email}', '${req.user_password}', '${req.creditcard}') WHERE user_id = ${ctx.params.id} RETURNING *;`)
-				ctx.body = userRows.rows[0]
+				user = userRows.rows[0]
+
+				ctx.response.status = 201
+				ctx.body = {user: user}
+
+				//if user is a tenant, update the emails of all tenants pointing to this user
+				if(!user.is_landlord) {
+					let tenant = await ctx.db.query(`UPDATE tenants SET (tenant_email) = ('${user.email}') WHERE user_id = ${user.user_id} AND is_active = true RETURNING *;`)
+					ctx.body.tenant = tenant.rows[0]
+					ctx.body.tenant.user_name = user.user_name
+				}
 			} else { //password did not match
 				ctx.response.status = 401
 				ctx.body = 'Password check failed, unauthorized to change profile data'
