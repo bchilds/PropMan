@@ -23,15 +23,16 @@ export function tenantPayment(payload, params, httpMethod) {
       payload: request
     }    
   } else if (httpMethod === 'put') {
-    const request = axios.post(`${ROOT_URL}/api/payments/billSplit`, 
+    console.log('lets flipping go', payload, params)
+    const request = axios.put(`${ROOT_URL}/api/payments/billSplit`, 
     {
-
+      transaction_id: params. transaction_id
     })
 
-    return {
-      type: SEND_PAYMENT,
-      payload: request
-    }
+    // return {
+    //   type: SEND_PAYMENT,
+    //   payload: request
+    // }
   }
 }
 

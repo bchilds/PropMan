@@ -43,8 +43,11 @@ class Transactions extends React.Component {
     })
   }
 
-  openModal(row, columnIndex, rowIndex) {
-    this.setState({modalIsOpen: true});
+  openModal(transaction_id) {
+    this.setState({
+      modalIsOpen: true,
+      selectedIncompleteTransactionId: transaction_id
+    });
   }
 
   closeModal() {
@@ -82,9 +85,9 @@ class Transactions extends React.Component {
   }
 
   renderRoommates() {
-    return this.props.otherTenants.map((tenant) =>{
+    return this.props.otherTenants.map((tenant, i) =>{
       return (
-        <div>
+        <div key={i}>
           <input type="checkbox" name="tenants" value={tenant.user_id}></input>
           <label> {tenant.user_name}</label>
         </div>
@@ -113,12 +116,9 @@ class Transactions extends React.Component {
     const incompleteOptions = {
       sortName: 'transaction_id',
       sortOrder: 'asc',
+      // onRowClick: this.openModal.bind(this)
       onRowClick: (row, columnIndex, rowIndex) => {
-        this.setState({
-          selectedIncompleteTransactionId: row.transaction_id
-        })
-
-        this.openModal.bind(this)
+        this.openModal.call(this, row.transaction_id)
       }
     }
     const completedOptions = {
@@ -164,11 +164,11 @@ class Transactions extends React.Component {
           style={customStyles}
           contentLabel="Payment Modal"
         > 
-          {console.log(this.state.selectedIncompleteTransactionId)}
           <PaymentForm paymentParams=
           {
             {
-
+              transaction_id: this.state.selectedIncompleteTransactionId,
+              httpMethod: 'put'
             }
           }
           />

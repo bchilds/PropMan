@@ -43,11 +43,17 @@ const createTransaction = async (ctx, paymentIdentifier, is_completed = true) =>
 }
 exports.createTransaction = createTransaction
 
+const getTransactionById = async (ctx, transaction_id) => {
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = ${transaction_id};`)
+  results = results.rows[0]
+  return results
+}
+exports.getTransactionById = getTransactionById
+
 router
   .get('/:id', async (ctx, next) => {
-    let paymentRows
-    paymentRows = ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = ${ctx.params.id};`)
-    ctx.body = await paymentRows.rows[0]
+    let paymentRows = await getTransactionById(ctx, ctx.params.id)
+    ctx.body = paymentRows
   })
   .post('/braintreePayment', async ctx => {
     // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id, payment_type} ID's are user_id's
@@ -78,7 +84,8 @@ router
     }
   })
   .put('/billSplit', async ctx => {
-    
+    let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
+    console.log(results)
   })
   .post('/addBill', async ctx => {
     ctx.request.body.sender_id = ctx.request.body.requester_userId
