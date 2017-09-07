@@ -25,9 +25,16 @@ class Tenants extends React.Component {
   constructor(props) {
     super()
     // props.getTenants(props.landlord.landlord_id)
+    var property_id_name = {}
+    props.properties.map(property => {
+        property_id_name[property.property_id] = property.property_name
+    })
+    props.tenants.map(tenant => {
+      tenant['property_name'] = property_id_name[tenant.property_id]
+    })
   }
 
-  componentDidUpdate() {
+  componentWillReceiveProps() {
     var property_id_name = {}
     this.props.properties.map(property => {
         property_id_name[property.property_id] = property.property_name
@@ -43,6 +50,8 @@ class Tenants extends React.Component {
       return property.property_name === e.target.property_id.value
     })[0]
     let monthNum = months.indexOf(e.target.month.value) + 1
+    console.log("tenant_email", e.target.tenant_email.value, "property_id", property.property_id, "rent", e.target.rent.value, "due_date", `${monthNum}/${e.target.day.value}/${e.target.year.value}`)
+    console.log(new Date(`${monthNum}/${e.target.day.value}/${e.target.year.value}`))
     let res = this.props.addTenant({
       "tenant_email": e.target.tenant_email.value,
       "property_id": property.property_id,
