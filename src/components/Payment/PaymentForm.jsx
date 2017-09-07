@@ -43,11 +43,11 @@ class PaymentForm extends React.Component {
   handlePaymentMethod(payload) {
     this.props.tenantPayment({
       payload: payload, 
-      rentDue: this.props.tenantData.rent, 
-      senderId: this.props.user.user_id, 
-      recipientId: this.props.tenantsLandlord.user_id, 
-      merchantId: this.props.tenantsLandlord.merchant_id,
-      paymentType: this.props.paymentType
+      amountDue: this.props.paymentParams.amountDue, 
+      senderId: this.props.paymentParams.senderId, 
+      recipientId: this.props.paymentParams.recipientId, 
+      merchantId: this.props.paymentParams.merchantId,
+      paymentType: this.props.paymentParams.paymentType
     }
     )
     this.setState({

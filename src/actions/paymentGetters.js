@@ -10,7 +10,7 @@ export function tenantPayment(params) {
   const request = axios.post(`${ROOT_URL}/api/payments/braintreePayment`, 
   {
     nonce: params.payload.nonce,
-    transaction_amount: params.rentDue,
+    transaction_amount: params.amountDue,
     sender_id: params.senderId,
     recipient_id: params.recipientId,
     merchant_id: params.merchantId,

@@ -6,14 +6,48 @@ import { connect } from 'react-redux'
 import { Accordion, Panel, FormGroup, Checkbox } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { addBill } from '../../actions/paymentGetters'
+import PaymentForm from '../Payment/PaymentForm.jsx'
+import Modal from 'react-modal';
+
+const customStyles = {
+  content : {
+    top             : '50%',
+    left            : '50%',
+    right           : '70%',
+    bottom          : 'auto',
+    marginRight     : '-50%',
+    transform       : 'translate(-50%, -50%)',
+    maxHeight       : '500px', // This sets the max height
+    maxWidth        : '700px',
+    overflow        : 'scroll', // This tells the modal to scroll
+    border          : '1px solid black',
+    //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
+    borderRadius    : '0px'
+  }
+};
 
 class Transactions extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       completedTransactions: [],
-      incompleteTransactions: []
+      incompleteTransactions: [],
+      modalIsOpen: false
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      modalIsOpen: false
+    })
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   alterTransactions(transactions) {
@@ -75,7 +109,12 @@ class Transactions extends React.Component {
   }
 
   render() {
-    const options = {
+    const incompleteOptions = {
+      sortName: 'transaction_id',
+      sortOrder: 'asc',
+      onRowClick: this.openModal.bind(this)
+    }
+    const completedOptions = {
       sortName: 'transaction_id',
       sortOrder: 'desc'
     }
@@ -97,7 +136,7 @@ class Transactions extends React.Component {
         <h4>Incomplete Transactions</h4>
         <Accordion>
           <Panel header="Click to view" eventKey="1">
-            <BootstrapTable options={options} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
+            <BootstrapTable options={incompleteOptions} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
               <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
               <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
               <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
@@ -106,12 +145,20 @@ class Transactions extends React.Component {
           </Panel>
         </Accordion>
         <h4>Completed Transactions</h4>
-        <BootstrapTable options={options} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true }>
+        <BootstrapTable options={completedOptions} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
           <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
           <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
           <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
         </BootstrapTable>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal.bind(this)}
+          style={customStyles}
+          contentLabel="Payment Modal"
+        > 
+          <PaymentForm paymentType={'Turtles'}/>
+        </Modal>
       </div>
     )
   }
