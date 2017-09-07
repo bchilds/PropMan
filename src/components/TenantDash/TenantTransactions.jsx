@@ -4,6 +4,8 @@ import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-a
 
 import { connect } from 'react-redux'
 import { Accordion, Panel, FormGroup, Checkbox } from 'react-bootstrap'
+import { bindActionCreators } from 'redux'
+import { addBill } from '../../actions/paymentGetters'
 
 class Transactions extends React.Component {
   constructor(props) {
@@ -13,18 +15,29 @@ class Transactions extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
-    let alteredTransactions = this.props.transactions.map((transaction) => {
+  alterTransactions(transactions) {
+    let alteredTransactions = transactions.map((transaction) => {
       let newObj = Object.assign({}, transaction)
       // date string manipulation to get only date
       newObj.created_date = newObj.created_date.split('T')[0]
       newObj.transaction_amount = `$${newObj.transaction_amount}`
       return newObj
     })
+    alteredTransactions = alteredTransactions.filter((transaction) => {
+      return transaction.is_completed
+    })
 
     this.setState({
       transactions: alteredTransactions
     })
+  }
+
+  componentWillMount() {
+    this.alterTransactions(this.props.transactions)
+  }
+
+  componentWillReceiveProps() {
+    this.alterTransactions(this.props.transactions)
   }
 
   renderRoommates() {
@@ -47,13 +60,18 @@ class Transactions extends React.Component {
       }
     }
     //selectedTenants is an array of selected users' ids
-    console.log(selectedTenants)
+    this.props.addBill({
+      billName: e.target.name.value,
+      billAmount: e.target.amount.value,
+      requesterUserId: this.props.user.user_id,
+      sharers: selectedTenants
+    })
   }
 
   render() {
     return (
       <div className="transactionsTable">
-        <h2>Past Payments</h2>
+        <h2>Transactions</h2>
         <form onSubmit={this.handleBillAdd.bind(this)}>
           <Accordion className="addBillAccordion">
             <Panel header="Add bill" eventKey="1">
@@ -80,9 +98,14 @@ class Transactions extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    user: state.user,
     transactions: state.sentTransactions,
     otherTenants: state.otherTenants
   }
 }
 
-export default connect(mapStateToProps, null)(Transactions)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({addBill}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions)

@@ -36,8 +36,9 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
 }
 exports.getUserTransactions = getUserTransactions
 
-const createTransaction = async (ctx, paymentIdentifier) => {
-  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}') RETURNING *;`)
+const createTransaction = async (ctx, paymentIdentifier, is_completed = true) => {
+  console.log('is_completed', is_completed)
+  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}', ${is_completed}) RETURNING *;`)
   results = results.rows[0]
   return results
 }
@@ -49,7 +50,7 @@ router
     paymentRows = ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = ${ctx.params.id};`)
     ctx.body = await paymentRows.rows[0]
   })
-  .post('/payRent', async ctx => {
+  .post('/braintreePayment', async ctx => {
     // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id, payment_type} ID's are user_id's
     let nonceFromClient = ctx.request.body.nonce
 
@@ -63,7 +64,6 @@ router
       serviceFeeAmount: "00.00"
     })
 
-    console.log(result)
     let paymentIdentifier = result.transaction.id
     if (result.success) {
       //create transaction record here
@@ -76,6 +76,28 @@ router
         ctx.response.status = 400
         ctx.body = 'Error creating transaction'
       }
+    }
+  })
+  .post('/addBill', async ctx => {
+    ctx.request.body.sender_id = ctx.request.body.requester_userId
+    console.log(ctx.request.body)
+    let newTransactions = []
+    ctx.request.body.recipient_id = null
+    let transaction = await createTransaction(ctx, null)
+    newTransactions.push(transaction)
+    if(transaction) {
+      for (var sharer of ctx.request.body.sharers) {
+        ctx.request.body.recipient_id = sharer
+        console.log('bill split')
+        let transaction = await createTransaction(ctx, null, false)
+        console.log('transaction', transaction)
+        newTransactions.push(transaction)
+      }
+      ctx.response.status = 201
+      ctx.body = newTransactions
+    } else {
+      ctx.response.status = 400
+      ctx.body = 'Error creating transaction'
     }
   })
   .put('/submerchantCreation/:landlord_id', async ctx => {

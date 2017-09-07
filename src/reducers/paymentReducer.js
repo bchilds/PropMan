@@ -1,4 +1,4 @@
-import { SEND_PAYMENT } from '../actions/paymentGetters'
+import { SEND_PAYMENT, ADD_BILL } from '../actions/paymentGetters'
 import { USER_LOGIN } from '../actions/authGetters'
 
 export function tenantPaidRent(state = false, action) {
@@ -36,6 +36,11 @@ export function sentTransactions(state=[], action) {
       if (action.payload.data) {
         return [...state, action.payload.data]
       }
+    case ADD_BILL: 
+      if (action.payload.data) {
+        return [...state].concat(action.payload.data)
+      }
+
     default:
       return state
   }
