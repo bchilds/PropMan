@@ -3,6 +3,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import { connect } from 'react-redux'
+import { Accordion, Panel, FormGroup, Checkbox } from 'react-bootstrap'
 
 class Transactions extends React.Component {
   constructor(props) {
@@ -13,15 +14,59 @@ class Transactions extends React.Component {
   }
 
   componentWillReceiveProps() {
-    this.setState({
-      transactions: this.props.transactions
+    let alteredTransactions = this.props.transactions.map((transaction) => {
+      let newObj = Object.assign({}, transaction)
+      // date string manipulation to get only date
+      newObj.created_date = newObj.created_date.split('T')[0]
+      newObj.transaction_amount = `$${newObj.transaction_amount}`
+      return newObj
     })
+
+    this.setState({
+      transactions: alteredTransactions
+    })
+  }
+
+  renderRoommates() {
+    return this.props.otherTenants.map((tenant) =>{
+      return (
+        <div>
+          <input type="checkbox" name="tenants" value={tenant.user_id}></input>
+          <label> {tenant.user_name}</label>
+        </div>
+      )
+    })
+  }
+
+  handleBillAdd(e) {
+    e.preventDefault()
+    let selectedTenants = []
+    for (let i = 0; i < e.target.tenants.length; i++) {
+      if (e.target.tenants[i].checked) {
+        selectedTenants.push(e.target.tenants[i].value)
+      }
+    }
+    //selectedTenants is an array of selected users' ids
+    console.log(selectedTenants)
   }
 
   render() {
     return (
       <div className="transactionsTable">
         <h2>Past Payments</h2>
+        <form onSubmit={this.handleBillAdd.bind(this)}>
+          <Accordion className="addBillAccordion">
+            <Panel header="Add bill" eventKey="1">
+              <label>Bill Name</label><br/><input name="name" className="paymentInput"></input><br/>
+              <label>Amount</label><br/><input name="amount" className="paymentInput"></input><br/>
+              <label>Split (optional)</label>
+              <fieldset>
+                {this.renderRoommates()}
+              </fieldset>
+              <button type="submit">Submit</button>
+            </Panel>
+          </Accordion>
+        </form>
         <BootstrapTable data={ this.state.transactions } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
           <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
@@ -35,7 +80,8 @@ class Transactions extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    transactions: state.sentTransactions
+    transactions: state.sentTransactions,
+    otherTenants: state.otherTenants
   }
 }
 

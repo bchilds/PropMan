@@ -10,7 +10,7 @@ import { tenantPayment } from '../../actions/paymentGetters'
 
 const renderSubmitButtonShow = ({onClick, isDisabled, text}) => {
   return (
-      <button onClick={onClick} disabled={isDisabled}>Pay Rent</button>
+      <button onClick={onClick} disabled={isDisabled}>Pay</button>
   )
 }
 

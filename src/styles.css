@@ -418,3 +418,7 @@ body {
   background: #2FBF71;
   width: calc(100% + 2px);
 }
+
+.addBillAccordion{
+  width: 25%;
+}
