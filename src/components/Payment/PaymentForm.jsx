@@ -46,7 +46,9 @@ class PaymentForm extends React.Component {
       rentDue: this.props.tenantData.rent, 
       senderId: this.props.user.user_id, 
       recipientId: this.props.tenantsLandlord.user_id, 
-      merchantId: this.props.tenantsLandlord.merchant_id}
+      merchantId: this.props.tenantsLandlord.merchant_id,
+      paymentType: this.props.paymentType
+    }
     )
     this.setState({
       showPayRentButton: false

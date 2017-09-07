@@ -78,7 +78,7 @@ class TenantDashboard extends Component {
           style={customStyles}
           contentLabel="Payment Modal"
         > 
-          <PaymentForm />
+          <PaymentForm paymentType={'rent'}/>
         </Modal>
       </div>
   	)

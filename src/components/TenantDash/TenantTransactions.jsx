@@ -25,6 +25,7 @@ class Transactions extends React.Component {
         <BootstrapTable data={ this.state.transactions } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
           <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
+          <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
           <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
         </BootstrapTable>
       </div>

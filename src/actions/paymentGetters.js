@@ -11,7 +11,8 @@ export function tenantPayment(params) {
     transaction_amount: params.rentDue,
     sender_id: params.senderId,
     recipient_id: params.recipientId,
-    merchant_id: params.merchantId
+    merchant_id: params.merchantId,
+    payment_type: params.paymentType
   })
 
   return {

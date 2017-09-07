@@ -37,7 +37,7 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
 exports.getUserTransactions = getUserTransactions
 
 const createTransaction = async (ctx, paymentIdentifier) => {
-  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}) RETURNING *;`)
+  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}') RETURNING *;`)
   results = results.rows[0]
   return results
 }
@@ -50,7 +50,7 @@ router
     ctx.body = await paymentRows.rows[0]
   })
   .post('/payRent', async ctx => {
-    // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id} ID's are user_id's
+    // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id, payment_type} ID's are user_id's
     let nonceFromClient = ctx.request.body.nonce
 
     let result = await gateway.transaction.sale({
