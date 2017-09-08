@@ -83,8 +83,6 @@ class Transactions extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props.transactions)
-    console.log(nextProps, 'NP')
     this.alterTransactions(nextProps.transactions)
   }
 
