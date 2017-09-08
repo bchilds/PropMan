@@ -3,17 +3,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { setEditedProfileInfo } from '../../actions/setEditedProfileInfo';
 import ReactPasswordStrength from '../PasswordStrength.jsx'
+import { setMulti } from '../../actions/twoFactorSet.js';
 
 class UserProfile extends Component {
 	constructor() {
 		super()
-
+		
 		this.state = {
 			editing: false,
 			confirmCount: 0,
 			passLength: 0,
 			newPassword: '',
-			editingPassword: false
+			editingPassword: false,
+			multiText: ''
 		}
 		this.handleEditPassword = this.handleEditPassword.bind(this)
 	}
@@ -122,6 +124,15 @@ class UserProfile extends Component {
 		)
 	}
 
+	handleMultiClick() {
+		this.props.setMulti(this.props.userId)
+		// .then( (response) => {
+		// 	console.log(response)
+		// 	//if successful
+			
+		// })
+	}
+
 	editForm() {
 		return (
 			<div className="editForm">
@@ -143,12 +154,26 @@ class UserProfile extends Component {
 					<br/>
 					<button className="paymentForm"> Save Changes </button>
 				</form>
+				<div className="addMulti">
+					<button onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</button>
+					{this.props.user && <img src={"https://i.pinimg.com/736x/7b/93/80/7b9380bb001475a19ec7bb9d798093c8--random-stuff-shetland-sheepdog.jpg"}/>}
+				</div>
 			</div>
 		)
 	}
 
+
+
 	toggleEdit() {
 		this.setState({editing: !this.state.editing})
+	}
+
+	componentWillMount() {
+		if(this.props.user.secret_url !== null && this.props.user.secret_url !== '') {
+			this.setState({multiText:'Add Multifactor'})
+		} else {
+			this.setState({multiText:'Something Else'})
+		}
 	}
 
 	render() {
@@ -169,17 +194,19 @@ class UserProfile extends Component {
 	}
 }
 
+
 function mapStateToProps(state) {
 	return {
 
 		name: state.user && state.user.user_name,
 		email: state.user && state.user.email,
-		userId: state.user && state.user.user_id
+		userId: state.user && state.user.user_id,
+		user: state.user,
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setEditedProfileInfo}, dispatch)
+  return bindActionCreators({setEditedProfileInfo, setMulti}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile)
