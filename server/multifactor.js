@@ -20,7 +20,7 @@ const genTimeToken = async (ctx, key, next) => {
 }
 exports.genTimeToken = genTimeToken
 
-let validateToken = async (ctx, token, secret, next) => {
+const validateToken = async (ctx, token, secret, next) => {
 	let validates
 	//secret = /////retrieve secret here
 	validates = await speakeasy.totp.verify({
@@ -34,10 +34,19 @@ let validateToken = async (ctx, token, secret, next) => {
 }
 exports.validateToken = validateToken
 
-let updateUserMulti = async (ctx, user) => {
+const updateUserMulti = async (ctx, user) => {
 	let out
 	out = await ctx.db.query(`UPDATE users SET (use_twofactor) = (true) WHERE user_id = ${user.user_id} RETURNING *;`)
 	out = out.rows[0]
 	return out
 }
 exports.updateUserMulti = updateUserMulti
+
+const genUserMulti = async (ctx, user_id) => {
+	let secret, qrUrl, user
+	secret = await genSecretKey()
+	qrUrl = await qrcode.toDataURL(secret.otpauth_url)
+	user = ctx.db.query(`UPDATE users SET (twofactor_auth, secret_url) = ('${secret.base32}', '${qrUrl}') WHERE user_id = ${user_id} RETURNING *;`)
+	return user.rows[0]
+}
+exports.genUserMulti = genUserMulti

@@ -1,6 +1,6 @@
 let router = require('koa-router')()
 let bcrypt = require('bcrypt-nodejs')
-
+let Multi = require('../multifactor.js')
 //responds to /users, /users/:email
 
 const getUserById = async (ctx, user_id) => {
@@ -149,6 +149,17 @@ router
 			ctx.body = `No user found with that email`
 		}
 	})
+	.get('/multiset/:user_id'), async (ctx, next) => {
+		let user
+		user = await Multi.genUserMult(ctx, ctx.params.user_id)
+		if(user){
+			ctx.response.status = 302
+			ctx.body = user
+		} else {
+			ctx.response.status = 400
+			ctx.body = 'Problem creating multiauth'
+		}
+	}
 	exports.routes = router
 
 	// module.exports = {
