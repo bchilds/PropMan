@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { setEditedProfileInfo } from '../../actions/setEditedProfileInfo';
 import ReactPasswordStrength from '../PasswordStrength.jsx'
-import { setMulti } from '../../actions/twoFactorSet.js';
+import { setMulti, removeMulti } from '../../actions/twoFactorSet.js';
 
 class UserProfile extends Component {
 	constructor() {
@@ -87,7 +87,6 @@ class UserProfile extends Component {
   	}
 	}
 
-
 	changeCallback(state) {
 	  this.setState({ passLength: state.password.length });
 	}
@@ -125,12 +124,19 @@ class UserProfile extends Component {
 	}
 
 	handleMultiClick() {
-		this.props.setMulti(this.props.userId)
-		// .then( (response) => {
-		// 	console.log(response)
-		// 	//if successful
-			
-		// })
+
+		if(this.state.multiText === "Add Multifactor") {
+			this.props.setMulti(this.props.userId)
+				.then( (response) => {
+					this.setState({multiText: "Remove Multifactor"})
+				})
+		} else {
+			//remove multifactor from user and set state
+			this.props.removeMulti(this.props.userId)
+			.then( (response) => {
+				this.setState({multiText: "Add Multifactor"})
+			})
+		}
 	}
 
 	editForm() {
@@ -154,25 +160,24 @@ class UserProfile extends Component {
 					<br/>
 					<button className="paymentForm"> Save Changes </button>
 				</form>
+				<br/>
 				<div className="addMulti">
 					<button onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</button>
-					{this.props.user && <img src={"https://i.pinimg.com/736x/7b/93/80/7b9380bb001475a19ec7bb9d798093c8--random-stuff-shetland-sheepdog.jpg"}/>}
+					{this.props.user.secret_url !== '' && <img src={this.props.user.secret_url}/>}
 				</div>
 			</div>
 		)
 	}
-
-
 
 	toggleEdit() {
 		this.setState({editing: !this.state.editing})
 	}
 
 	componentWillMount() {
-		if(this.props.user.secret_url !== null && this.props.user.secret_url !== '') {
+		if(this.props.user.secret_url === null || this.props.user.secret_url === '') {
 			this.setState({multiText:'Add Multifactor'})
 		} else {
-			this.setState({multiText:'Something Else'})
+			this.setState({multiText:'Remove Multifactor'})
 		}
 	}
 
@@ -206,7 +211,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setEditedProfileInfo, setMulti}, dispatch)
+  return bindActionCreators({setEditedProfileInfo, setMulti, removeMulti}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile)

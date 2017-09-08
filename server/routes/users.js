@@ -149,22 +149,26 @@ router
 			ctx.body = `No user found with that email`
 		}
 	})
-	.get('/multiset/:user_id'), async (ctx, next) => {
+	.get('/multiset/:user_id', async (ctx, next) => {
 		let user
-		user = await Multi.genUserMult(ctx, ctx.params.user_id)
+		user = await Multi.genUserMulti(ctx, ctx.params.user_id)
 		if(user){
-			ctx.response.status = 302
+			ctx.response.status = 200
 			ctx.body = user
 		} else {
 			ctx.response.status = 400
-			ctx.body = 'Problem creating multiauth'
+			ctx.body = 'Problem modifying multiauth'
 		}
-	}
+	})
+	.get('/multiremove/:user_id', async (ctx, next) => {
+		let user
+		user = await Multi.removeUserMulti(ctx, ctx.params.user_id)
+		if(user){
+			ctx.response.status = 200
+			ctx.body = user
+		} else {
+			ctx.response.status = 400
+			ctx.body = 'Problem removing multiauth'
+		}
+	})
 	exports.routes = router
-
-	// module.exports = {
-	// 	routes: router,
-	// 	getUserByEmail: getUserByEmail,
-	// 	createUser: createUser,
-	// 	getUserById: getUserById,
-	// }

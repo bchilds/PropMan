@@ -1,4 +1,6 @@
 let speakeasy = require('speakeasy')
+let Bluebird = require('bluebird')
+// let qrcode = Promise.promisifyAll('qrcode')
 let qrcode = require('qrcode')
 
 const genSecretKey = async (ctx, next) => {
@@ -45,8 +47,20 @@ exports.updateUserMulti = updateUserMulti
 const genUserMulti = async (ctx, user_id) => {
 	let secret, qrUrl, user
 	secret = await genSecretKey()
-	qrUrl = await qrcode.toDataURL(secret.otpauth_url)
-	user = ctx.db.query(`UPDATE users SET (twofactor_auth, secret_url) = ('${secret.base32}', '${qrUrl}') WHERE user_id = ${user_id} RETURNING *;`)
-	return user.rows[0]
+	let qrUrlPromisified = Bluebird.promisify(qrcode.toDataURL)
+	qrUrl = await qrUrlPromisified(secret.otpauth_url)
+	if(secret && qrUrl) {
+		user = await ctx.db.query(`UPDATE users SET (twofactor_auth, secret_url) = ('${secret.base32}', '${qrUrl}') WHERE user_id = ${user_id} RETURNING *;`)
+		return user.rows[0]
+	} else {
+		return
+	}
 }
 exports.genUserMulti = genUserMulti
+
+const removeUserMulti = async (ctx, user_id) => {
+	let secret, qrUrl, user
+	user = await ctx.db.query(`UPDATE users SET (twofactor_auth, secret_url, use_twofactor) = ('', '', false) WHERE user_id = ${user_id} RETURNING *;`)
+	return user.rows[0]
+}
+exports.removeUserMulti = removeUserMulti
