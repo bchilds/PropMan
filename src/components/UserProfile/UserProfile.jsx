@@ -3,17 +3,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { setEditedProfileInfo } from '../../actions/setEditedProfileInfo';
 import ReactPasswordStrength from '../PasswordStrength.jsx'
+import { setMulti, removeMulti } from '../../actions/twoFactorSet.js';
 
 class UserProfile extends Component {
 	constructor() {
 		super()
-
+		
 		this.state = {
 			editing: false,
 			confirmCount: 0,
 			passLength: 0,
 			newPassword: '',
-			editingPassword: false
+			editingPassword: false,
+			multiText: ''
 		}
 		this.handleEditPassword = this.handleEditPassword.bind(this)
 	}
@@ -85,7 +87,6 @@ class UserProfile extends Component {
   	}
 	}
 
-
 	changeCallback(state) {
 	  this.setState({ passLength: state.password.length });
 	}
@@ -122,6 +123,22 @@ class UserProfile extends Component {
 		)
 	}
 
+	handleMultiClick() {
+
+		if(this.state.multiText === "Add Multifactor") {
+			this.props.setMulti(this.props.userId)
+				.then( (response) => {
+					this.setState({multiText: "Remove Multifactor"})
+				})
+		} else {
+			//remove multifactor from user and set state
+			this.props.removeMulti(this.props.userId)
+			.then( (response) => {
+				this.setState({multiText: "Add Multifactor"})
+			})
+		}
+	}
+
 	editForm() {
 		return (
 			<div className="editForm">
@@ -143,12 +160,25 @@ class UserProfile extends Component {
 					<br/>
 					<button className="paymentForm"> Save Changes </button>
 				</form>
+				<br/>
+				<div className="addMulti">
+					<button onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</button>
+					{this.props.user.secret_url !== '' && <img src={this.props.user.secret_url}/>}
+				</div>
 			</div>
 		)
 	}
 
 	toggleEdit() {
 		this.setState({editing: !this.state.editing})
+	}
+
+	componentWillMount() {
+		if(this.props.user.secret_url === null || this.props.user.secret_url === '') {
+			this.setState({multiText:'Add Multifactor'})
+		} else {
+			this.setState({multiText:'Remove Multifactor'})
+		}
 	}
 
 	render() {
@@ -169,17 +199,19 @@ class UserProfile extends Component {
 	}
 }
 
+
 function mapStateToProps(state) {
 	return {
 
 		name: state.user && state.user.user_name,
 		email: state.user && state.user.email,
-		userId: state.user && state.user.user_id
+		userId: state.user && state.user.user_id,
+		user: state.user,
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setEditedProfileInfo}, dispatch)
+  return bindActionCreators({setEditedProfileInfo, setMulti, removeMulti}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile)

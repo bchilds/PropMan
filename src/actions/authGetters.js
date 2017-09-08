@@ -30,7 +30,8 @@ export function signupUser(credentials, cb) {
 export function loginUser(credentials) {
   const request = axios.post(`${ROOT_URL}/api/auth/signin`, {
       email: credentials.email,
-      password: credentials.password
+      password: credentials.password,
+      multi: credentials.multi,
   })
   
   return {

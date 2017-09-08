@@ -4,7 +4,7 @@ let props = require('./props.js')
 let payments = require('./payments.js')
 let tenants = require('./tenants.js')
 let Users = require('./users.js')
-
+let Multi = require('../multifactor.js')
 // Signup
 auth
 	.post('/signup', async (ctx, next) => {
@@ -54,31 +54,65 @@ auth
 // Sign in
 	.post('/signin', async (ctx, next) => {
 		// insert actual user auth here
-		let user, tenant, landlord, properties, output
+		// {email, password, multi}
+		let user, tenant, landlord, properties, output, passwordCheck
 		user = await Users.getUserByEmail(ctx)
 		if(!user) {
 			console.log('User does not exist')
 			ctx.response.status = 403
 			ctx.body = 'No user exists'
-		}
+		} else {
+			//we have user now, check multifactor
+			let multiPass
+			//cases:
+			if(!user.use_twofactor && !user.twofactor_auth){
+				//user has no secret and false use_twofactor
+				//carry on
+				multiPass = true
+			} else if (!user.use_twofactor && user.twofactor_auth) {
+				//user has secret but false use_twofactor
+				//check to see if the secret they input matches
+				multiPass = true
+				if(await Multi.validateToken(ctx, ctx.request.body.multi, user.twofactor_auth)) {
+					//if it does, modify use_twofactor on the user record
+					console.log('should update multifactor')
+					user = await Multi.updateUserMulti(ctx, user)
+				} else {
+					//if it does not, add attribute to user to notify client but continue
+					user.multiFail = true
+				}
+			} else if (user.use_twofactor && user.twofactor_auth) {
+				//user has secret, true use_twofactor
+				//check to make sure input twofactor matches. 
+				multiPass = await Multi.validateToken(ctx, ctx.request.body.multi, user.twofactor_auth)
+				//if it passes, will check password. If it does not, will fail sign-in
+			}
 
-		passwordCheck = await Users.checkUserPass(ctx)
+			//now check password
+			if (multiPass) passwordCheck = await Users.checkUserPass(ctx)
 
-		if(user && user.is_landlord && passwordCheck) {
-			output = await landlords.getLandlordData(ctx, user)
-			output.user = user
-			ctx.session.isLoggedIn = true
-			ctx.response.status = 200
-			ctx.body = output
-		} else if(user && passwordCheck) {
-			tenant = await tenants.checkForActiveTenant(ctx, user)
-			if(tenant) {
-				//all gucci
-				output = await tenants.retrieveActiveTenantData(ctx, tenant)
+			if(user && user.is_landlord && passwordCheck) {
+				output = await landlords.getLandlordData(ctx, user)
 				output.user = user
+
 				ctx.session.isLoggedIn = true
 				ctx.response.status = 200
 				ctx.body = output
+			} else if(user && passwordCheck) {
+				tenant = await tenants.checkForActiveTenant(ctx, user)
+				if(tenant) {
+					//all gucci
+					output = await tenants.retrieveActiveTenantData(ctx, tenant)
+					output.user = user
+					
+					ctx.session.isLoggedIn = true
+					ctx.response.status = 200
+					ctx.body = output
+				} else { //if tenant has no active record
+					//go back and look at this
+					ctx.response.status = 403
+					ctx.body = `No active tenant found`
+				}
 			} else {
 				ctx.response.status = 403
 				ctx.body = `WOOP WOOP WOOP -- Forbidden`
@@ -88,7 +122,7 @@ auth
 
 	.get('/logout', async (ctx, next) => {
 		ctx.session = null
-		console.log(ctx.session)
+		// console.log(ctx.session)
 		ctx.response.status = 202
 		ctx.body = 'Successful signout'
 	})

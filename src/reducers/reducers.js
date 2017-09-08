@@ -4,6 +4,7 @@ import { USER_LOGIN, USER_LOGOUT} from '../actions/authGetters'
 import { FETCH_RENT, FETCH_MESSAGES, FETCH_DOCS, FETCH_SELECTED_MEDIA } 
 	from '../actions/tenantDashboardGetters.js';
 import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
+import { SET_MULTI, REMOVE_MULTI } from '../actions/twoFactorSet.js';
 
 export function userData(state = {}, action) {
   switch(action.type) {
@@ -13,6 +14,12 @@ export function userData(state = {}, action) {
     case SET_PROFILE:
     console.log('set profile reducer', action.payload)
     	return action.payload.data
+    case SET_MULTI:
+    console.log('set multifactor', action.payload)
+      return action.payload.data
+    case REMOVE_MULTI:
+    console.log('remove multifactor', action.payload)
+      return action.payload.data  
     default:
       return state;
   }
