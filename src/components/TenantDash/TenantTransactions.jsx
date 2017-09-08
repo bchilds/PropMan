@@ -69,7 +69,7 @@ class Transactions extends React.Component {
     })
 
     let incompleteTransactions = [...alteredTransactions].filter((transaction) => {
-      return !transaction.is_completed && (transaction.sender_id !== this.props.user.user_id)
+      return !transaction.is_completed && (transaction.recipient_id !== this.props.user.user_id)
     })
 
     this.setState({
@@ -125,7 +125,7 @@ class Transactions extends React.Component {
         this.openModal.call(this, row.transaction_id)
       }
     }
-    
+
     if (this.state.incompleteTransactions.length) {    
       return (
         <div>

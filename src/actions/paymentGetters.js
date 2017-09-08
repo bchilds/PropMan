@@ -3,6 +3,7 @@ import axios from 'axios'
 export const SEND_PAYMENT = 'send_payment'
 export const SUBMERCHANT_CREATION = 'submerchant_creation'
 export const ADD_BILL = 'add_bill'
+export const BILL_SHARE_PAYMENT = 'bill_share_payment'
 
 const ROOT_URL = 'http://localhost:8000'
 
@@ -23,16 +24,16 @@ export function tenantPayment(payload, params, httpMethod) {
       payload: request
     }    
   } else if (httpMethod === 'put') {
-    const request = axios.put(`${ROOT_URL}/api/payments/billSplit`, 
+    const request = axios.put(`${ROOT_URL}/api/payments/billShare`, 
     {
       nonce: payload.nonce,
       transaction_id: params. transaction_id
     })
 
-    // return {
-    //   type: SEND_PAYMENT,
-    //   payload: request
-    // }
+    return {
+      type: BILL_SHARE_PAYMENT,
+      payload: request
+    }
   }
 }
 
@@ -47,15 +48,6 @@ export function submerchantCreation(merchantAccountParams, userId) {
     payload: request
   }
 
-  // return request
-  //   .then((response) => {
-  //     console.log('smC response', response)
-  //     return response
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.response)
-  //     return Promise.reject(err.response)
-  //   })
 }
 
 export function addBill (billParams) {

@@ -83,14 +83,12 @@ router
       }
     }
   })
-  .put('/billSplit', async ctx => {
+  .put('/billShare', async ctx => {
     let nonceFromClient = ctx.request.body.nonce
     let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
     console.log(results)
-
-    let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = ${results.sender_id};`)
+    let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = ${results.recipient_id};`)
     merchantId = merchantId.rows[0].merchant_id
-    console.log(merchantId)
     if (merchantId) {    
       let result = await gateway.transaction.sale({
         merchantAccountId: merchantId,
@@ -104,34 +102,34 @@ router
       let paymentIdentifier = result.transaction.id
       if (result.success) {
         //create transaction record here
-        console.log('creating transaction in DB')
-        console.log(result.transaction_id)
+        console.log('updating transaction in DB')
         let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ('${paymentIdentifier}', true) WHERE transaction_id = ${results.transaction_id} RETURNING *;`)
-        transaction = transaction.rows[0]
+        let user = await Users.getUserById(ctx, results.sender_id)
+        let allTransactions = await getUserTransactions(ctx, user)
+        console.log(allTransactions)
         if(transaction) {
           ctx.response.status = 201
-          ctx.body = transaction
+          ctx.body = allTransactions
         } else {
           ctx.response.status = 400
           ctx.body = 'Error creating transaction'
         }
       }
     }
-
   })
   .post('/addBill', async ctx => {
-    ctx.request.body.sender_id = ctx.request.body.requester_userId
+    ctx.request.body.recipient_id = ctx.request.body.requester_userId
     let newTransactions = []
-    ctx.request.body.recipient_id = null
+    ctx.request.body.sender_id = null
     let transaction = await createTransaction(ctx, null)
     newTransactions.push(transaction)
     if(transaction) {
       // split the amount amongst all the users (bill sharer creator plus all sharers)
       ctx.request.body.transaction_amount = (ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)).toFixed(2)  
       // edit payment name to have '(split)'
-      ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share)`
+      ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share payment)`
       for (var sharer of ctx.request.body.sharers) {
-        ctx.request.body.recipient_id = sharer 
+        ctx.request.body.sender_id = sharer 
         let transaction = await createTransaction(ctx, null, false)
         newTransactions.push(transaction)
       }
