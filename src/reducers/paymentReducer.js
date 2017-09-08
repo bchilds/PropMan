@@ -20,6 +20,7 @@ export function receivedTransactions(state=[], action) {
       }
     case BILL_SHARE_PAYMENT:
       if (action.payload.data) {
+        console.log(action.payload.data)
         return action.payload.data.receivedPayments
       } else {
         return state
@@ -39,14 +40,21 @@ export function sentTransactions(state=[], action) {
       }
     case SEND_PAYMENT: 
       if (action.payload.data) {
+        console.log('sending payment', action.payload.data)
         return [...state, action.payload.data]
+      } else {
+        return state
       }
     case ADD_BILL: 
       if (action.payload.data) {
+        console.log('adding bill', action.payload.data)
         return [...state].concat(action.payload.data)
-      }
+      } else {
+        return state
+      }      
     case BILL_SHARE_PAYMENT:
       if (action.payload.data) {
+        console.log('bill share payment', action.payload.data)
         return action.payload.data.sentPayments
       } else {
         return state

@@ -82,8 +82,10 @@ class Transactions extends React.Component {
     this.alterTransactions(this.props.transactions)
   }
 
-  componentWillReceiveProps() {
-    this.alterTransactions(this.props.transactions)
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props.transactions)
+    console.log(nextProps, 'NP')
+    this.alterTransactions(nextProps.transactions)
   }
 
   renderRoommates() {

@@ -8,7 +8,6 @@ export const BILL_SHARE_PAYMENT = 'bill_share_payment'
 const ROOT_URL = 'http://localhost:8000'
 
 export function tenantPayment(payload, params, httpMethod) {
-  console.log(params.recipientId)
   if (httpMethod === 'post') {
     const request = axios.post(`${ROOT_URL}/api/payments/braintreePayment`, 
     {
