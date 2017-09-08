@@ -7,6 +7,7 @@ export const ADD_BILL = 'add_bill'
 const ROOT_URL = 'http://localhost:8000'
 
 export function tenantPayment(payload, params, httpMethod) {
+  console.log(params.recipientId)
   if (httpMethod === 'post') {
     const request = axios.post(`${ROOT_URL}/api/payments/braintreePayment`, 
     {
@@ -14,7 +15,6 @@ export function tenantPayment(payload, params, httpMethod) {
       transaction_amount: params.amountDue,
       sender_id: params.senderId,
       recipient_id: params.recipientId,
-      merchant_id: params.merchantId,
       payment_type: params.paymentType
     })
 
@@ -23,7 +23,6 @@ export function tenantPayment(payload, params, httpMethod) {
       payload: request
     }    
   } else if (httpMethod === 'put') {
-    console.log('lets flipping go', payload, params)
     const request = axios.put(`${ROOT_URL}/api/payments/billSplit`, 
     {
       nonce: payload.nonce,

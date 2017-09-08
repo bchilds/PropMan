@@ -9,6 +9,7 @@ import { addBill } from '../../actions/paymentGetters'
 import PaymentForm from '../Payment/PaymentForm.jsx'
 import PaymentSetup from '../Payment/PaymentForm.jsx'
 import Modal from 'react-modal';
+import { Link } from 'react-router-dom'
 
 const customStyles = {
   content : {
@@ -115,8 +116,40 @@ class Transactions extends React.Component {
     })
   }
 
+  renderIncompleteTransactions() {
+    const incompleteOptions = {
+      sortName: 'transaction_id',
+      sortOrder: 'asc',
+      // onRowClick: this.openModal.bind(this)
+      onRowClick: (row, columnIndex, rowIndex) => {
+        this.openModal.call(this, row.transaction_id)
+      }
+    }
+    
+    if (this.state.incompleteTransactions.length) {    
+      return (
+        <div>
+          <h4>Incomplete Transactions</h4>
+          <Accordion>
+            <Panel header="Click to view" eventKey="1">
+              <BootstrapTable options={incompleteOptions} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
+                <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
+                <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
+                <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
+                <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
+              </BootstrapTable>
+            </Panel>
+          </Accordion>
+        </div>
+      )
+    }
+    return (
+      <div></div>
+    )
+  }
+
   renderBillShareContent() {
-    if (this.props.tenantData.merchant_id) {
+    if (this.props.user.merchant_id) {
       return (
         <div>
           <label>Bill Name</label><br/><input name="name" className="paymentInput"></input><br/>
@@ -131,24 +164,19 @@ class Transactions extends React.Component {
     } else {
       return (
         <div>
-          It looks like you haven't set up your payment information yet. 
-          <br/>
-          To use bill share, please follow
-          the link to set it up. 
+          <p>
+            It looks like you haven't set up your payment information yet. 
+            <br/>
+            To use bill share, please follow
+            the link to set it up.
+          </p>
+          <button><Link to='/tenant/paymentsetup'>Set up payment</Link></button>
         </div>
       )
     }
   }
 
   render() {
-    const incompleteOptions = {
-      sortName: 'transaction_id',
-      sortOrder: 'asc',
-      // onRowClick: this.openModal.bind(this)
-      onRowClick: (row, columnIndex, rowIndex) => {
-        this.openModal.call(this, row.transaction_id)
-      }
-    }
     const completedOptions = {
       sortName: 'transaction_id',
       sortOrder: 'desc'
@@ -162,17 +190,7 @@ class Transactions extends React.Component {
             </Panel>
           </Accordion>
         </form>
-        <h4>Incomplete Transactions</h4>
-        <Accordion>
-          <Panel header="Click to view" eventKey="1">
-            <BootstrapTable options={incompleteOptions} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
-              <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
-              <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
-              <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
-              <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
-            </BootstrapTable>
-          </Panel>
-        </Accordion>
+        {this.renderIncompleteTransactions()}
         <h4>Completed Transactions</h4>
         <BootstrapTable options={completedOptions} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>

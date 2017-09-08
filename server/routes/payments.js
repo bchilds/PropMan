@@ -56,11 +56,11 @@ router
     ctx.body = paymentRows
   })
   .post('/braintreePayment', async ctx => {
-    // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id, payment_type} ID's are user_id's
+    // ctx.request.body = {nonce, transaction_amount, sender_id, merchant_id, payment_type, recipient_id} ID's are user_id's
     let nonceFromClient = ctx.request.body.nonce
-
+    let landlordUserData = await Users.getUserById(ctx, ctx.request.body.recipient_id)
     let result = await gateway.transaction.sale({
-      merchantAccountId: ctx.request.body.merchant_id,
+      merchantAccountId: landlordUserData.merchant_id,
       amount: ctx.request.body.transaction_amount,
       paymentMethodNonce: nonceFromClient,
       options: {
@@ -68,7 +68,7 @@ router
       },
       serviceFeeAmount: "00.00"
     })
-
+    console.log(result)
     let paymentIdentifier = result.transaction.id
     if (result.success) {
       //create transaction record here
@@ -88,15 +88,35 @@ router
     let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
     console.log(results)
 
-    // let result = await gateway.transaction.sale({
-    //   merchantAccountId: ctx.request.body.merchant_id,
-    //   amount: ctx.request.body.transaction_amount,
-    //   paymentMethodNonce: nonceFromClient,
-    //   options: {
-    //     submitForSettlement: true
-    //   },
-    //   serviceFeeAmount: "00.00"
-    // })
+    let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = ${results.sender_id};`)
+    merchantId = merchantId.rows[0].merchant_id
+    console.log(merchantId)
+    if (merchantId) {    
+      let result = await gateway.transaction.sale({
+        merchantAccountId: merchantId,
+        amount: results.transaction_amount,
+        paymentMethodNonce: nonceFromClient,
+        options: {
+          submitForSettlement: true
+        },
+        serviceFeeAmount: "00.00"
+      })
+      let paymentIdentifier = result.transaction.id
+      if (result.success) {
+        //create transaction record here
+        console.log('creating transaction in DB')
+        console.log(result.transaction_id)
+        let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ('${paymentIdentifier}', true) WHERE transaction_id = ${results.transaction_id} RETURNING *;`)
+        transaction = transaction.rows[0]
+        if(transaction) {
+          ctx.response.status = 201
+          ctx.body = transaction
+        } else {
+          ctx.response.status = 400
+          ctx.body = 'Error creating transaction'
+        }
+      }
+    }
 
   })
   .post('/addBill', async ctx => {
