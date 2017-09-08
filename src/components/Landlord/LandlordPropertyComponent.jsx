@@ -9,7 +9,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import BroadcastModal from './BroadcastMessageModal.jsx';
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
-import { Documents } from './LandlordPropertyDocuments.jsx'
+import Documents from './LandlordPropertyDocuments.jsx'
 
 const customStyles = {
   content : {
@@ -51,8 +51,12 @@ class Property extends React.Component {
       sendTo: -1
     }
     this.openModal = this.openModal.bind(this)
+
   }
 
+  componentWillMount() {
+    this.props.getPropertyTenants2(this.props.property_id)
+  }
 
   openModal() {
     this.setState({modalIsOpen: true});
@@ -67,7 +71,6 @@ class Property extends React.Component {
   }
 
   componentWillReceiveProps() {
-    this.props.getPropertyTenants2(this.props.property_id)
   }
 
   addTenantButton(e) {
@@ -77,7 +80,7 @@ class Property extends React.Component {
       "property_id": this.props.property.property_id,
       "tenant_email": e.target.tenant_email.value,
       "rent": e.target.rent.value,
-      "due_date": `${monthNum}/${e.target.day.value}/${e.target.year.value}`
+      "due_date": `${e.target.day.value}/${monthNum}/${e.target.year.value}`
     }, (res, data) => {
       if (res) {
         console.log(res, data)
@@ -175,6 +178,9 @@ class Property extends React.Component {
           <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
           <TableHeaderColumn dataField='due_date' dataSort={ true }>Due</TableHeaderColumn>
         </BootstrapTable>
+        <div>
+          <Documents />
+        </div>
       </div>
     )
   }
