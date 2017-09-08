@@ -7,6 +7,7 @@ import { Accordion, Panel, FormGroup, Checkbox } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { addBill } from '../../actions/paymentGetters'
 import PaymentForm from '../Payment/PaymentForm.jsx'
+import PaymentSetup from '../Payment/PaymentForm.jsx'
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -67,7 +68,7 @@ class Transactions extends React.Component {
     })
 
     let incompleteTransactions = [...alteredTransactions].filter((transaction) => {
-      return !transaction.is_completed
+      return !transaction.is_completed && (transaction.sender_id !== this.props.user.user_id)
     })
 
     this.setState({
@@ -86,12 +87,14 @@ class Transactions extends React.Component {
 
   renderRoommates() {
     return this.props.otherTenants.map((tenant, i) =>{
-      return (
-        <div key={i}>
-          <input type="checkbox" name="tenants" value={tenant.user_id}></input>
-          <label> {tenant.user_name}</label>
-        </div>
-      )
+      if (tenant.user_id) {
+        return (
+          <div key={i}>
+            <input type="checkbox" name="tenants" value={tenant.user_id}></input>
+            <label> {tenant.user_name}</label>
+          </div>
+        )
+      }
     })
   }
 
@@ -112,6 +115,31 @@ class Transactions extends React.Component {
     })
   }
 
+  renderBillShareContent() {
+    if (this.props.tenantData.merchant_id) {
+      return (
+        <div>
+          <label>Bill Name</label><br/><input name="name" className="paymentInput"></input><br/>
+          <label>Amount</label><br/><input name="amount" className="paymentInput"></input><br/>
+          <label>Split (optional)</label>
+          <fieldset>
+            {this.renderRoommates()}
+          </fieldset>
+          <button type="submit">Submit</button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          It looks like you haven't set up your payment information yet. 
+          <br/>
+          To use bill share, please follow
+          the link to set it up. 
+        </div>
+      )
+    }
+  }
+
   render() {
     const incompleteOptions = {
       sortName: 'transaction_id',
@@ -130,13 +158,7 @@ class Transactions extends React.Component {
         <form onSubmit={this.handleBillAdd.bind(this)}>
           <Accordion className="addBillAccordion">
             <Panel header="Add bill" eventKey="1">
-              <label>Bill Name</label><br/><input name="name" className="paymentInput"></input><br/>
-              <label>Amount</label><br/><input name="amount" className="paymentInput"></input><br/>
-              <label>Split (optional)</label>
-              <fieldset>
-                {this.renderRoommates()}
-              </fieldset>
-              <button type="submit">Submit</button>
+              {this.renderBillShareContent()}
             </Panel>
           </Accordion>
         </form>
@@ -182,7 +204,8 @@ function mapStateToProps(state) {
   return {
     user: state.user,
     transactions: state.sentTransactions.concat(state.receivedTransactions),
-    otherTenants: state.otherTenants
+    otherTenants: state.otherTenants,
+    tenantData: state.tenantData
   }
 }
 

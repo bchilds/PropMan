@@ -13,16 +13,16 @@ CREATE TABLE users (
 	twofactor_auth			 text,
 	secret_url           text,
 	use_twofactor        bool DEFAULT false ,
+	merchant_id					 text  ,
+	payment_set_up       bool DEFAULT false ,
 	CONSTRAINT pk_users PRIMARY KEY ( user_id )
 	-- CONSTRAINT uniq_email unique ( email )
  );
 
 CREATE TABLE landlords ( 
 	landlord_id          SERIAL NOT NULL,
-	payment_set_up       bool DEFAULT false ,
 	created_date         date DEFAULT current_date ,
 	user_id              integer  NOT NULL,
-	merchant_id					 text  ,
 	CONSTRAINT pk_landlords PRIMARY KEY ( landlord_id )
  );
 

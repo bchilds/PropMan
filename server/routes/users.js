@@ -53,6 +53,14 @@ const checkUserPass = async (ctx, email, password, user) => {
 }
 exports.checkUserPass = checkUserPass
 
+const updateMerchant = async (ctx, user_id) => {
+	let user, userRows
+	userRows = await ctx.db.query(`UPDATE users SET (merchant_id, payment_set_up) = ('${ctx.request.body.merchant_id}', true) RETURNING *;`)
+	user = userRows.rows[0]
+	return user
+}
+exports.updateMerchant = updateMerchant
+
 router
 	.get('/:id', async (ctx, next) => {
 		let user

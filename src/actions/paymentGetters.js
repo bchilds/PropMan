@@ -26,6 +26,7 @@ export function tenantPayment(payload, params, httpMethod) {
     console.log('lets flipping go', payload, params)
     const request = axios.put(`${ROOT_URL}/api/payments/billSplit`, 
     {
+      nonce: payload.nonce,
       transaction_id: params. transaction_id
     })
 
@@ -36,8 +37,8 @@ export function tenantPayment(payload, params, httpMethod) {
   }
 }
 
-export function submerchantCreation(merchantAccountParams, landlordId) {
-  const request = axios.put(`${ROOT_URL}/api/payments/submerchantCreation/${landlordId}`, 
+export function submerchantCreation(merchantAccountParams, userId) {
+  const request = axios.put(`${ROOT_URL}/api/payments/submerchantCreation/${userId}`, 
   {
     merchantAccountParams: merchantAccountParams
   })

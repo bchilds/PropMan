@@ -1,7 +1,7 @@
 let router = require('koa-router')()
 let braintree = require('braintree')
 let config = require('../../braintreeConfig.js')
-let Landlords = require('./landlords.js')
+let Users = require('./users.js')
 let Promise = require('bluebird')
 
 let gateway = braintree.connect({
@@ -84,8 +84,20 @@ router
     }
   })
   .put('/billSplit', async ctx => {
+    let nonceFromClient = ctx.request.body.nonce
     let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
     console.log(results)
+
+    // let result = await gateway.transaction.sale({
+    //   merchantAccountId: ctx.request.body.merchant_id,
+    //   amount: ctx.request.body.transaction_amount,
+    //   paymentMethodNonce: nonceFromClient,
+    //   options: {
+    //     submitForSettlement: true
+    //   },
+    //   serviceFeeAmount: "00.00"
+    // })
+
   })
   .post('/addBill', async ctx => {
     ctx.request.body.sender_id = ctx.request.body.requester_userId
@@ -95,7 +107,7 @@ router
     newTransactions.push(transaction)
     if(transaction) {
       // split the amount amongst all the users (bill sharer creator plus all sharers)
-      ctx.request.body.transaction_amount = ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)  
+      ctx.request.body.transaction_amount = (ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)).toFixed(2)  
       // edit payment name to have '(split)'
       ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share)`
       for (var sharer of ctx.request.body.sharers) {
@@ -110,7 +122,7 @@ router
       ctx.body = 'Error creating transaction'
     }
   })
-  .put('/submerchantCreation/:landlord_id', async ctx => {
+  .put('/submerchantCreation/:user_id', async ctx => {
     ctx.request.body.merchantAccountParams.masterMerchantAccountId = config.MERCHANT_ACCOUNT_ID
     let merchantAccountParams = ctx.request.body.merchantAccountParams
 
@@ -119,15 +131,15 @@ router
       ctx.response.status = 400
       ctx.body = result.message
     } else {      
-      // update the landlord record with the merchantAccount id using ctx.request.body.landlord_id  
+      // update the user record with the merchantAccount id using ctx.request.body.user_id  
       ctx.request.body.merchant_id = result.merchantAccount.id
-      let landlord = await Landlords.updateMerchant(ctx, ctx.params.landlord_id)  
-      if(landlord) {
+      let user = await Users.updateMerchant(ctx, ctx.params.user_id)  
+      if(user) {
         ctx.response.status = 201
-        ctx.body = landlord   
+        ctx.body = user   
       } else {
         ctx.response.status = 400
-        ctx.body = 'Error updating Landlord'
+        ctx.body = 'Error updating User'
       }
     }
   }) 

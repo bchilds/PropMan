@@ -20,6 +20,8 @@ export function userData(state = {}, action) {
     case REMOVE_MULTI:
     console.log('remove multifactor', action.payload)
       return action.payload.data  
+    case SUBMERCHANT_CREATION:
+      return action.payload.data
     default:
       return state;
   }
@@ -83,8 +85,6 @@ export function landlordData(state = [], action) {
       } else {
         return state
       }
-    case SUBMERCHANT_CREATION:
-      return action.payload.data
     default:
       return state;
   }

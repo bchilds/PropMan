@@ -34,14 +34,6 @@ const getLandlordById = async (ctx, landlord_id) => {
 }
 exports.getLandlordById = getLandlordById
 
-const updateMerchant = async (ctx, landlord_id) => {
-	let ll, llRows
-	llRows = await ctx.db.query(`UPDATE landlords SET (merchant_id, payment_set_up) = ('${ctx.request.body.merchant_id}', true) RETURNING *;`)
-	ll = llRows.rows[0]
-	return ll
-}
-exports.updateMerchant = updateMerchant
-
 const getLandlordByPropId = async (ctx, prop_id) => {
 	let ll, llRows
 	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name from landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = ${prop_id};`)
