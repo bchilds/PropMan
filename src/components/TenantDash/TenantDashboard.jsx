@@ -78,7 +78,17 @@ class TenantDashboard extends Component {
           style={customStyles}
           contentLabel="Payment Modal"
         > 
-          <PaymentForm />
+          <PaymentForm paymentParams=
+            {
+              {
+                amountDue: this.props.tenantData.rent, 
+                senderId: this.props.user.user_id, 
+                recipientId: this.props.tenantsLandlord.user_id, 
+                merchantId: this.props.tenantsLandlord.merchant_id,
+                paymentType: 'Rent',
+                httpMethod: 'post'
+              }
+            }/>
         </Modal>
       </div>
   	)
@@ -89,7 +99,9 @@ function mapStateToProps(state) {
 	return {
 		tenantRentDue: state.tenantData && state.tenantData.rent,
     media: state.selectedTenantMedia,
-    tenantData: state.tenantData
+    tenantData: state.tenantData,
+    user: state.user,
+    tenantsLandlord: state.tenantsLandlord
 	}
 }
 

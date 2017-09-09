@@ -1,8 +1,9 @@
 let router = require('koa-router')()
 let braintree = require('braintree')
 let config = require('../../braintreeConfig.js')
-let Landlords = require('./landlords.js')
+let Users = require('./users.js')
 let Promise = require('bluebird')
+let email = require('../emailService.js')
 
 let gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
@@ -36,25 +37,31 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
 }
 exports.getUserTransactions = getUserTransactions
 
-const createTransaction = async (ctx, paymentIdentifier) => {
-  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}) RETURNING *;`)
+const createTransaction = async (ctx, paymentIdentifier, is_completed = true) => {
+  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}', ${is_completed}) RETURNING *;`)
   results = results.rows[0]
   return results
 }
 exports.createTransaction = createTransaction
 
+const getTransactionById = async (ctx, transaction_id) => {
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = ${transaction_id};`)
+  results = results.rows[0]
+  return results
+}
+exports.getTransactionById = getTransactionById
+
 router
   .get('/:id', async (ctx, next) => {
-    let paymentRows
-    paymentRows = ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = ${ctx.params.id};`)
-    ctx.body = await paymentRows.rows[0]
+    let paymentRows = await getTransactionById(ctx, ctx.params.id)
+    ctx.body = paymentRows
   })
-  .post('/payRent', async ctx => {
-    // ctx.request.body = {nonce, transaction_amount, sender_user_id, merchant_id} ID's are user_id's
+  .post('/braintreePayment', async ctx => {
+    // ctx.request.body = {nonce, transaction_amount, sender_id, merchant_id, payment_type, recipient_id} ID's are user_id's
     let nonceFromClient = ctx.request.body.nonce
-
+    let landlordUserData = await Users.getUserById(ctx, ctx.request.body.recipient_id)
     let result = await gateway.transaction.sale({
-      merchantAccountId: ctx.request.body.merchant_id,
+      merchantAccountId: landlordUserData.merchant_id,
       amount: ctx.request.body.transaction_amount,
       paymentMethodNonce: nonceFromClient,
       options: {
@@ -62,7 +69,6 @@ router
       },
       serviceFeeAmount: "00.00"
     })
-
     console.log(result)
     let paymentIdentifier = result.transaction.id
     if (result.success) {
@@ -78,7 +84,65 @@ router
       }
     }
   })
-  .put('/submerchantCreation/:landlord_id', async ctx => {
+  .put('/billShare', async ctx => {
+    let nonceFromClient = ctx.request.body.nonce
+    let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
+    console.log(results)
+    let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = ${results.recipient_id};`)
+    merchantId = merchantId.rows[0].merchant_id
+    if (merchantId) {    
+      let result = await gateway.transaction.sale({
+        merchantAccountId: merchantId,
+        amount: results.transaction_amount,
+        paymentMethodNonce: nonceFromClient,
+        options: {
+          submitForSettlement: true
+        },
+        serviceFeeAmount: "00.00"
+      })
+      let paymentIdentifier = result.transaction.id
+      if (result.success) {
+        //create transaction record here
+        console.log('updating transaction in DB')
+        let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ('${paymentIdentifier}', true) WHERE transaction_id = ${results.transaction_id} RETURNING *;`)
+        let user = await Users.getUserById(ctx, results.sender_id)
+        let allTransactions = await getUserTransactions(ctx, user)
+        console.log(allTransactions)
+        if(transaction) {
+          ctx.response.status = 201
+          ctx.body = allTransactions
+        } else {
+          ctx.response.status = 400
+          ctx.body = 'Error creating transaction'
+        }
+      }
+    }
+  })
+  .post('/addBill', async ctx => {
+    ctx.request.body.recipient_id = ctx.request.body.requester_userId
+    let newTransactions = []
+    ctx.request.body.sender_id = null
+    let transaction = await createTransaction(ctx, null)
+    newTransactions.push(transaction)
+    if(transaction) {
+      // split the amount amongst all the users (bill sharer creator plus all sharers)
+      ctx.request.body.transaction_amount = (ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)).toFixed(2)  
+      // edit payment name to have '(split)'
+      ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share payment)`
+      for (var sharer of ctx.request.body.sharers) {
+        ctx.request.body.sender_id = sharer 
+        let transaction = await createTransaction(ctx, null, false)
+        newTransactions.push(transaction)
+        email.sendEmail('jordan.n.hoang@gmail.com', 'Rentopia - Your roommate has requested a bill share')
+      }
+      ctx.response.status = 201
+      ctx.body = newTransactions
+    } else {
+      ctx.response.status = 400
+      ctx.body = 'Error creating transaction'
+    }
+  })
+  .put('/submerchantCreation/:user_id', async ctx => {
     ctx.request.body.merchantAccountParams.masterMerchantAccountId = config.MERCHANT_ACCOUNT_ID
     let merchantAccountParams = ctx.request.body.merchantAccountParams
 
@@ -87,15 +151,15 @@ router
       ctx.response.status = 400
       ctx.body = result.message
     } else {      
-      // update the landlord record with the merchantAccount id using ctx.request.body.landlord_id  
+      // update the user record with the merchantAccount id using ctx.request.body.user_id  
       ctx.request.body.merchant_id = result.merchantAccount.id
-      let landlord = await Landlords.updateMerchant(ctx, ctx.params.landlord_id)  
-      if(landlord) {
+      let user = await Users.updateMerchant(ctx, ctx.params.user_id)  
+      if(user) {
         ctx.response.status = 201
-        ctx.body = landlord   
+        ctx.body = user   
       } else {
         ctx.response.status = 400
-        ctx.body = 'Error updating Landlord'
+        ctx.body = 'Error updating User'
       }
     }
   }) 

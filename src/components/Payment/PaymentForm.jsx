@@ -10,7 +10,7 @@ import { tenantPayment } from '../../actions/paymentGetters'
 
 const renderSubmitButtonShow = ({onClick, isDisabled, text}) => {
   return (
-      <button onClick={onClick} disabled={isDisabled}>Pay Rent</button>
+      <button onClick={onClick} disabled={isDisabled}>Pay</button>
   )
 }
 
@@ -41,13 +41,7 @@ class PaymentForm extends React.Component {
   }
 
   handlePaymentMethod(payload) {
-    this.props.tenantPayment({
-      payload: payload, 
-      rentDue: this.props.tenantData.rent, 
-      senderId: this.props.user.user_id, 
-      recipientId: this.props.tenantsLandlord.user_id, 
-      merchantId: this.props.tenantsLandlord.merchant_id}
-    )
+    this.props.tenantPayment(payload, this.props.paymentParams, this.props.paymentParams.httpMethod)
     this.setState({
       showPayRentButton: false
     })

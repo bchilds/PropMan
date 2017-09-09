@@ -130,7 +130,7 @@ body {
   text-align: center;
 }
 
-.termsOfService {
+.termsOfService, .credits {
   width: 40%;
   margin: 50px auto;
 }
@@ -417,4 +417,8 @@ body {
 .ReactPasswordStrength.is-strength-4 .ReactPasswordStrength-strength-bar {
   background: #2FBF71;
   width: calc(100% + 2px);
+}
+
+.addBillAccordion{
+  width: 25%;
 }

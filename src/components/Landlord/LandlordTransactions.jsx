@@ -33,7 +33,7 @@ class LandlordTransactions extends React.Component {
   }
 
   render() {
-    if (this.props.landlordData.payment_set_up) {
+    if (this.props.user.payment_set_up) {
       return (
         <div className="transactionsTable">
           <h2>Past Payments</h2>
@@ -57,6 +57,7 @@ class LandlordTransactions extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    user: state.user,
     landlordData: state.landlordData,
     transactions: state.receivedTransactions,
     landlordTenants: state.landlordTenants

@@ -69,7 +69,7 @@ class PaymentSetup extends React.Component {
       tosAccepted: true, // need to do a terms of service thing
       masterMerchantAccountId: "" // inside of braintree.config.js
     }
-    this.props.submerchantCreation(params, this.props.landlordData.landlord_id)
+    this.props.submerchantCreation(params, this.props.user.user_id)
   }
 
   handleOptionChange(e) {
@@ -194,7 +194,7 @@ class PaymentSetup extends React.Component {
               <button type="submit"> Submit</button>
             </div>
           </form>
-          {this.props.landlordData.payment_set_up && <PaymentSetupSuccess message={'You successfully set up your payment information.'} redirectLink={'/proprietor'} />}
+          {this.props.user.payment_set_up && <PaymentSetupSuccess message={'You successfully set up your payment information.'} redirectLink={'/'} />}
       </div>
     )
   }
@@ -202,8 +202,7 @@ class PaymentSetup extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
-    landlordData: state.landlordData
+    user: state.user
   }
 }
 
