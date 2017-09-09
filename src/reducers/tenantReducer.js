@@ -1,10 +1,17 @@
 import { FETCH_SELECTED_MEDIA } from '../actions/tenantDashboardGetters.js';
 import { CURRENT_CONVO } from '../actions/sortMessages'
-import { USER_LOGOUT } from '../actions/authGetters'
+import { USER_LOGOUT, USER_LOGIN } from '../actions/authGetters'
+import { FETCH_BROADCASTS } from '../actions/broadcastsGetter'
 
 export function selectedTenantMedia(state = '', action) {
 	switch(action.type) {
-
+		case FETCH_BROADCASTS:
+			let broadcasts = action.payload.data
+			let newestBroadcast = broadcasts[broadcasts.length - 1]
+			return {
+				title: newestBroadcast.message_title,
+				media: newestBroadcast.message_content
+			}
 		case FETCH_SELECTED_MEDIA:
 		  return action.payload;
 

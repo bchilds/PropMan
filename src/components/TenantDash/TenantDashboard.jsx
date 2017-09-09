@@ -61,8 +61,8 @@ class TenantDashboard extends Component {
         <TenantSidebar />
 
         <div id="tenantWindow">
-          <h3> Header </h3>
-          <p> {this.props.media} </p>
+          <h3> {this.props.media.title} </h3>
+          <p> {this.props.media.media} </p>
         </div>
 
         <div id="centerTenantDash">

@@ -38,10 +38,13 @@ export function getDocs(userId) {
 	}
 }
 
-export function selectedMedia(media) {
+export function selectedMedia(title = '', media) {
 
 	return {
 		type: FETCH_SELECTED_MEDIA,
-		payload: media
+		payload: {
+			title: title,
+			media: media
+		}
 	}
 }

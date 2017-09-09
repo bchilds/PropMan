@@ -26,7 +26,7 @@ const makeMessage = async (ctx) => {
 	if(obj.property_id && !obj.sender_id && !obj.recipient_id) {
 		//it is a broadcast 
 		// ctx.request.body = {message_content, message_type, property_id, importance, sender_id, sender_name, recipient_id, recipient_name}
-		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id) VALUES ('${obj.message_content}', 'broadcast', ${obj.property_id}) RETURNING *;`)
+		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id, message_title) VALUES ('${obj.message_content}', 'broadcast', ${obj.property_id}, '${obj.title}') RETURNING *;`)
 		message = messageRows.rows[0]
 		return message
 	} else if(!obj.property_id && obj.sender_id && obj.recipient_id) {
@@ -78,7 +78,7 @@ router
 		}
 	})
 	.post('/', async (ctx, next) => {
-		// ctx.request.body = {message_content, message_type, property_id, importance, sender_id, sender_name, recipient_id, recipient_name}
+		// ctx.request.body = {message_content, message_type, property_id, importance, sender_id, sender_name, recipient_id, recipient_name, message_title}
 		let message = await makeMessage(ctx)
 		if(message !== null) {
 			ctx.response.status = 201
