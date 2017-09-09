@@ -5,7 +5,6 @@ import { USER_LOGOUT, USER_LOGIN } from '../actions/authGetters'
 export function broadcasts(state = [], action) {
   switch(action.type) {
     case FETCH_BROADCASTS: 
-    console.log('payload is', action.payload)
       return action.payload.data
     case DIRECT_MESSAGES: 
 	    if (typeof action.payload.data !== 'string') {
