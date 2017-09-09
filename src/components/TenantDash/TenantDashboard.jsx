@@ -7,8 +7,9 @@ import PaymentForm from '../Payment/PaymentForm.jsx';
 import Modal from 'react-modal';
 import { getBroadcasts } from '../../actions/broadcastsGetter'
 import { bindActionCreators } from 'redux';
-
+// import Dimensions from 'react-dimensions'
 // import { bindActionCreators } from 'redux';
+import DonutWindow from '../Payment/DonutWindow.jsx'
 const customStyles = {
   content : {
     top             : '50%',
@@ -58,9 +59,33 @@ class TenantDashboard extends Component {
   	return (
       <div>
         <h2 className="pageTitle"> Your Dashboard </h2>
-        <TenantSidebar />
+        <TenantSidebar 
+          containerWidth={this.props.containerWidth}
+          containerHeight={this.props.containerHeight}
+        />
 
         <div id="tenantWindow">
+          <DonutWindow data = {
+            [
+              {
+                label: 'Rent',
+                value: 780
+              },
+              {
+                label: 'Utilities',
+                value: 110
+              },
+              {
+                label: 'Internet',
+                value: 60
+              },
+              {
+                label: 'Gas',
+                value: 30
+              }
+            ]
+          }
+          />
           <h3> {this.props.media.title} </h3>
           <p> {this.props.media.media} </p>
         </div>

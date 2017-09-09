@@ -183,6 +183,7 @@ body {
   border: 1px solid black;
   vertical-align: top;
   overflow: scroll;
+  padding: 0px 10px;
 }
 
 .sidebarTitle {
@@ -421,4 +422,17 @@ body {
 
 .addBillAccordion{
   width: 25%;
+}
+
+.sidebarContainer {
+  height: 600px;
+}
+
+.donutWindow {
+  width: 100%;
+}
+
+.donut {
+  display: inline-block;
+  margin: 0 auto;
 }
