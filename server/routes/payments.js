@@ -3,6 +3,7 @@ let braintree = require('braintree')
 let config = require('../../braintreeConfig.js')
 let Users = require('./users.js')
 let Promise = require('bluebird')
+let email = require('../emailService.js')
 
 let gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
@@ -132,6 +133,7 @@ router
         ctx.request.body.sender_id = sharer 
         let transaction = await createTransaction(ctx, null, false)
         newTransactions.push(transaction)
+        email.sendEmail('jordan.n.hoang@gmail.com', 'Rentopia - Your roommate has requested a bill share')
       }
       ctx.response.status = 201
       ctx.body = newTransactions
