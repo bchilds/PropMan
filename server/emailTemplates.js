@@ -1,6 +1,5 @@
 const path = require('path')
 let image = path.join(__dirname, '../src/images/invoice.png')
-console.log(image)
 
 const billShare = () => {
   return ( 
@@ -38,6 +37,7 @@ const billShare = () => {
                 font-size: 20px;
                 padding: 5px;
                 cursor: pointer;
+                margin-bottom: 40px;
               }
               .billButton a {
                 text-decoration: none;

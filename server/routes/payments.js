@@ -107,7 +107,6 @@ router
         let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ('${paymentIdentifier}', true) WHERE transaction_id = ${results.transaction_id} RETURNING *;`)
         let user = await Users.getUserById(ctx, results.sender_id)
         let allTransactions = await getUserTransactions(ctx, user)
-        console.log(allTransactions)
         if(transaction) {
           ctx.response.status = 201
           ctx.body = allTransactions
@@ -119,6 +118,7 @@ router
     }
   })
   .post('/addBill', async ctx => {
+    console.log('payments route')
     ctx.request.body.recipient_id = ctx.request.body.requester_userId
     let newTransactions = []
     ctx.request.body.sender_id = null
@@ -133,7 +133,8 @@ router
         ctx.request.body.sender_id = sharer 
         let transaction = await createTransaction(ctx, null, false)
         newTransactions.push(transaction)
-        email.sendEmail('jordan.n.hoang@gmail.com', 'Rentopia - Your roommate has requested a bill share')
+        let user = await Users.getUserById(ctx, sharer)
+        email.sendEmail(user.email, 'Rentopia - Your roommate has requested a bill share')
       }
       ctx.response.status = 201
       ctx.body = newTransactions

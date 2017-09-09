@@ -102,9 +102,13 @@ class Transactions extends React.Component {
   handleBillAdd(e) {
     e.preventDefault()
     let selectedTenants = []
-    for (let i = 0; i < e.target.tenants.length; i++) {
-      if (e.target.tenants[i].checked) {
-        selectedTenants.push(e.target.tenants[i].value)
+    if (!e.target.tenants.length) {
+      selectedTenants.push(e.target.tenants.value)
+    } else {    
+      for (let i = 0; i < e.target.tenants.length; i++) {
+        if (e.target.tenants[i].checked) {
+          selectedTenants.push(e.target.tenants[i].value)
+        }
       }
     }
     //selectedTenants is an array of selected users' ids
