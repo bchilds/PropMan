@@ -61,6 +61,10 @@ class Property extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
+  componentWillMount() {
+    this.props.getPropertyTenants2(this.props.property_id)
+  }
+
   componentWillReceiveProps() {
     this.props.getPropertyTenants2(this.props.property_id)
   }
