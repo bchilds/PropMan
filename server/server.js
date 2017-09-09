@@ -49,28 +49,12 @@ const authFunc = async (ctx, next) => {
 	console.log(ctx.session)
 	ctx.session.isLoggedIn = ctx.session.isLoggedIn || false
 	if (!ctx.session.isLoggedIn) {
-	  //redirToIndex(ctx, next) 
+	  redirToIndex(ctx, next) 
 	}
 	  await next()
 }
 app.use(authFunc)
 
-// app.use(redirToIndex)
-
-
-// app.use(async (ctx, next) => {
-//   const start = Date.now();
-//   await next();
-//   const ms = Date.now() - start;
-//   ctx.set('X-Response-Time', `${ms}ms`);
-// });
-
-// app.use(async (ctx, next) => {
-//   const start = Date.now();
-//   await next();
-//   const ms = Date.now() - start;
-//   console.log(`${ctx.method} ${ctx.url} - ${ms}`);
-// });
 
 // routing
 api.use('/api/users', users.routes.routes())

@@ -25,6 +25,7 @@
     "d3-shape": "^1.2.0",
     "dotenv": "^4.0.0",
     "font": "0.0.4",
+    "google-maps-react": "^1.1.0",
     "hard-source-webpack-plugin": "^0.4.9",
     "image-webpack-loader": "^3.4.0",
     "install": "^0.10.1",
