@@ -6,9 +6,11 @@ import TenantSidebar from './TenantSidebar.jsx';
 import PaymentForm from '../Payment/PaymentForm.jsx';
 import Modal from 'react-modal';
 import { getBroadcasts } from '../../actions/broadcastsGetter'
+import { getTransactionData } from '../../actions/paymentGetters'
 import { bindActionCreators } from 'redux';
-
 // import { bindActionCreators } from 'redux';
+import DonutWindow from '../Payment/DonutWindow.jsx'
+
 const customStyles = {
   content : {
     top             : '50%',
@@ -28,11 +30,13 @@ const customStyles = {
 
 
 class TenantDashboard extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       modalIsOpen: true,
+      showDonut: true,
+      donutData: [],
     }
   }
 
@@ -57,12 +61,22 @@ class TenantDashboard extends Component {
   render() {
   	return (
       <div>
-        <h2 className="pageTitle"> Your Dashboard </h2>
         <TenantSidebar />
 
         <div id="tenantWindow">
-          <h3> Header </h3>
-          <p> {this.props.media} </p>
+          <h2 className="pageTitle"> Your Dashboard </h2>
+          {this.state.showDonut && <div className="donutGraph">
+            <h3>Monthly Expenses</h3>
+            <DonutWindow data = {this.props.expenses}
+            />
+          </div>
+          }
+          {!this.state.showDonut &&           
+            <div className="selectedMedia">
+              <h3> {this.props.media.title} </h3>
+              <p> {this.props.media.media} </p>
+            </div>
+          }
         </div>
 
         <div id="centerTenantDash">
@@ -101,7 +115,8 @@ function mapStateToProps(state) {
     media: state.selectedTenantMedia,
     tenantData: state.tenantData,
     user: state.user,
-    tenantsLandlord: state.tenantsLandlord
+    tenantsLandlord: state.tenantsLandlord,
+    expenses: state.expenses
 	}
 }
 

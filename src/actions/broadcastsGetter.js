@@ -5,7 +5,6 @@ export const FETCH_BROADCASTS = 'fetch_broadcasts';
 const ROOT_URL = 'http://localhost:8000'
 
 export function getBroadcasts(propertyId) {
-	console.log('property id is', propertyId)
 	const request = axios.get(`${ROOT_URL}/api/props/broadcasts/${propertyId}`)
 
 	return {

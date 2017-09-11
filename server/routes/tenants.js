@@ -92,15 +92,17 @@ const retrieveActiveTenantData = async (ctx, tenant) => {
 		])
 	}
 	// docs will return as {tenant docs, propertyDocs}
-	[docArray, messagesArray, transactions] = await Promise.all([
+	[docArray, messagesArray, transactions, expenses] = await Promise.all([
 		docs.getUserDocs(ctx, tenant),
 		Messages.getUserMessages(ctx, tenant.user_id),
-		payments.getUserTransactions(ctx, tenant)
+		payments.getUserTransactions(ctx, tenant),
+		payments.getUserExpenses(ctx, tenant.user_id)
 	])
 	// docArray = await docs.getUserDocs(ctx, tenant)
 	// messagesArray = await Messages.getUserMessages(ctx, tenant.user_id)
 	// transactions = await payments.getUserTransactions(ctx, tenant)
-	output = { tenant: tenant, property: property, messages: messagesArray, docs: docArray, otherTenants: otherTenants, landlord: landlord, transactions: transactions }
+	output = { tenant: tenant, property: property, messages: messagesArray, docs: docArray, otherTenants: otherTenants, landlord: landlord, transactions: transactions, expenses: expenses }
+	console.log(output)
 	return output
 }
 exports.retrieveActiveTenantData = retrieveActiveTenantData

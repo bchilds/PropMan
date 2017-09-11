@@ -46,7 +46,7 @@ export function sentTransactions(state=[], action) {
       }
     case ADD_BILL: 
       if (action.payload.data) {
-        return [...state].concat(action.payload.data)
+        return [...state].concat(action.payload.data.newTransactions)
       } else {
         return state
       }      
@@ -56,6 +56,17 @@ export function sentTransactions(state=[], action) {
       } else {
         return state
       }
+    default:
+      return state
+  }
+}
+
+export function expenses(state=[], action) {
+  switch(action.type) {
+    case USER_LOGIN:
+      return action.payload.data.expenses
+    case ADD_BILL:
+      return action.payload.data.newExpense
     default:
       return state
   }

@@ -13,9 +13,11 @@ class TenantSideBar extends Component {
 	}
 
 	renderBroadcasts() {
-		return this.props.broadcasts.map((bcast, i) => {
+		let reversedBroadcasts = this.props.broadcasts.reverse()
+
+		return reversedBroadcasts.map((bcast, i) => {
 			return (
-				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_content)}> {bcast.message_content} </div>
+				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
 			)
 		})
 	}

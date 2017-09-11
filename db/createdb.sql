@@ -68,6 +68,7 @@ ALTER TABLE tenants ADD CONSTRAINT fk_tenants_users FOREIGN KEY ( user_id ) REFE
 CREATE TABLE messages ( 
 	message_id           SERIAL NOT NULL,
 	message_content      text  ,
+	message_title				 text  ,
 	message_type         text  NOT NULL,
 	property_id          integer  ,
 	is_read              bool DEFAULT false ,
@@ -104,6 +105,7 @@ CREATE TABLE transactions (
 	recipient_id         integer  ,
 	payment_type				 text 		,
 	is_completed				 bool DEFAULT true ,
+	split_amount				 integer  ,
 	created_date         date DEFAULT current_date ,
 	CONSTRAINT pk_transactions PRIMARY KEY ( transaction_id )
  );
