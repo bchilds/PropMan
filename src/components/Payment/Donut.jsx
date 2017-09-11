@@ -16,7 +16,7 @@ class Donut extends React.Component {
              outerRadius={this.props.radius}
              innerRadius={this.props.radius * .70}
              value={value}
-             label={value.data.label}
+             label={value.data.payment_type}
              fill={this.colorScale[i]} 
       />
     );
@@ -24,7 +24,7 @@ class Donut extends React.Component {
 
   render() {
     let {x, y, data} = this.props;
-    let pie = d3.pie().value((data)=> {return data.value})
+    let pie = d3.pie().value((data)=> {return data.sum})
     return (
       <g transform={`translate(${x}, ${y})`}>
         {/* Render a slice for each data point */}

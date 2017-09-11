@@ -66,8 +66,12 @@ export function addBill (billParams) {
 }
 
 export function getTransactionData (user_id) {
-  console.log(`${ROOT_URL}/api/payments/getTransactionData/${user_id}`)
-  const request = axios.get(`${ROOT_URL}/api/payments/getTransactionData/${user_id}`)
-
-  return request
+  axios.get(`${ROOT_URL}/api/payments/getTransactionData/${user_id}`)
+    .then((result) => {
+      console.log(result.data)
+      return result.data
+    })
+    .catch((err) => {
+      throw err
+    })
 }

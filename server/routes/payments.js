@@ -38,7 +38,7 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
 exports.getUserTransactions = getUserTransactions
 
 const createTransaction = async (ctx, paymentIdentifier, is_completed = true) => {
-  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}', ${is_completed}) RETURNING *;`)
+  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed, split_amount) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}', ${is_completed}, ${ctx.request.body.split_amount}) RETURNING *;`)
   results = results.rows[0]
   return results
 }
@@ -50,6 +50,13 @@ const getTransactionById = async (ctx, transaction_id) => {
   return results
 }
 exports.getTransactionById = getTransactionById
+
+const getUserExpenses = async (ctx, user_id) => {
+  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id=${user_id} GROUP BY payment_type ORDER BY SUM(split_amount) DESC;`)
+  transactionData = transactionData.rows
+  return transactionData
+}
+exports.getUserExpenses = getUserExpenses
 
 router
   .get('/:id', async (ctx, next) => {
@@ -69,11 +76,11 @@ router
       },
       serviceFeeAmount: "00.00"
     })
-    console.log(result)
     let paymentIdentifier = result.transaction.id
     if (result.success) {
       //create transaction record here
       console.log('creating transaction in DB')
+      ctx.request.body.split_amount = ctx.request.body.transaction_amount
       let transaction = await createTransaction(ctx, paymentIdentifier)
       if(transaction) {
         ctx.response.status = 201
@@ -87,7 +94,6 @@ router
   .put('/billShare', async ctx => {
     let nonceFromClient = ctx.request.body.nonce
     let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
-    console.log(results)
     let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = ${results.recipient_id};`)
     merchantId = merchantId.rows[0].merchant_id
     if (merchantId) {    
@@ -118,26 +124,30 @@ router
     }
   })
   .post('/addBill', async ctx => {
-    console.log('payments route')
-    ctx.request.body.recipient_id = ctx.request.body.requester_userId
+    ctx.request.body.sender_id = ctx.request.body.requester_userId
     let newTransactions = []
-    ctx.request.body.sender_id = null
+    ctx.request.body.recipient_id = null
+    let splitAmount = (ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)).toFixed(2)  
+    ctx.request.body.split_amount = splitAmount
     let transaction = await createTransaction(ctx, null)
     newTransactions.push(transaction)
     if(transaction) {
       // split the amount amongst all the users (bill sharer creator plus all sharers)
-      ctx.request.body.transaction_amount = (ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)).toFixed(2)  
+      ctx.request.body.transaction_amount = splitAmount
+      ctx.request.body.split_amount = splitAmount
       // edit payment name to have '(split)'
       ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share payment)`
       for (var sharer of ctx.request.body.sharers) {
+        ctx.request.body.recipient_id = ctx.request.body.requester_userId
         ctx.request.body.sender_id = sharer 
         let transaction = await createTransaction(ctx, null, false)
         newTransactions.push(transaction)
         let user = await Users.getUserById(ctx, sharer)
         email.sendEmail(user.email, 'Rentopia - Your roommate has requested a bill share')
       }
+      let newExpense = await getUserExpenses(ctx, ctx.request.body.requester_userId)
       ctx.response.status = 201
-      ctx.body = newTransactions
+      ctx.body = {newTransactions: newTransactions, newExpense: newExpense}
     } else {
       ctx.response.status = 400
       ctx.body = 'Error creating transaction'
@@ -164,10 +174,6 @@ router
       }
     }
   })
-  .get('/getTransactionData/:user_id', async ctx => {
-    console.log('cool beans')
-    console.log(ctx.params.user_id)
-  }) 
   exports.routes = router
 
 // module.exports = {

@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
@@ -11,6 +13,8 @@ import { bindActionCreators } from 'redux';
 // import Dimensions from 'react-dimensions'
 // import { bindActionCreators } from 'redux';
 import DonutWindow from '../Payment/DonutWindow.jsx'
+let Promise = require('bluebird')
+
 const customStyles = {
   content : {
     top             : '50%',
@@ -30,19 +34,18 @@ const customStyles = {
 
 
 class TenantDashboard extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       modalIsOpen: true,
-      showDonut: true
+      showDonut: true,
+      donutData: [],
     }
   }
-  
-  componentWillReceiveProps(nextProps) {
-    console.log('donuts are yummy')
-    getTransactionData(nextProps.user.user_id)
-    this.props.getBroadcasts(nextProps.tenantData.property_id)
+
+  componentWillMount() {
+    this.props.getBroadcasts(this.props.tenantData.property_id)
   }
 
   componentDidMount() {
@@ -71,26 +74,7 @@ class TenantDashboard extends Component {
           <h2 className="pageTitle"> Your Dashboard </h2>
           {this.state.showDonut && <div className="donutGraph">
             <h3>Monthly Expenses</h3>
-            <DonutWindow data = {
-              [
-                {
-                  label: 'Rent',
-                  value: 780
-                },
-                {
-                  label: 'Utilities',
-                  value: 110
-                },
-                {
-                  label: 'Internet',
-                  value: 60
-                },
-                {
-                  label: 'Gas',
-                  value: 30
-                }
-              ]
-            }
+            <DonutWindow data = {this.props.expenses}
             />
           </div>
           }
@@ -138,7 +122,8 @@ function mapStateToProps(state) {
     media: state.selectedTenantMedia,
     tenantData: state.tenantData,
     user: state.user,
-    tenantsLandlord: state.tenantsLandlord
+    tenantsLandlord: state.tenantsLandlord,
+    expenses: state.expenses
 	}
 }
 
