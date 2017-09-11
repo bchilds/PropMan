@@ -4,7 +4,7 @@ export const USER_LOGIN = 'user_login'
 export const USER_LOGOUT = 'user_logout'
 export const CHECK_SESSION = 'check_session'
 
-const ROOT_URL = 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
 export function signupUser(credentials, cb) {
 

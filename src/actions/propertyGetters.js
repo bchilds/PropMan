@@ -3,7 +3,7 @@ import axios from 'axios';
 export const FETCH_PROPERTY_TENANT = 'fetch_landlord_property_tenant'
 export const ADD_PROPERTY_TENANT = 'add_landlord_property_tenants'
 
-const ROOT_URL = 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
 // export function getPropertyTenants(landlordId) {
 //   var request = axios.get(`${ROOT_URL}/api/tenants/landlord/all/${landlordId}/act`) 
