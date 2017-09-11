@@ -15,7 +15,6 @@ class Slice extends React.Component {
               dy=".35em"
               textAnchor="middle"
               fill="white">
-          {label}
         </text>
       </g>
     );

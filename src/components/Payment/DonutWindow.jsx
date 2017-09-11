@@ -1,6 +1,7 @@
 import React from 'react'
 import * as d3 from 'd3'
 import Donut from './Donut.jsx'
+import DonutLegend from './DonutLegend.jsx'
 
 class DonutWindow extends React.Component {
 
@@ -14,12 +15,14 @@ class DonutWindow extends React.Component {
     // Centers the pie chart
     let x = width / 2;
     let y = height / 2;
+    let colorScale =  ["rgba(52, 73, 94, 1)", "rgba(37, 116, 169, 1)", "rgba(137, 196, 244, 1)", "rgba(82, 179, 217, 1)", "rgba(230, 126, 34 ,1)"]
 
     return (
       <div className="donutContainer">
         <svg className="donut" width={width} height={height}>
-          <Donut x={x} y={y} radius={radius} data={this.props.data} />
+          <Donut x={x} y={y} radius={radius} data={this.props.data} colorScale={colorScale} />
         </svg>
+        <DonutLegend data={this.props.data} colorScale={colorScale} />
       </div>
     );
   }
