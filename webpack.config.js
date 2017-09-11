@@ -4,11 +4,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const webpack = require('webpack')
-require("babel-core/register");
-require("babel-polyfill");
 
 const config = {
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
