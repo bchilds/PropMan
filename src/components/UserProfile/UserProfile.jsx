@@ -30,52 +30,52 @@ class UserProfile extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
-		alert('profile editing is temporarily disabled')
-		// let name = event.target.name.value 
-		// let email = event.target.email.value 
-		// let confirm = event.target.confirm.value
+		// alert('profile ffediting is temporarily disabled')
+		let name = event.target.name.value 
+		let email = event.target.email.value 
+		let confirm = event.target.confirm.value
 
-		// if (email === confirm && email !== '') {
-		// 	var profileObj = {}
-		// 	if (this.state.editingPassword) {
-		// 		let currentPassword = event.target.currentPassword.value
-		// 		let confirmPassword = event.target.confirmPassword.value
-		// 		if (this.state.newPassword === confirmPassword && this.state.newPassword !== '') {
-		// 			profileObj = {
-		// 				user_name: name,
-		// 				email: email,
-		// 				user_password: currentPassword,
-		// 				new_password: this.state.newPassword
-		// 			}
-		// 	  } else {
-		// 	  	alert('Passwords do not match')
-		// 	  }
-		// 	} else {
-		// 		profileObj = {
-		// 			name: name,
-		// 			email: email,
-		// 		}
-		// 	}
+		if (email === confirm && email !== '') {
+			var profileObj = {}
+			if (this.state.editingPassword) {
+				let currentPassword = event.target.currentPassword.value
+				let confirmPassword = event.target.confirmPassword.value
+				if (this.state.newPassword === confirmPassword && this.state.newPassword !== '') {
+					profileObj = {
+						user_name: name,
+						email: email,
+						user_password: currentPassword,
+						new_password: this.state.newPassword
+					}
+			  } else {
+			  	alert('Passwords do not match')
+			  }
+			} else {
+				profileObj = {
+					name: name,
+					email: email,
+				}
+			}
 
-		// 	this.props.setEditedProfileInfo(profileObj, this.props.userId)
-		// 	  .then((response) => {
-		// 	  	console.log('response from profile edit', response)
-		// 	  })
+			this.props.setEditedProfileInfo(profileObj, this.props.userId)
+			  .then((response) => {
+			  	console.log('response from profile edit', response)
+			  })
 
-		// 	event.target.name.value = ''
-		// 	event.target.email.value = ''
-		// 	event.target.confirm.value = ''
-		// 	event.target.confirmPassword.value = ''
-		// 	event.target.currentPassword.value = ''
+			event.target.name.value = ''
+			event.target.email.value = ''
+			event.target.confirm.value = ''
+			event.target.confirmPassword.value = ''
+			event.target.currentPassword.value = ''
 
-		// 	this.setState({
-		// 		confirmCount: 0,
-		// 		editing: false,
-		// 		password: ''
-		// 	})
-		// } else {
-		// 	alert("You done messed up boiieee!!!\nMake sure all fields are filled in properly")
-		// }
+			this.setState({
+				confirmCount: 0,
+				editing: false,
+				password: ''
+			})
+		} else {
+			alert("You done messed up boiieee!!!\nMake sure all fields are filled in properly")
+		}
 	}
 
 	toggleConfirmEmail(e) {
