@@ -6,6 +6,7 @@ import TenantSidebar from './TenantSidebar.jsx';
 import PaymentForm from '../Payment/PaymentForm.jsx';
 import Modal from 'react-modal';
 import { getBroadcasts } from '../../actions/broadcastsGetter'
+import { getTransactionData } from '../../actions/paymentGetters'
 import { bindActionCreators } from 'redux';
 // import Dimensions from 'react-dimensions'
 // import { bindActionCreators } from 'redux';
@@ -34,11 +35,14 @@ class TenantDashboard extends Component {
 
     this.state = {
       modalIsOpen: true,
+      showDonut: true
     }
   }
-
-  componentWillMount() {
-    this.props.getBroadcasts(this.props.tenantData.property_id)
+  
+  componentWillReceiveProps(nextProps) {
+    console.log('donuts are yummy')
+    getTransactionData(nextProps.user.user_id)
+    this.props.getBroadcasts(nextProps.tenantData.property_id)
   }
 
   componentDidMount() {
@@ -58,36 +62,44 @@ class TenantDashboard extends Component {
   render() {
   	return (
       <div>
-        <h2 className="pageTitle"> Your Dashboard </h2>
         <TenantSidebar 
           containerWidth={this.props.containerWidth}
           containerHeight={this.props.containerHeight}
         />
 
         <div id="tenantWindow">
-          <DonutWindow data = {
-            [
-              {
-                label: 'Rent',
-                value: 780
-              },
-              {
-                label: 'Utilities',
-                value: 110
-              },
-              {
-                label: 'Internet',
-                value: 60
-              },
-              {
-                label: 'Gas',
-                value: 30
-              }
-            ]
+          <h2 className="pageTitle"> Your Dashboard </h2>
+          {this.state.showDonut && <div className="donutGraph">
+            <h3>Monthly Expenses</h3>
+            <DonutWindow data = {
+              [
+                {
+                  label: 'Rent',
+                  value: 780
+                },
+                {
+                  label: 'Utilities',
+                  value: 110
+                },
+                {
+                  label: 'Internet',
+                  value: 60
+                },
+                {
+                  label: 'Gas',
+                  value: 30
+                }
+              ]
+            }
+            />
+          </div>
           }
-          />
-          <h3> {this.props.media.title} </h3>
-          <p> {this.props.media.media} </p>
+          {!this.state.showDonut &&           
+            <div className="selectedMedia">
+              <h3> {this.props.media.title} </h3>
+              <p> {this.props.media.media} </p>
+            </div>
+          }
         </div>
 
         <div id="centerTenantDash">

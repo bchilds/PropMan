@@ -5,7 +5,6 @@ class Slice extends React.Component {
   render() {
     let {value, label, fill, innerRadius = 0, outerRadius} = this.props;
     // https://github.com/d3/d3/wiki/SVG-Shapes#arc
-    console.log(this.props)
     let arc = d3.arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);

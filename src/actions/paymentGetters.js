@@ -64,3 +64,10 @@ export function addBill (billParams) {
     payload: request
   }
 }
+
+export function getTransactionData (user_id) {
+  console.log(`${ROOT_URL}/api/payments/getTransactionData/${user_id}`)
+  const request = axios.get(`${ROOT_URL}/api/payments/getTransactionData/${user_id}`)
+
+  return request
+}

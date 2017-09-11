@@ -5,8 +5,8 @@ import Donut from './Donut.jsx'
 class DonutWindow extends React.Component {
 
   render() {
-    let width = 500
-    let height = 500
+    let width = 400
+    let height = 400
     let minViewportSize = Math.min(width, height);
     // This sets the radius of the pie chart to fit within
     // the current window size, with some additional padding

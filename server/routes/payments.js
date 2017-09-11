@@ -163,6 +163,10 @@ router
         ctx.body = 'Error updating User'
       }
     }
+  })
+  .get('/getTransactionData/:user_id', async ctx => {
+    console.log('cool beans')
+    console.log(ctx.params.user_id)
   }) 
   exports.routes = router
 
