@@ -64,7 +64,11 @@ export function sentTransactions(state=[], action) {
 export function expenses(state=[], action) {
   switch(action.type) {
     case USER_LOGIN:
-      return action.payload.data.expenses
+      if (action.payload.data.tenant) {
+        return action.payload.data.expenses
+      } else {
+        return state
+      }
     case ADD_BILL:
       return action.payload.data.newExpense
     default:
