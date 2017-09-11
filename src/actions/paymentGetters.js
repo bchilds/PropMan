@@ -5,7 +5,7 @@ export const SUBMERCHANT_CREATION = 'submerchant_creation'
 export const ADD_BILL = 'add_bill'
 export const BILL_SHARE_PAYMENT = 'bill_share_payment'
 
-const ROOT_URL = 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
 export function tenantPayment(payload, params, httpMethod) {
   if (httpMethod === 'post') {
