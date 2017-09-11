@@ -16,7 +16,9 @@ class Signup extends React.Component {
       password: e.target.password.value,
       isLandlord: isLandlord        
     }, (res, data) => {
+      console.log('data first', data, res)
       if (res) {
+
         this.props.loginUser({
           email: data.email,
           password: data.password
