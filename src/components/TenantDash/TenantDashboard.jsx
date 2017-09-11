@@ -1,5 +1,3 @@
-'use strict'
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
@@ -10,10 +8,8 @@ import Modal from 'react-modal';
 import { getBroadcasts } from '../../actions/broadcastsGetter'
 import { getTransactionData } from '../../actions/paymentGetters'
 import { bindActionCreators } from 'redux';
-// import Dimensions from 'react-dimensions'
 // import { bindActionCreators } from 'redux';
 import DonutWindow from '../Payment/DonutWindow.jsx'
-let Promise = require('bluebird')
 
 const customStyles = {
   content : {
@@ -65,10 +61,7 @@ class TenantDashboard extends Component {
   render() {
   	return (
       <div>
-        <TenantSidebar 
-          containerWidth={this.props.containerWidth}
-          containerHeight={this.props.containerHeight}
-        />
+        <TenantSidebar />
 
         <div id="tenantWindow">
           <h2 className="pageTitle"> Your Dashboard </h2>

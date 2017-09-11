@@ -64,14 +64,3 @@ export function addBill (billParams) {
     payload: request
   }
 }
-
-export function getTransactionData (user_id) {
-  axios.get(`${ROOT_URL}/api/payments/getTransactionData/${user_id}`)
-    .then((result) => {
-      console.log(result.data)
-      return result.data
-    })
-    .catch((err) => {
-      throw err
-    })
-}
