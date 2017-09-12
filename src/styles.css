@@ -346,6 +346,28 @@ body {
   text-align: center;
 }
 
+.BootstrapTableFull {
+  width: 98%;
+  margin: 0 auto;
+}
+
+.Dropzone {
+  width: 98%;
+  margin: 0 auto;
+  border-style: dashed;
+  border-width: 1px;
+  text-align: center;
+}
+
+.Dropzone p {
+  padding-top: 7px;
+  color: blue;
+}
+
+.Dropzone button {
+  margin-bottom: 20px;
+}
+
 .ReactPasswordStrength {
   border: 1px solid #c6c6c6;
   /*box-sizing: border-box;*/

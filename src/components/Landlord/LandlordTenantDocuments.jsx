@@ -9,21 +9,21 @@ class Documents extends React.Component {
   constructor(props) {
     super()
     this.state = {
-      propertyDocuments: [],
+      tenantDocuments: [],
       fileForUploadToS3: null
     }
   }
 
   componentWillMount() {
-    this.getPropertyDocuments(this.props.property_id)
+    this.getTenantDocuments(this.props.tenant_id)
   }
 
-  getPropertyDocuments(property_id) {
-    axios.get(`${ROOT_URL}/api/docs/property/${property_id}`)
+  getTenantDocuments(tenant_id) {
+    axios.get(`${ROOT_URL}/api/docs/tenant/${tenant_id}`)
      .then((response) => {
         // console.log(response)
         this.setState({
-          propertyDocuments: response.data
+          tenantDocuments: response.data
         })
      })
      .catch((err) => {
@@ -31,21 +31,21 @@ class Documents extends React.Component {
      })
   }
 
-  addPropertyDocument(landlord_id = null, property_id = null) {
-    const propertyDocsRequest = axios.post(`${ROOT_URL}/api/docs/add/rawtext`,
+  addTenantDocument(tenant_id = null) {
+    axios.post(`${ROOT_URL}/api/docs/add/rawtext`,
     {
       "doc_type": "rawtext", 
-      "landlord_id": landlord_id, 
+      "landlord_id": null, 
       "tenant_id": tenant_id, 
-      "property_id": property_id,
+      "property_id": null,
       "doc_body": this.state.fileForUploadToS3.name,
       "doc_url": `https://s3.us-east-2.amazonaws.com/rentopia/${this.state.fileForUploadToS3.name}`
     })
      .then((response) => {
         // console.log(response)
-        this.getPropertyDocuments(this.props.property_id)
+        this.getTenantDocuments(this.props.tenant_id)
         // this.setState({
-        //   propertyDocuments: [...this.state.propertyDocuments, response.data]
+        //   tenantDocuments: [...this.state.tenantDocuments, response.data]
         // })
      })
      .catch((err) => {
@@ -88,7 +88,7 @@ class Documents extends React.Component {
         instance.put(signedUrl, this.state.fileForUploadToS3, {headers: {'Content-Type': this.state.fileForUploadToS3.type}})
          .then((result) => {
             // console.log('result', result)
-            this.addPropertyDocument(this.props.landlord_id, this.props.property_id)
+            this.addTenantDocument(this.props.tenant_id)
             this.setState({
               fileForUploadToS3: null
             })
@@ -118,11 +118,11 @@ class Documents extends React.Component {
     return (
         <div>
         <h2>Documents</h2>
-        {this.state.propertyDocuments.length === 0 ? null :
+        {this.state.tenantDocuments.length === 0 ? null :
           <div>
             <ul>
               {
-                this.state.propertyDocuments.map(doc => 
+                this.state.tenantDocuments.map(doc => 
                   <div key={doc.document_id}>
                     <a target="_blank" href={doc.doc_url}>{doc.doc_body} </a>
                     {!this.props.tenants ? null :

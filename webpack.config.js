@@ -38,6 +38,8 @@ const config = {
         PRIVATE_KEY: JSON.stringify(process.env.PRIVATE_KEY),
         TOKENIZATION_KEY: JSON.stringify(process.env.TOKENIZATION_KEY),
         MERCHANT_ACCOUNT_ID: JSON.stringify(process.env.MERCHANT_ACCOUNT_ID),
+        AWS_ACCESSKEYID: JSON.stringify(process.env.AWS_ACCESSKEYID),
+        AWS_SECRETACCESSKEY: JSON.stringify(process.env.AWS_SECRETACCESSKEY)
       },
     }),
   ]

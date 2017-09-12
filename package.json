@@ -9,6 +9,7 @@
     ]
   },
   "dependencies": {
+    "aws-sdk": "^2.112.0",
     "axios": "^0.16.2",
     "bcrypt-nodejs": "0.0.3",
     "bcrypt-nodejs-as-promised": "^1.0.4",
@@ -46,6 +47,7 @@
     "react-bootstrap": "^0.31.2",
     "react-bootstrap-table": "^4.0.2",
     "react-dom": "^15.6.1",
+    "react-dropzone": "^4.1.2",
     "react-modal": "^2.2.4",
     "react-password-strength": "^2.0.0",
     "react-redux": "^5.0.6",
