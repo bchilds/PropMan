@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { selectedMedia, getMessages, getDocs } from '../../actions/tenantDashboardGetters';
 import { getBroadcasts } from '../../actions/broadcastsGetter';
-
+import Documents from '../Landlord/LandlordTenantDocuments.jsx'
 
 class TenantSideBar extends Component {
+	constructor(props) {
+    super()
+	}
 
 	componentDidMount() {
 		// this.props.getBroadcasts(this.props.userId)
@@ -22,21 +25,12 @@ class TenantSideBar extends Component {
 		})
 	}
 
-	renderDocs() {
-		return this.props.docs && this.props.docs.map((doc, i) => {
-			return (
-				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(doc)}> {doc} </div>
-			)
-		})
-	}
-
 	render() {
 		return (
 			<div id="tenantSidebar">
 			  <h3 className="sidebarTitle">Broadcasts</h3>
 	        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
-				<h3 className="sidebarTitle">Documents</h3>
-				 {this.props.docs ? this.renderDocs(): 'No docs'}
+				<Documents tenant_id={this.props.tenant_id} />
 			</div>
 		)
 	}

@@ -70,7 +70,7 @@ class TenantDashboard extends Component {
   render() {
   	return (
       <div>
-        <TenantSidebar />
+        <TenantSidebar tenant_id={this.props.tenantData.tenant_id} />
 
         <div id="tenantWindow">
           <h2 className="pageTitle"> Your Dashboard </h2>

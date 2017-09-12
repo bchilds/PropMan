@@ -117,7 +117,7 @@ class Documents extends React.Component {
   render() {
     return (
         <div>
-        <h2>Documents</h2>
+        <h3 className="sidebarTitle">Documents</h3>
         {this.state.tenantDocuments.length === 0 ? null :
           <div>
             <ul>
