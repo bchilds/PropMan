@@ -39,7 +39,7 @@ export class SimpleMap extends React.Component {
 		this.state = {
 			currentLocation: {
 				lat: lat,
-				lng: lng
+				lng: lng,
 			}
 		}
 	}
@@ -81,7 +81,7 @@ export class SimpleMap extends React.Component {
 			const center = new maps.LatLng(lat, lng)
 			const mapConfig = Object.assign({}, {
 				center: center,
-				zoom: zoom
+				zoom: zoom,
 			})
 			this.map = new maps.Map(node, mapConfig)
 
@@ -89,6 +89,9 @@ export class SimpleMap extends React.Component {
         this.map.addListener(e, this.handleEvent(e))
       });
 
+
+      maps.event.trigger(this.map, 'ready')
+      this.forceUpdate()
 		}
 	}
 
@@ -124,11 +127,24 @@ export class SimpleMap extends React.Component {
 		this.loadMap()
 	}
 
+	renderChildren() {
+		const {children} = this.props
+		if(!children) return
+		return React.Children.map(children, c => {
+      return React.cloneElement(c, {
+        map: this.map,
+        google: this.props.google,
+        mapCenter: this.state.currentLocation,
+      })
+    })
+	}
+
 
 	render() {
 		return (
 			<div ref='map' style={{width: "70vw", height: "50vh"}} >
 				Loading Map...
+				{this.renderChildren()}
 			</div>
 		)
 	}
@@ -150,7 +166,6 @@ SimpleMap.defaultProps = {
 		lng: -97.7410364
 	},
 	centerAroundCurrentLocation: false,
-	onMove: function() {},
 }
 
 export default SimpleMap
