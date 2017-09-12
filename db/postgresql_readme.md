@@ -17,15 +17,15 @@ If you do not have a user named postgres, follow instructions laid out in articl
 
 # Create the leasetopia database
 in psql, run this query:
-CREATE DATABASE leasetopia;
+CREATE DATABASE rentopia;
 
 then type \q
 
 # Create all the tables in the db
 From Sublime, get the filepath of the createdb.sql file in the db folder
 In terminal now, run the following command:
-psql leasetopia < [insert file path]
-Example: [psql leasetopia < /Users/BChilds/Desktop/PropMan/db/createdb.sql]
+psql rentopia < [insert file path]
+Example: [psql rentopia < /Users/BChilds/Desktop/PropMan/db/createdb.sql]
 
 # Set environment variables, as seen on this page: [https://node-postgres.com/features/connecting]
-I ended up putting PGUSER, PGDATABASE and PGPASSWORD in my .bash_profile to always run for every terminal. PGUSER should be postgres, PGPASSWORD is the password you set for that user, and PGDATABASE is leasetopia
+I ended up putting PGUSER, PGDATABASE and PGPASSWORD in my .bash_profile to always run for every terminal. PGUSER should be postgres, PGPASSWORD is the password you set for that user, and PGDATABASE is rentopia

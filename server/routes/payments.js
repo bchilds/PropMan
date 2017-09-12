@@ -52,7 +52,7 @@ const getTransactionById = async (ctx, transaction_id) => {
 exports.getTransactionById = getTransactionById
 
 const getUserExpenses = async (ctx, user_id) => {
-  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id=${user_id} GROUP BY payment_type ORDER BY SUM(split_amount) DESC;`)
+  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id=${user_id} AND is_completed=true GROUP BY payment_type ORDER BY SUM(split_amount) DESC;`)
   transactionData = transactionData.rows
   return transactionData
 }
@@ -82,9 +82,10 @@ router
       console.log('creating transaction in DB')
       ctx.request.body.split_amount = ctx.request.body.transaction_amount
       let transaction = await createTransaction(ctx, paymentIdentifier)
+      let newExpenses = await getUserExpenses(ctx, ctx.request.body.sender_id)
       if(transaction) {
         ctx.response.status = 201
-        ctx.body = transaction
+        ctx.body = {transaction, newExpenses}
       } else {
         ctx.response.status = 400
         ctx.body = 'Error creating transaction'
@@ -111,11 +112,16 @@ router
         //create transaction record here
         console.log('updating transaction in DB')
         let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ('${paymentIdentifier}', true) WHERE transaction_id = ${results.transaction_id} RETURNING *;`)
+        transaction = transaction.rows[0]
         let user = await Users.getUserById(ctx, results.sender_id)
+        console.log(1)
         let allTransactions = await getUserTransactions(ctx, user)
+        console.log(2)
+        let newExpenses = await getUserExpenses(ctx, transaction.sender_id)
+        console.log(3)
         if(transaction) {
           ctx.response.status = 201
-          ctx.body = allTransactions
+          ctx.body = {allTransactions: allTransactions, newExpenses: newExpenses}
         } else {
           ctx.response.status = 400
           ctx.body = 'Error creating transaction'
@@ -145,9 +151,9 @@ router
         let user = await Users.getUserById(ctx, sharer)
         email.sendEmail(user.email, 'Rentopia - Your roommate has requested a bill share')
       }
-      let newExpense = await getUserExpenses(ctx, ctx.request.body.requester_userId)
+      let newExpenses = await getUserExpenses(ctx, ctx.request.body.requester_userId)
       ctx.response.status = 201
-      ctx.body = {newTransactions: newTransactions, newExpense: newExpense}
+      ctx.body = {newTransactions: newTransactions, newExpenses: newExpenses}
     } else {
       ctx.response.status = 400
       ctx.body = 'Error creating transaction'

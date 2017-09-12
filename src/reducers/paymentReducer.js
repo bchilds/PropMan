@@ -21,7 +21,7 @@ export function receivedTransactions(state=[], action) {
     case BILL_SHARE_PAYMENT:
       if (action.payload.data) {
         console.log(action.payload.data)
-        return action.payload.data.receivedPayments
+        return action.payload.data.allTransactions.receivedPayments
       } else {
         return state
       }
@@ -40,7 +40,7 @@ export function sentTransactions(state=[], action) {
       }
     case SEND_PAYMENT: 
       if (action.payload.data) {
-        return [...state, action.payload.data]
+        return [...state, action.payload.data.transaction]
       } else {
         return state
       }
@@ -52,7 +52,7 @@ export function sentTransactions(state=[], action) {
       }      
     case BILL_SHARE_PAYMENT:
       if (action.payload.data) {
-        return action.payload.data.sentPayments
+        return action.payload.data.allTransactions.sentPayments
       } else {
         return state
       }
@@ -70,7 +70,15 @@ export function expenses(state=[], action) {
         return state
       }
     case ADD_BILL:
-      return action.payload.data.newExpense
+      return action.payload.data.newExpenses
+    case SEND_PAYMENT: 
+      return action.payload.data.newExpenses
+    case BILL_SHARE_PAYMENT:
+      if (action.payload.data) {
+        return action.payload.data.newExpenses
+      } else {
+        return state
+      }
     default:
       return state
   }

@@ -18,6 +18,7 @@ let send = require('koa-send');
 const path = require('path')
 let serve = require('koa-static')
 let session = require('koa-session')
+let cors = require('koa-cors')
 
 // db connection
 // db now available from ctx throughout app
@@ -29,6 +30,7 @@ const middleware = koaWebpack({
   config: config
 })
 app.use(middleware)
+app.use(cors())
 app.use(serve(__dirname + 'dist'));
 
 // bodyparser

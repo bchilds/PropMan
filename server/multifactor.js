@@ -13,6 +13,7 @@ const genTimeToken = async (ctx, key, next) => {
 	//let secret = /////retrieve secret here
 	let secret
 	if(key) secret = key
+	if(secret.base32) secret = secret.base32
 	let token = speakeasy.totp({
 		secret: secret,
 		encoding: 'base32',

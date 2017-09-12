@@ -1,4 +1,4 @@
-\c leasetopia;
+\c rentopia;
 
 DROP TABLE IF EXISTS users, landlords, properties, tenants, messages, transactions, events, documents CASCADE;
 
