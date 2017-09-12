@@ -3,6 +3,7 @@ import axios from 'axios'
 export const USER_LOGIN = 'user_login'
 export const USER_LOGOUT = 'user_logout'
 export const CHECK_SESSION = 'check_session'
+export const LOGIN_FAILURE = 'login_failure'
 
 const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
@@ -39,7 +40,10 @@ export function loginUser(credentials) {
           payload: response
         })
     }).catch((err) => {
-        console.log(err)
+        dispatch({
+          type: LOGIN_FAILURE,
+          payload: true
+        })
     })
   }
   

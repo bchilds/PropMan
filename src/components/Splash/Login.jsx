@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link, Redirect } from 'react-router-dom'
-
+import { Tooltip } from 'react-bootstrap'
 import { loginUser, checkSession } from '../../actions/authGetters'
 
 class Login extends React.Component {
@@ -35,6 +35,14 @@ class Login extends React.Component {
 
               <button className="loginButton" type="submit">Log in</button>
             </form>
+            {
+              this.props.loginFailure &&
+              <div className="loginFailure">
+              <Tooltip placement="bottom" className="in" id="tooltip-bottom">
+                Whoops! It looks like your email and password combination are incorrect. Please try again.
+              </Tooltip>
+              </div>
+            }
           </div>
         </div>
           {this.props.isLoggedIn && (this.props.isLandlord ? <Redirect to="/proprietor" /> : <Redirect to="/tenant" />)}
@@ -46,7 +54,8 @@ class Login extends React.Component {
 function mapStateToProps(state) {
   return {
     isLandlord: state.user && state.user.is_landlord,
-    isLoggedIn: state.loggedIn
+    isLoggedIn: state.loggedIn,
+    loginFailure: state.loginFailure
   }
 }
 
