@@ -24,10 +24,20 @@ function mapDispatchToProps(dispatch) {
 class Tenants extends React.Component {
   constructor(props) {
     super()
-    // props.getTenants(props.landlord.landlord_id)
+    var property_id_name = {}
+    props.properties.map(property => {
+        property_id_name[property.property_id] = property.property_name
+    })
+    props.tenants.map(tenant => {
+      tenant['property_name'] = property_id_name[tenant.property_id]
+    })
   }
 
   componentDidUpdate() {
+    this.props.getTenants(this.props.landlord.landlord_id)    
+  }
+
+  componentWillReceiveProps() {
     var property_id_name = {}
     this.props.properties.map(property => {
         property_id_name[property.property_id] = property.property_name
@@ -47,7 +57,7 @@ class Tenants extends React.Component {
       "tenant_email": e.target.tenant_email.value,
       "property_id": property.property_id,
       "rent": e.target.rent.value,
-      "due_date": `${monthNum}/${e.target.day.value}/${e.target.year.value}`
+      "due_date": `${e.target.day.value}/${monthNum}/${e.target.year.value}`
     }, (res, data) => {
       if (res) {
         console.log(res, data)
@@ -134,7 +144,6 @@ class Tenants extends React.Component {
           </Panel>
         </Accordion>
       </form>
-{ console.log('render props tenants', this.props.tenants) }
       <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
         <TableHeaderColumn dataField='tenant_email' dataSort={ true } isKey={ true }>Email</TableHeaderColumn>
         <TableHeaderColumn dataField='property_name' dataSort={ true }>Property</TableHeaderColumn>

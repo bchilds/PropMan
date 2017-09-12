@@ -9,6 +9,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import BroadcastModal from './BroadcastMessageModal.jsx';
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
+import Documents from './LandlordPropertyDocuments.jsx'
 
 const customStyles = {
   content : {
@@ -31,6 +32,8 @@ const customStyles = {
 function mapStateToProps(state, match) {
   const property_id = Number(match.match.params.id);
   return {
+    user: state.user,
+    landlord: state.landlordData,
     property_id: property_id,
     property: state.landlordProperties.filter(property => property.property_id === property_id)[0],
     tenants: state.propertyTenants2
@@ -50,8 +53,12 @@ class Property extends React.Component {
       sendTo: -1
     }
     this.openModal = this.openModal.bind(this)
+
   }
 
+  componentWillMount() {
+    this.props.getPropertyTenants2(this.props.property_id)
+  }
 
   openModal() {
     this.setState({modalIsOpen: true});
@@ -61,14 +68,6 @@ class Property extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
-  componentWillMount() {
-    this.props.getPropertyTenants2(this.props.property_id)
-  }
-
-  componentWillReceiveProps() {
-    this.props.getPropertyTenants2(this.props.property_id)
-  }
-
   addTenantButton(e) {
     e.preventDefault()
     let monthNum = months.indexOf(e.target.month.value) + 1
@@ -76,14 +75,16 @@ class Property extends React.Component {
       "property_id": this.props.property.property_id,
       "tenant_email": e.target.tenant_email.value,
       "rent": e.target.rent.value,
-      "due_date": `${monthNum}/${e.target.day.value}/${e.target.year.value}`
-    }, (res, data) => {
-      if (res) {
-        console.log(res, data)
-      } else {
-        alert('failure to login upon signup')
-      }
-    })
+      "due_date": `${e.target.day.value}/${monthNum}/${e.target.year.value}`
+    }
+    // , (res, data) => {
+    //   if (res) {
+    //     console.log(res, data)
+    //   } else {
+    //     alert('failure to login upon signup')
+    //   }
+    // }
+    )
     e.target.tenant_email.value = ''
     e.target.rent.value = ''
   }
@@ -140,7 +141,7 @@ class Property extends React.Component {
               tenants={this.props.tenants} />
           </Modal>  
         }
-        <h3>Tenants</h3>
+        <h2>Tenants</h2>
         <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
           <Accordion>
             <Panel header="Add a Tenant" eventKey="1">
@@ -174,6 +175,9 @@ class Property extends React.Component {
           <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
           <TableHeaderColumn dataField='due_date' dataSort={ true }>Due</TableHeaderColumn>
         </BootstrapTable>
+        <div>
+          <Documents landlord_id={this.props.landlord.landlord_id} property_id={this.props.property_id} tenants={this.props.tenants} />
+        </div>
       </div>
     )
   }
