@@ -42,11 +42,20 @@ class TenantDashboard extends Component {
 
   componentWillMount() {
     this.props.getBroadcasts(this.props.tenantData.property_id)
+    this.setState({
+      donutData: this.props.expenses
+    })
   }
 
   componentDidMount() {
     this.setState({
       modalIsOpen: false
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      donutData: nextProps.expenses
     })
   }
 
@@ -67,7 +76,7 @@ class TenantDashboard extends Component {
           <h2 className="pageTitle"> Your Dashboard </h2>
           {this.state.showDonut && <div className="donutGraph">
             <h3>Monthly Expenses</h3>
-            <DonutWindow data = {this.props.expenses}
+            <DonutWindow data = {this.state.donutData}
             />
           </div>
           }

@@ -52,7 +52,7 @@ auth
 	}) //end signup
 
 // Sign in
-	.post('/signin', async (ctx, next) => {g
+	.post('/signin', async (ctx, next) => {
 		// insert actual user auth here
 		// {email, password, multi}
 		let user, tenant, landlord, properties, output, passwordCheck
