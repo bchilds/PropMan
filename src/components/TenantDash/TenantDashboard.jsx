@@ -75,7 +75,7 @@ class TenantDashboard extends Component {
         <div id="tenantWindow">
           <h2 className="pageTitle"> Your Dashboard </h2>
           {this.state.showDonut && <div className="donutGraph">
-            <h3>Monthly Expenses</h3>
+            <h3>Expenses</h3>
             <DonutWindow data = {this.state.donutData}
             />
           </div>

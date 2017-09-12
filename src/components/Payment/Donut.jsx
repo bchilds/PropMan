@@ -18,6 +18,8 @@ class Donut extends React.Component {
              value={value}
              label={value.data.payment_type}
              fill={this.props.colorScale[i]} 
+             x={this.props.x}
+             y={this.props.y}
       />
     );
   }

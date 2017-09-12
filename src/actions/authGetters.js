@@ -28,16 +28,21 @@ export function signupUser(credentials, cb) {
 }
 
 export function loginUser(credentials) {
-  const request = axios.post(`${ROOT_URL}/api/auth/signin`, {
-      email: credentials.email,
-      password: credentials.password,
-      multi: credentials.multi,
-  })
-  
-  return {
-    type: USER_LOGIN,
-    payload: request
+  return function(dispatch) {  
+    axios.post(`${ROOT_URL}/api/auth/signin`, {
+        email: credentials.email,
+        password: credentials.password,
+        multi: credentials.multi,
+    }).then((response) => {  
+        dispatch({
+          type: USER_LOGIN,
+          payload: response
+        })
+    }).catch((err) => {
+        console.log(err)
+    })
   }
+  
 
   // **** request should have userData, tenant info, messages, docs, media
 }

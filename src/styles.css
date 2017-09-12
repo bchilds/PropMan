@@ -462,6 +462,12 @@ body {
   margin: 0 auto;
 }
 
+.donutLegend {
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 30px;
+}
 .fillColorBox {
   width: 20px;
   height: 20px;

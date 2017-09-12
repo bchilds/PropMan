@@ -9,7 +9,7 @@ class DonutLegend extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="donutLegend">
         {
           this.props.data.map((item, index) => {
             return <DonutLegendElement item={item} key={index} colorFill={this.props.colorScale[index]} />

@@ -8,10 +8,10 @@ class DonutLegendElement extends React.Component {
 
   render() {
     return (
-      <span>
-        <div className="fillColorBox" style={{backgroundColor: `${this.props.colorFill}` }}></div>
+      <div>
+        <span className="fillColorBox" style={{backgroundColor: `${this.props.colorFill}` }}></span>
         <span>{this.props.item.payment_type}</span>
-      </span>
+      </div>
     )
   }
 }
