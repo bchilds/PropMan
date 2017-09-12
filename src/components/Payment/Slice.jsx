@@ -34,7 +34,7 @@ class Slice extends React.Component {
           <text transform={'translate(0,0)'}
                 textAnchor="middle"
                 fill="black"
-                fontSize="25"
+                fontSize="30"
           >
           <tspan>{label}</tspan>
           <tspan x='0' dy='1.2em'>{`$${value.data.sum}`}</tspan>

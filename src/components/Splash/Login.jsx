@@ -35,14 +35,14 @@ class Login extends React.Component {
 
               <button className="loginButton" type="submit">Log in</button>
             </form>
-            {
-              this.props.loginFailure &&
-              <div className="loginFailure">
-              <Tooltip placement="bottom" className="in" id="tooltip-bottom">
-                Whoops! It looks like your email and password combination are incorrect. Please try again.
-              </Tooltip>
-              </div>
-            }
+          </div>
+          <div className="loginFailure">
+          {
+            this.props.loginFailure &&
+            <Tooltip placement="bottom" className="in" id="tooltip-bottom">
+              Whoops! It looks like your email and password combination are incorrect. Please try again.
+            </Tooltip>
+          }
           </div>
         </div>
           {this.props.isLoggedIn && (this.props.isLandlord ? <Redirect to="/proprietor" /> : <Redirect to="/tenant" />)}

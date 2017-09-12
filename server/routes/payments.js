@@ -142,7 +142,7 @@ router
       ctx.request.body.transaction_amount = splitAmount
       ctx.request.body.split_amount = splitAmount
       // edit payment name to have '(split)'
-      ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share payment)`
+      ctx.request.body.payment_type = `${ctx.request.body.payment_type}`
       for (var sharer of ctx.request.body.sharers) {
         ctx.request.body.recipient_id = ctx.request.body.requester_userId
         ctx.request.body.sender_id = sharer 
@@ -165,6 +165,7 @@ router
 
     let result = await gateway.merchantAccount.create(merchantAccountParams)
     if (!result.success) {
+      console.log(result)
       ctx.response.status = 400
       ctx.body = result.message
     } else {      

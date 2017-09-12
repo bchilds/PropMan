@@ -4,6 +4,7 @@ export const SEND_PAYMENT = 'send_payment'
 export const SUBMERCHANT_CREATION = 'submerchant_creation'
 export const ADD_BILL = 'add_bill'
 export const BILL_SHARE_PAYMENT = 'bill_share_payment'
+export const SUBMERCHANT_CREATION_FAILURE = 'submerchant_creation_failure'
 
 const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
@@ -37,14 +38,21 @@ export function tenantPayment(payload, params, httpMethod) {
 }
 
 export function submerchantCreation(merchantAccountParams, userId) {
-  const request = axios.put(`${ROOT_URL}/api/payments/submerchantCreation/${userId}`, 
-  {
-    merchantAccountParams: merchantAccountParams
-  })
-
-  return {
-    type: SUBMERCHANT_CREATION,
-    payload: request
+  return function(dispatch) {  
+    axios.put(`${ROOT_URL}/api/payments/submerchantCreation/${userId}`, 
+    {
+      merchantAccountParams: merchantAccountParams
+    }).then((response) => {
+      dispatch({
+        type: SUBMERCHANT_CREATION,
+        payload: request
+      })
+    }).catch((error) => {
+      dispatch({
+        type: SUBMERCHANT_CREATION_FAILURE,
+        payload: error.response
+      })
+    })
   }
 
 }
