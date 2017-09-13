@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import SimpleMap from './LandlordMap.jsx'
 import Marker from './LandlordMarker.js'
+import { connect } from 'react-redux'
 
 export class MapContainer extends React.Component {
 
@@ -12,11 +13,16 @@ export class MapContainer extends React.Component {
 	}
 
 	render() {
-		const pos = {lat: 37.759703, lng: -122.428093}
 		return (
 			<div>
-				<SimpleMap google={this.props.google}>
-					<Marker />
+				<SimpleMap google={this.props.google} centerAroundCurrentLocation={true}>
+					{this.props.properties.map(p => {
+						let pos = {
+							lat: p.lat,
+							lng: p.lng
+						}
+						return <Marker position={pos}/>
+					})}
 				</SimpleMap>
 			</div>
 		)
@@ -24,8 +30,14 @@ export class MapContainer extends React.Component {
   
 }
 
-export default GoogleApiWrapper({
+function mapStateToProps(state) {
+	return {
+		properties: state.landlordProperties
+	}
+}
+
+export default connect(mapStateToProps) (GoogleApiWrapper({
 	apiKey: 'AIzaSyBsMMjEedsvvYmcMhEOdQwzKR5UD1Mm_sg',
 	libraries: ['places'],
 	version: '3'
-}) (MapContainer)
+}) (MapContainer))

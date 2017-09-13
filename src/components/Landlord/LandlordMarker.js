@@ -20,8 +20,12 @@ const evtNames = [
 
 export class Marker extends React.Component {
 
+	constructor(props){
+		super(props)
+	}
+
 	componentDidMount() {
-	  this.renderMarker();
+	  this.renderMarker()
 	}
 
 	componentDidUpdate(prevProps) {
@@ -30,10 +34,16 @@ export class Marker extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if(this.marker) {
+			this.marker.setMap(null)
+		}
+	}
+
 	renderMarker() {
 		let {
 			map, google, position, mapCenter
-		} = this.props;
+		} = this.props
 
 		if(!google) return null
 
@@ -55,7 +65,7 @@ export class Marker extends React.Component {
     return (e) => {
       const evtName = `on${camelize(evtName)}`
       if (this.props[evtName]) {
-        this.props[evtName](this.props, this.marker, e);
+        this.props[evtName](this.props, this.marker, e)
       }
     }
   }
