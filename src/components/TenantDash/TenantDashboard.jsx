@@ -35,7 +35,7 @@ class TenantDashboard extends Component {
 
     this.state = {
       modalIsOpen: true,
-      showDonut: true,
+      showDonut: false,
       donutData: [],
     }
   }

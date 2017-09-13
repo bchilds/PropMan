@@ -5,7 +5,11 @@ import { USER_LOGOUT, USER_LOGIN } from '../actions/authGetters'
 export function broadcasts(state = [], action) {
   switch(action.type) {
     case FETCH_BROADCASTS: 
-      return action.payload.data
+      if (action.payload.data) {
+        return action.payload.data
+      } else {
+        return state
+      }
     case DIRECT_MESSAGES: 
 	    if (typeof action.payload.data !== 'string') {
 	   		var newArray = [...state, action.payload.data]
