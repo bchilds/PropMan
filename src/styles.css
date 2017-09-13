@@ -1,6 +1,4 @@
-body {
-  padding-bottom: 50px;
-}
+
 
 .splash {
   height: 100vh;
@@ -51,6 +49,10 @@ body {
   margin: 10px auto;
 /*  border-radius: 5px;*/
 }
+
+/*.bothHeaderNavBars {
+  font-family: "Open Sans";
+}*/
 
 .splash ::-webkit-input-placeholder {
   color: white;
@@ -170,41 +172,64 @@ body {
   margin-left: 60%;
 }
 
-.navbar {
-  border-radius: 0px;
-}
 
 .braintree-toggle {
   visibility: hidden;
   height: 0px;
 }
 
+.navbarColor {
+  background-color: #F9F9F9;
+  font-family: "Open Sans";
+  font-size: 18px;
+}
+
+#navbarText {
+  color: black !important;
+}
+
+#nav-dropdown {
+  color: black !important;
+}
+
 #tenantWindow {
-  width: 70%;
-  height: 450px;
-  margin: 10px;
-  display: inline-block;
+  /*width: 70%;*/
+  height: 75vh;
+  /*margin: 10px;*/
+  /*display: inline-block;*/
   border: 1px solid black;
-  vertical-align: top;
+  /*vertical-align: top;*/
   overflow: scroll;
-  padding: 0px 10px;
+  /*padding: 0px 10px;*/
+}
+
+#tenantMessagesWindow {
+  height: 75vh;
+  /*border: 2px solid lightgray;*/
+  overflow: scroll;
 }
 
 .sidebarTitle {
   text-align: center;
+  color: white;
 }
 
-.convoPersName {
-  margin-left: 25%;
+@media only screen and (min-width : 768px)  {
+  .messageMargins {
+    margin: 0% !important;
+    padding: 0 !important;
+  }
 }
 
 #tenantSidebar {
-  width: 20%;
-  height: 450px;
-  margin: 10px;
-  display: inline-block;
-  border: 1px solid black;
-  vertical-align: top;
+  /*width: 20%;*/
+  height: 100%;
+  border-radius: 5px;
+  /*margin-right: 10px;*/
+  /*display: inline-block;*/
+  /*border: 1px solid black;*/
+  background-color: #7882B4;
+  /*vertical-align: top;*/
 }
 
 /*#tenantDashFooter {
@@ -234,6 +259,16 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.pickAConvo {
+  font-family: "Open Sans";
+  float: center;
+}
+
+.convoPersName {
+  font-family: "Open Sans";
+  text-align: center;
 }
 
 .mesRight {
@@ -267,10 +302,11 @@ body {
 }
 
 .newMessage {
-  width: 70%;
   bottom: 0;
   text-align: center;
   margin: 0 auto;
+  border: 2px solid lightgray;
+  border-radius: 5px;
 }
 
 .centerMessage {

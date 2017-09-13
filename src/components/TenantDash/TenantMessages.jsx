@@ -26,6 +26,7 @@ class TenantMessages extends Component {
   }
 
   componentDidMount() {
+    console.log('mounting', this.props.currentConvo)
     this.props.sortMessages(this.props.messages, this.props.userId)
     this.setScrollToBottom()
     this.setState({
@@ -92,19 +93,27 @@ class TenantMessages extends Component {
 
   render() {
   	return (
-      <div>
-        <h2 className="pageTitle"> Your Messages </h2>
-        <div className="convoPersName"> <h3>{this.props.convoPersonsName} </h3></div>
-        <MessageSidebar />
-        <div id="tenantWindow">
-          <div>{this.renderConvo()}</div>
+        <div className="container-fluid messageMargins">
+            <div className="row ">
+              <div  className="col-lg-3 col-md-4 col-sm-6 col-xs-12 messageMargins">
+                <MessageSidebar/>
+              </div>
+              <div className="col-lg-9 col-md-8 col-sm-7 col-xs-12 messageMargins">
+                <div id="tenantMessagesWindow">
+                <div className="convoPersName"><h3>{this.props.convoPersonsName}</h3></div>
+                  { this.props.currentConvo.length === 0 &&
+                    <h3 className="pickAConvo">Choose a conversation on the left!</h3>
+                  }
+                  <div>{this.renderConvo()}</div>
+                </div>
+                <div className="newMessage">
+                  <form onSubmit={this.handleSendTo.bind(this)}>
+                    <input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+                  </form>
+                </div>
+              </div>
+          </div>
         </div>
-        <div className="newMessage">
-          <form onSubmit={this.handleSendTo.bind(this)}>
-            <input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
-          </form>
-        </div>
-      </div>
   	)
   }
 }

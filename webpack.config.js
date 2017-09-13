@@ -42,6 +42,12 @@ const config = {
         AWS_SECRETACCESSKEY: JSON.stringify(process.env.AWS_SECRETACCESSKEY)
       },
     }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default']
+    })
   ]
 }
 
