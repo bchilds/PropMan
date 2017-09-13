@@ -1,6 +1,5 @@
 
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Header  from './LandlordHeader.jsx'
@@ -15,9 +14,6 @@ class LandlordDashboard extends React.Component {
 
   constructor(props) {
     super()
-    this.uluru = {lat: -25.363, lng: 131.044};
-    // let map = new google.maps.Map(document.getElementById('g-map'), {zoom: 4, center: this.uluru})
-    // let marker = new google.maps.Marker({position: this.uluru, map: map})
   }
 
   render() {
@@ -25,7 +21,7 @@ class LandlordDashboard extends React.Component {
       <div>
         <h2> Manage your estate </h2>
         <p> {this.props.media} </p>
-        <MapContainer/>
+        <MapContainer history={this.props.history}/>
       </div>
     )
   }

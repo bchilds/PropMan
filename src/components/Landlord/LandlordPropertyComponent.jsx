@@ -47,7 +47,6 @@ function mapDispatchToProps(dispatch) {
 class Property extends React.Component {
   constructor(props) {
     super()
-
     this.state = {
       modalIsOpen: false,
       sendTo: -1

@@ -10,6 +10,11 @@ export class MapContainer extends React.Component {
 
 	constructor(props){
 		super()
+		this.onMarkerClicked = this.onMarkerClicked.bind(this)
+	}
+
+	onMarkerClicked(props, marker, e) {
+		this.props.history.push(`/proprietor/properties/${props.property.property_id}`)
 	}
 
 	render() {
@@ -21,7 +26,7 @@ export class MapContainer extends React.Component {
 							lat: p.lat,
 							lng: p.lng
 						}
-						return <Marker position={pos}/>
+						return <Marker key={p.property_id} property={p} position={pos} onClick={this.onMarkerClicked}/>
 					})}
 				</SimpleMap>
 			</div>

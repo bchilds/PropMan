@@ -10,12 +10,6 @@ const camelize = function(str) {
 const evtNames = [
   'click',
   'dblclick',
-  'dragend',
-  'mousedown',
-  'mouseout',
-  'mouseover',
-  'mouseup',
-  'recenter',
 ]
 
 export class Marker extends React.Component {
@@ -63,9 +57,9 @@ export class Marker extends React.Component {
 
 	handleEvent(evtName) {
     return (e) => {
-      const evtName = `on${camelize(evtName)}`
-      if (this.props[evtName]) {
-        this.props[evtName](this.props, this.marker, e)
+      const nEvtName = `on${camelize(evtName)}`
+      if (this.props[nEvtName]) {
+        this.props[nEvtName](this.props, this.marker, e)
       }
     }
   }
