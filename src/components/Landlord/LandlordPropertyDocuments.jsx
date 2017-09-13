@@ -36,7 +36,7 @@ class Documents extends React.Component {
     {
       "doc_type": "rawtext", 
       "landlord_id": landlord_id, 
-      "tenant_id": tenant_id, 
+      "tenant_id": null, 
       "property_id": property_id,
       "doc_body": this.state.fileForUploadToS3.name,
       "doc_url": `https://s3.us-east-2.amazonaws.com/rentopia/${this.state.fileForUploadToS3.name}`
@@ -103,7 +103,18 @@ class Documents extends React.Component {
 
   sendDocumentToTenant(e) {
     e.preventDefault()
-    console.log('Send document to Tenant!')
+    const propertyDocsRequest = axios.post(`${ROOT_URL}/api/landlords/emailTenant`,
+    {
+      "document_title": e.target.getElementsByClassName("document_title")[0].text,
+      "document_url": e.target.getElementsByClassName("document_title")[0].href,
+      "tenant_email": e.target.tenant_email.value
+    })
+     .then((response) => {
+        alert(`"${response.data.document_title}" has been sent to ${response.data.tenant_email}`)
+     })
+     .catch((err) => {
+        console.log(err)
+     })
   }
 
   renderTenants() {
@@ -124,15 +135,13 @@ class Documents extends React.Component {
               {
                 this.state.propertyDocuments.map(doc => 
                   <div key={doc.document_id}>
-                    <a target="_blank" href={doc.doc_url}>{doc.doc_body} </a>
-                    {!this.props.tenants ? null :
-                      <span>
-                        <select name="tenant_id">
-                          {this.renderTenants()}
-                        </select>
-                        <button onClick={this.sendDocumentToTenant.bind(this)}> Send File </button>
-                      </span>
-                    }
+                    <form className="sendDocumentToTenantEmail" onSubmit={this.sendDocumentToTenant.bind(this)}>
+                      <a className="document_title" target="_blank" href={doc.doc_url}>{doc.doc_body} </a>
+                      <select name="tenant_email">
+                        {this.renderTenants()}
+                      </select>
+                      <button type="submit"> Send File </button>
+                    </form>
                   </div>
                 )
               }
