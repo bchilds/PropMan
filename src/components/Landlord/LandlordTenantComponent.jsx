@@ -26,15 +26,16 @@ class Tenant extends React.Component {
   }
 
   render() {
-    const property = this.props.property;
-    const tenant = this.props.tenant;
+    const property = this.props.property || {property_name: '', address: ''};
+    const tenant = this.props.tenant || {tenant_email: '', rent:'', due_date: ''};
+
     return (
       <div>
-        <h3>{this.props.tenant.tenant_email}</h3>
-        <p>Property: {this.props.property.property_name}</p>
-        <p>Address: {this.props.property.address}</p>
-        <p>Rent: {this.props.tenant.rent}</p>
-        <p>Due: {this.props.tenant.due_date}</p>
+        <h3>{tenant.tenant_email}</h3>
+        <p>Property: {property.property_name}</p>
+        <p>Address: {property.address}</p>
+        <p>Rent: {tenant.rent}</p>
+        <p>Due: {tenant.due_date}</p>
         <Documents tenant_id={this.props.tenant_id} />
       </div>
     )
