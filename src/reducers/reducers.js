@@ -1,6 +1,6 @@
 import { SET_PROFILE } from '../actions/setEditedProfileInfo'
 import { DIRECT_MESSAGES } from '../actions/messageGetters'
-import { USER_LOGIN, USER_LOGOUT, LOGIN_FAILURE} from '../actions/authGetters'
+import { USER_LOGIN, LOGIN_FAILURE} from '../actions/authGetters'
 import { FETCH_RENT, FETCH_MESSAGES, FETCH_DOCS, FETCH_SELECTED_MEDIA } 
 	from '../actions/tenantDashboardGetters.js';
 import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
