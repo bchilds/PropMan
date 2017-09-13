@@ -5,17 +5,6 @@ import { FETCH_BROADCASTS } from '../actions/broadcastsGetter'
 
 export function selectedTenantMedia(state = {}, action) {
 	switch(action.type) {
-		case FETCH_BROADCASTS:
-			if (action.payload.data && action.payload.data.length) {
-				let broadcasts = action.payload.data
-				let newestBroadcast = broadcasts[broadcasts.length - 1]
-				return {
-					title: newestBroadcast.message_title,
-					media: newestBroadcast.message_content
-				}
-			} else {
-				return state
-			}
 		case FETCH_SELECTED_MEDIA:
 		  return action.payload;
 

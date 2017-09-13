@@ -7,7 +7,7 @@ import Documents from '../Landlord/LandlordTenantDocuments.jsx'
 
 class TenantSideBar extends Component {
 	constructor(props) {
-    super()
+    super(props)
 	}
 
 	componentDidMount() {
@@ -25,9 +25,14 @@ class TenantSideBar extends Component {
 		})
 	}
 
+	showDonut(props) {
+		props.showDonut()
+	}
+
 	render() {
 		return (
 			<div id="tenantSidebar">
+				<h3 className="sidebarTitle"><div onClick={this.showDonut.bind(this, this.props)}>Expenses</div></h3>
 			  <h3 className="sidebarTitle">Broadcasts</h3>
 	        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
 				<Documents tenant_id={this.props.tenant_id} />

@@ -35,7 +35,7 @@ class TenantDashboard extends Component {
 
     this.state = {
       modalIsOpen: true,
-      showDonut: false,
+      showDonut: true,
       donutData: [],
     }
   }
@@ -57,6 +57,12 @@ class TenantDashboard extends Component {
     this.setState({
       donutData: nextProps.expenses
     })
+
+    if (nextProps.media) {
+      this.setState({
+        showDonut: false
+      })
+    }
   }
 
   openModal() {
@@ -67,10 +73,16 @@ class TenantDashboard extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  showDonut() {
+    this.setState({
+      showDonut: true
+    })
+  }
+
   render() {
   	return (
       <div>
-        <TenantSidebar tenant_id={this.props.tenantData.tenant_id} />
+        <TenantSidebar tenant_id={this.props.tenantData.tenant_id} showDonut={this.showDonut.bind(this)} />
 
         <div id="tenantWindow">
           <h2 className="pageTitle"> Your Dashboard </h2>
