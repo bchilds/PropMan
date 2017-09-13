@@ -43,15 +43,20 @@ export function submerchantCreation(merchantAccountParams, userId) {
     {
       merchantAccountParams: merchantAccountParams
     }).then((response) => {
-      dispatch({
-        type: SUBMERCHANT_CREATION,
-        payload: request
-      })
+      if (response) {
+        dispatch({
+          type: SUBMERCHANT_CREATION,
+          payload: response
+        })
+      }
     }).catch((error) => {
-      dispatch({
-        type: SUBMERCHANT_CREATION_FAILURE,
-        payload: error.response
-      })
+      if (error) {
+        console.log(error)      
+        dispatch({
+          type: SUBMERCHANT_CREATION_FAILURE,
+          payload: error.response
+        })
+      }
     })
   }
 

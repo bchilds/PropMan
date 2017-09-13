@@ -88,9 +88,13 @@ export function expenses(state=[], action) {
 export function submerchantCreationFailure(state = {failure: false, errors: []}, action) {
   switch(action.type) {
     case SUBMERCHANT_CREATION_FAILURE:
-      return {
-        failure: true,
-        errors: action.payload.data.split('\n')
+      if (action.payload.data) {      
+        return {
+          failure: true,
+          errors: action.payload.data.split('\n')
+        }
+      } else {
+        return state
       }
     case REHYDRATE:
       return {failure: false, errors: []}

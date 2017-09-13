@@ -15,7 +15,7 @@ Check your users by typing \du to see existing users
 [https://stackoverflow.com/questions/15008204/how-to-check-postgres-user-and-password]
 If you do not have a user named postgres, follow instructions laid out in article above
 
-# Create the leasetopia database
+# Create the rentopia database
 in psql, run this query:
 CREATE DATABASE rentopia;
 
