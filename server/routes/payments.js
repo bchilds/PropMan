@@ -165,7 +165,6 @@ router
 
     let result = await gateway.merchantAccount.create(merchantAccountParams)
     if (!result.success) {
-      console.log(result)
       ctx.response.status = 400
       ctx.body = result.message
     } else {      
