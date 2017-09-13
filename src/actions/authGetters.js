@@ -3,6 +3,7 @@ import axios from 'axios'
 export const USER_LOGIN = 'user_login'
 export const USER_LOGOUT = 'user_logout'
 export const CHECK_SESSION = 'check_session'
+export const LOGIN_FAILURE = 'login_failure'
 
 const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
@@ -28,16 +29,24 @@ export function signupUser(credentials, cb) {
 }
 
 export function loginUser(credentials) {
-  const request = axios.post(`${ROOT_URL}/api/auth/signin`, {
-      email: credentials.email,
-      password: credentials.password,
-      multi: credentials.multi,
-  })
-  
-  return {
-    type: USER_LOGIN,
-    payload: request
+  return function(dispatch) {  
+    axios.post(`${ROOT_URL}/api/auth/signin`, {
+        email: credentials.email,
+        password: credentials.password,
+        multi: credentials.multi,
+    }).then((response) => {  
+        dispatch({
+          type: USER_LOGIN,
+          payload: response
+        })
+    }).catch((err) => {
+        dispatch({
+          type: LOGIN_FAILURE,
+          payload: true
+        })
+    })
   }
+  
 
   // **** request should have userData, tenant info, messages, docs, media
 }

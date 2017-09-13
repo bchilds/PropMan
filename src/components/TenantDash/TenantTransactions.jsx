@@ -56,12 +56,20 @@ class Transactions extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
-  alterTransactions(transactions) {
+  alterTransactions(transactions, otherTenants) {
+    let roommateObj = otherTenants.reduce((obj, roommate) => {
+      obj[roommate.user_id] = roommate
+      return obj
+    }, {})
+
     let alteredTransactions = transactions.map((transaction) => {
       let newObj = Object.assign({}, transaction)
       // date string manipulation to get only date
       newObj.created_date = newObj.created_date.split('T')[0]
       newObj.transaction_amount = `$${newObj.transaction_amount}`
+      if (transaction.recipient_id === this.props.user.user_id) {
+        newObj.payment_type = `${newObj.payment_type} (reimbursement from ${roommateObj[transaction.sender_id].user_name})`
+      }
       return newObj
     })
     let completedTransactions = [...alteredTransactions].filter((transaction) => {
@@ -79,11 +87,11 @@ class Transactions extends React.Component {
   }
 
   componentWillMount() {
-    this.alterTransactions(this.props.transactions)
+    this.alterTransactions(this.props.transactions, this.props.otherTenants)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.alterTransactions(nextProps.transactions)
+    this.alterTransactions(nextProps.transactions, nextProps.otherTenants)
   }
 
   renderRoommates() {
@@ -196,7 +204,7 @@ class Transactions extends React.Component {
         </form>
         {this.renderIncompleteTransactions()}
         <h4>Completed Transactions</h4>
-        <BootstrapTable options={completedOptions} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true }>
+        <BootstrapTable options={completedOptions} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true } pagination>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
           <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
           <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>

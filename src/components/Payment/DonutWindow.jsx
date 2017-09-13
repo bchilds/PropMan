@@ -15,7 +15,7 @@ class DonutWindow extends React.Component {
     // Centers the pie chart
     let x = width / 2;
     let y = height / 2;
-    let colorScale =  ["rgba(52, 73, 94, 1)", "rgba(37, 116, 169, 1)", "rgba(137, 196, 244, 1)", "rgba(82, 179, 217, 1)", "rgba(230, 126, 34 ,1)"]
+    let colorScale = ["rgba(0,100,66,1)", "rgba(30, 130, 76, 1)", "rgba(43, 175, 118, 1)", "rgba(46, 204, 113, 1)", "rgba(135, 211, 124, 1)"]
 
     return (
       <div className="donutContainer">

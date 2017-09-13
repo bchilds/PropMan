@@ -112,9 +112,13 @@ body {
   text-align: center
 }
 
-.paymentSetupForm {
+.paymentSetupForm, .setupErrors {
   width: 40%;
   margin: 0 auto;
+}
+
+.setupErrors {
+  color: red;
 }
 
 .paymentInput {
@@ -462,9 +466,34 @@ body {
   margin: 0 auto;
 }
 
+.donutLegend {
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 30px;
+}
 .fillColorBox {
   width: 20px;
   height: 20px;
   display: inline-block;
   margin: 0px 5px;
+}
+
+.loginFailure {
+  width: 50%;
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.tooltip-inner{
+  background-color: rgba(192, 57, 43,1) !important;
+  opacity: 1 !important;
+  width: 100%;
+}
+.tooltip.in {
+  opacity: 1 !important;
+}
+
+.tooltip-arrow {
+  border-bottom-color: rgba(192, 57, 43,1) !important;
 }

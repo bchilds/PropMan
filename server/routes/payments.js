@@ -52,7 +52,7 @@ const getTransactionById = async (ctx, transaction_id) => {
 exports.getTransactionById = getTransactionById
 
 const getUserExpenses = async (ctx, user_id) => {
-  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id=${user_id} AND is_completed=true GROUP BY payment_type ORDER BY SUM(split_amount) DESC;`)
+  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id=${user_id} AND is_completed=true GROUP BY payment_type ORDER BY SUM(split_amount) DESC LIMIT 5;`)
   transactionData = transactionData.rows
   return transactionData
 }
@@ -142,7 +142,7 @@ router
       ctx.request.body.transaction_amount = splitAmount
       ctx.request.body.split_amount = splitAmount
       // edit payment name to have '(split)'
-      ctx.request.body.payment_type = `${ctx.request.body.payment_type} (bill share payment)`
+      ctx.request.body.payment_type = `${ctx.request.body.payment_type}`
       for (var sharer of ctx.request.body.sharers) {
         ctx.request.body.recipient_id = ctx.request.body.requester_userId
         ctx.request.body.sender_id = sharer 

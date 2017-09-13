@@ -16,7 +16,7 @@ class PaymentSetup extends React.Component {
     super(props)
     this.state = {
       bankIsSelected: true,
-      user: this.props.user
+      user: {}
     }
   }
 
@@ -131,15 +131,25 @@ class PaymentSetup extends React.Component {
     )
   }
 
+  renderErrors(errors) {
+    // errors is an array of error messages
+    return errors.map((error, i) => {
+      return (
+        <h5 className="setupErrors">*{error} </h5>
+      )
+    })
+  }
+
   render() {
     return (
       <div className="paymentSetup">
         <h2 className="methodTitle">Set up my payment method</h2>
+          {this.props.failure.failure && this.renderErrors(this.props.failure.errors)}
           <form className="paymentSetupForm" onSubmit={this.handleSubmit.bind(this)}>
             <Accordion>
               <Panel header="1. Personal Information" eventKey="1">
-                <label>Full Name</label><br/><input name="name" className="paymentInput" defaultValue={this.state.user.user_name}></input><br/>
-                <label>E-mail address</label><br/><input name="email" className="paymentInput" defaultValue={this.state.user.email}></input><br/>
+                <label>Full Name</label><br/><input name="name" className="paymentInput" defaultValue={this.props.user.user_name}></input><br/>
+                <label>E-mail address</label><br/><input name="email" className="paymentInput" defaultValue={this.props.user.email}></input><br/>
                 <label>Birthday</label><br/>
                 <select name="month">
                   {this.renderMonths()}
@@ -202,7 +212,8 @@ class PaymentSetup extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
+    failure: state.submerchantCreationFailure
   }
 }
 

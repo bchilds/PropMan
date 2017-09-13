@@ -10,9 +10,10 @@ import promise from 'redux-promise';
 import styles from './styles.css';
 // import { loadState, saveState } from './localStorage'
 import { persistStore, autoRehydrate } from 'redux-persist'
+import thunk from 'redux-thunk'
 
 // const persistedState = loadState()
-const createStoreWithMiddleware = composeWithDevTools(applyMiddleware(promise), autoRehydrate())(createStore);
+const createStoreWithMiddleware = composeWithDevTools(applyMiddleware(promise, thunk), autoRehydrate())(createStore);
 
 const store = createStoreWithMiddleware(reducers)
 

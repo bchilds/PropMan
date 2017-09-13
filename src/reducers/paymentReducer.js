@@ -1,5 +1,6 @@
-import { SEND_PAYMENT, ADD_BILL, BILL_SHARE_PAYMENT } from '../actions/paymentGetters'
+import { SEND_PAYMENT, ADD_BILL, BILL_SHARE_PAYMENT, SUBMERCHANT_CREATION_FAILURE } from '../actions/paymentGetters'
 import { USER_LOGIN } from '../actions/authGetters'
+import { REHYDRATE } from 'redux-persist/constants'
 
 export function tenantPaidRent(state = false, action) {
   switch(action.type) {
@@ -79,6 +80,24 @@ export function expenses(state=[], action) {
       } else {
         return state
       }
+    default:
+      return state
+  }
+}
+
+export function submerchantCreationFailure(state = {failure: false, errors: []}, action) {
+  switch(action.type) {
+    case SUBMERCHANT_CREATION_FAILURE:
+      if (action.payload.data) {      
+        return {
+          failure: true,
+          errors: action.payload.data.split('\n')
+        }
+      } else {
+        return state
+      }
+    case REHYDRATE:
+      return {failure: false, errors: []}
     default:
       return state
   }

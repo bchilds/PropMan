@@ -1,10 +1,11 @@
 import { SET_PROFILE } from '../actions/setEditedProfileInfo'
 import { DIRECT_MESSAGES } from '../actions/messageGetters'
-import { USER_LOGIN, USER_LOGOUT} from '../actions/authGetters'
+import { USER_LOGIN, USER_LOGOUT, LOGIN_FAILURE} from '../actions/authGetters'
 import { FETCH_RENT, FETCH_MESSAGES, FETCH_DOCS, FETCH_SELECTED_MEDIA } 
 	from '../actions/tenantDashboardGetters.js';
 import { SUBMERCHANT_CREATION } from '../actions/paymentGetters'
 import { SET_MULTI, REMOVE_MULTI } from '../actions/twoFactorSet.js';
+import { REHYDRATE } from 'redux-persist/constants'
 
 export function userData(state = {}, action) {
   switch(action.type) {
@@ -119,5 +120,16 @@ export function docs(state = [], action) {
 
     default:
       return state;
+  }
+}
+
+export function loginFailure(state = false, action) {
+  switch(action.type) {
+    case LOGIN_FAILURE:
+      return true
+    case REHYDRATE:
+      return false
+    default:
+      return state
   }
 }
