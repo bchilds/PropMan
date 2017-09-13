@@ -8,13 +8,13 @@ let Landlords = require('./landlords.js')
 let Promise = require('bluebird')
 
 
-const updateTenant = async (ctx, user, tenant_id, property_id) => {
+const updateTenant = async (ctx, user, tenant_id, property_id, rent, date) => {
 	console.log(tenant_id, property_id)
 	let tenantRows
 	if(user) {
 		tenantRows = await ctx.db.query(`UPDATE tenants SET user_id = ${user.user_id} WHERE tenant_email = '${user.email}' AND is_active = true RETURNING *;`)
 	} else {
-		tenantRows = await ctx.db.query(`UPDATE tenants SET property_id = ${property_id} WHERE tenant_id = ${tenant_id} RETURNING *;`)
+		tenantRows = await ctx.db.query(`UPDATE tenants SET (property_id, rent, due_date) = (${property_id}, ${rent}, TO_DATE('${date})', 'DD/MM/YYYY')) WHERE tenant_id = ${tenant_id} RETURNING *;`)
 	}
 	return tenantRows.rows[0]
 }	
@@ -132,6 +132,7 @@ router
 		obj = ctx.request.body
 		// needs to check if tenant has a user
 		console.log(obj.tenant_email)
+		console.log(obj)
 		user = await Users.getUserByEmail(ctx, obj.tenant_email)
 		if(user) {
 			// if it does, check if user has active tenant
@@ -149,7 +150,8 @@ router
 			} else if(tenant && !tenant.property_id) {
 				// if tenant is active but has no property, update
 				console.log('bylandlord - updating tenant')
-				// tenant = await updateTenant(ctx, null, tenant.tenant_id, obj.property_id)
+				tenant = await updateTenant(ctx, null, tenant.tenant_id, obj.property_id, obj.rent, obj.due_date)
+				console.log('10ant', tenant)
 				ctx.response.status = 202
 				ctx.body = tenant
 			} else {
