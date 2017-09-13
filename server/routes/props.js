@@ -19,7 +19,8 @@ exports.getLandlordProperties = getLandlordProperties
 const addProperty = async (ctx, landlord_id) => {
 	let propsRows, prop, obj
 	obj = ctx.request.body
-	propsRows = await ctx.db.query(`INSERT INTO properties (property_name, address, city, state_abbrv, landlord_id) VALUES ('${obj.property_name}', '${obj.address}', '${obj.city}', '${obj.state_abbrv}', ${landlord_id}) RETURNING *;`)
+	console.log(`${obj.lat}, ${obj.lng}`)
+	propsRows = await ctx.db.query(`INSERT INTO properties (property_name, address, city, state_abbrv, landlord_id, lat, lng) VALUES ('${obj.property_name}', '${obj.address}', '${obj.city}', '${obj.state_abbrv}', ${landlord_id}, ${obj.lat}, ${obj.lng}) RETURNING *;`)
 	prop = propsRows.rows[0]
 	return prop
 }

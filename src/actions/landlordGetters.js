@@ -12,7 +12,9 @@ export function addProperty(propDetails, cb) {
     property_name: propDetails.property_name,
     address: propDetails.address,
     city: propDetails.city,
-    state_abbrv: propDetails.state_abbrv
+    state_abbrv: propDetails.state_abbrv,
+    lat: propDetails.lat,
+    lng: propDetails.lng
   })
 
   return {

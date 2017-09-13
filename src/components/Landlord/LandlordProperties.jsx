@@ -24,23 +24,42 @@ function mapDispatchToProps(dispatch) {
 class Properties extends React.Component {
   addPropertyButton(e) {
     e.preventDefault()
-    let res = this.props.addProperty({
-      "landlord_id": this.props.landlordData.landlord_id,
-      "property_name": e.target.property_name.value,
-      "address": e.target.address.value,
-      "city": e.target.city.value,
-      "state_abbrv": e.target.state_abbr.value
-    }, (res, data) => {
-      if (res) {
-        console.log(res, data)
+    e.persist()
+    const geoIn = {
+      address: e.target.address.value + ', ' + e.target.city.value + ' ' + e.target.state_abbr.value,
+    }
+
+    let geocoder = new google.maps.Geocoder()
+    geocoder.geocode(geoIn, (results, status) => { 
+
+      if(status === google.maps.GeocoderStatus.OK) {
+        const lat = results[0].geometry.location.lat()
+        const lng = results[0].geometry.location.lng()
+        
+        let res = this.props.addProperty({
+          "landlord_id": this.props.landlordData.landlord_id,
+          "property_name": e.target.property_name.value,
+          "address": e.target.address.value,
+          "city": e.target.city.value,
+          "state_abbrv": e.target.state_abbr.value,
+          "lat": lat,
+          "lng": lng,
+        }, (res, data) => {
+          if (res) {
+            console.log(res, data)
+          } else {
+            alert('failure to login upon signup')
+          }
+        })
+        e.target.property_name.value = '',
+        e.target.address.value = '',
+        e.target.city.value = '',
+        e.target.state_abbr.value = 'CA'
       } else {
-        alert('failure to login upon signup')
+        alert('Error validating your address: ', status)
       }
     })
-    e.target.property_name.value = '',
-    e.target.address.value = '',
-    e.target.city.value = '',
-    e.target.state_abbr.value = 'CA'
+
   }
 
   renderStates() {

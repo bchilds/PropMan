@@ -31,12 +31,14 @@ CREATE INDEX idx_landlords ON landlords ( user_id );
 ALTER TABLE landlords ADD CONSTRAINT fk_landlords_users FOREIGN KEY ( user_id ) REFERENCES users( user_id ) ON DELETE CASCADE;
 
 CREATE TABLE properties ( 
-	property_id          SERIAL NOT NULL,
-	property_name        text  NOT NULL,
+	property_id          SERIAL NOT NULL ,
+	property_name        text  NOT NULL ,
 	address              text  ,
 	city                 text  ,
 	state_abbrv          text  ,
 	landlord_id          integer  ,
+	lat									 numeric ,
+	lng									 numeric ,
 	created_date         date DEFAULT current_date ,
 	CONSTRAINT pk_properties PRIMARY KEY ( property_id )
  );
