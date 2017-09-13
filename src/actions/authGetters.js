@@ -51,7 +51,7 @@ export function loginUser(credentials) {
   // **** request should have userData, tenant info, messages, docs, media
 }
 
-export function logoutUser(cb) {
+export function logoutUser() {
   const request = axios.get(`${ROOT_URL}/api/auth/logout`)
   return {
     type: USER_LOGOUT,

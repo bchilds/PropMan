@@ -9,8 +9,11 @@ import { connect } from 'react-redux'
 export class MapContainer extends React.Component {
 
 	constructor(props){
-		super()
+		super(props)
 		this.onMarkerDblClicked = this.onMarkerDblClicked.bind(this)
+		this.state = {
+			properties: props.properties
+		}
 	}
 
 	onMarkerDblClicked(props, marker, e) {
@@ -21,7 +24,7 @@ export class MapContainer extends React.Component {
 		return (
 			<div>
 				<SimpleMap google={this.props.google} centerAroundCurrentLocation={true}>
-					{this.props.properties.map(p => {
+					{this.state.properties.map(p => {
 						let pos = {
 							lat: p.lat,
 							lng: p.lng
