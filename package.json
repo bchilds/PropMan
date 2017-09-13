@@ -45,7 +45,6 @@
     "prop-types": "^15.5.10",
     "qrcode": "^0.9.0",
     "react": "^15.6.1",
-    "react-addons-create-fragment": "^15.6.0",
     "react-bootstrap": "^0.31.2",
     "react-bootstrap-table": "^4.0.2",
     "react-dom": "^15.6.1",

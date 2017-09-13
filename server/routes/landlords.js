@@ -4,7 +4,6 @@ let payments = require('./payments.js')
 let messages = require('./messages.js')
 let Tenants = require('./tenants.js')
 let Promise = require('bluebird')
-// let Users = require('./users.js')
 let email = require('../emailService.js')
 
 const createLandlord = async (ctx, user) => {
@@ -102,7 +101,6 @@ router
 			url: ctx.request.body.document_url
 		}
 		email.sendEmail(ctx.request.body.tenant_email, 'Rentopia - Your landloard has sent you a document', template)
-		// email.sendEmail(ctx.request.body.tenant_email, 'Rentopia - Your landloard has sent you a document')
 		ctx.body = {
 			document_title: ctx.request.body.document_title,
 			tenant_email: ctx.request.body.tenant_email
