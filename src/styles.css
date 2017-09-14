@@ -282,6 +282,10 @@
     overflow: scroll;
   }
 
+  #navProfileDropdown {
+    margin-right: 30px;
+  }
+
   .centerMessage {
     width: 80%;
     font-size: 18px;

@@ -35,7 +35,7 @@ class TenantNavBar extends Component {
               </li>
             </ul>
 
-           <div className="nav-item dropdown">
+           <div id="navProfileDropdown" className="nav-item dropdown">
              <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
              <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
                <Link className="dropdown-item" to="/tenant/profile">Your Profile</Link>
