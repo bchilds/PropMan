@@ -19,7 +19,7 @@ class LandlordDashboard extends React.Component {
   render() {
     return (
       <div>
-        <h2> Manage your estate </h2>
+        <h2 className="pageTitle"> Manage your estate </h2>
         <p> {this.props.media} </p>
         <MapContainer history={this.props.history}/>
       </div>

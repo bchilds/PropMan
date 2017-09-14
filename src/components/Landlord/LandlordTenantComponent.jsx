@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Documents from './LandlordTenantDocuments.jsx'
+import defaultTenantPic from '../../images/user-silhouette.png'
 
 function mapStateToProps(state, match) {
   const url = [...match.match.url.split('/')]
@@ -31,12 +32,22 @@ class Tenant extends React.Component {
 
     return (
       <div>
-        <h3>{tenant.tenant_email}</h3>
-        <p>Property: {property.property_name}</p>
-        <p>Address: {property.address}</p>
-        <p>Rent: {tenant.rent}</p>
-        <p>Due: {tenant.due_date}</p>
-        <Documents tenant_id={this.props.tenant_id} />
+        <h3 className="pageTitle">{tenant.tenant_email}</h3>
+        <div className="row">
+          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <img style={{height: '120px', width: '120px', float: 'right'}} src={defaultTenantPic} />
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 propertyInfo">
+            <p>Property: {property.property_name}</p>
+            <p>Address: {property.address}</p>
+            <p>Rent: {tenant.rent}</p>
+            <p>Due: {tenant.due_date}</p>
+          </div>
+        </div>
+        <div className="row">
+          <hr />
+          <Documents tenant_id={this.props.tenant_id} />
+        </div>
       </div>
     )
   }

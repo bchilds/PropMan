@@ -139,10 +139,9 @@ export class SimpleMap extends React.Component {
     })
 	}
 
-
 	render() {
 		return (
-			<div ref='map' style={{width: "70vw", height: "50vh"}} >
+      <div className="LandlordMap" ref='map' style={{width: "90VW", height: "80VH"}} >
 				Loading Map...
 				{this.renderChildren()}
 			</div>

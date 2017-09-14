@@ -10,6 +10,7 @@ import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-a
 import BroadcastModal from './BroadcastMessageModal.jsx';
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
 import Documents from './LandlordPropertyDocuments.jsx'
+import defaultPropertyPic from '../../images/home.png'
 
 const customStyles = {
   content : {
@@ -115,7 +116,6 @@ class Property extends React.Component {
   render() {
     const options = {
       onRowClick: (row, columnIndex, rowIndex) => {
-        // console.log(`/proprietor/properties/${this.props.property.property_id}/${row.tenant_id}`)
         this.props.history.push(`/proprietor/properties/${this.props.property.property_id}/${row.tenant_id}`);
       }
     }
@@ -123,10 +123,17 @@ class Property extends React.Component {
     return (
       <div>
         <h2 className="pageTitle">{property && property.property_name}</h2>
-        <p>Address: {property && property.address}</p>
-        <p>City: {property && property.city}</p>
-        <p>State: {property && property.state_abbrv}</p>
-        <button onClick={this.openModal}> Create Broadcast </button>
+        <div className="row">
+          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <img style={{height: '120px', width: '120px', float: 'right'}} src={defaultPropertyPic} />
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 propertyInfo">
+            <p>Address: {property && property.address}</p>
+            <p>City: {property && property.city}</p>
+            <p>State: {property && property.state_abbrv}</p>
+            <button onClick={this.openModal}> Create Broadcast </button>
+          </div>
+        </div>
         {this.state.modalIsOpen &&
           <Modal
             isOpen={this.state.modalIsOpen}
@@ -140,41 +147,45 @@ class Property extends React.Component {
               tenants={this.props.tenants} />
           </Modal>  
         }
-        <h2>Tenants</h2>
-        <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
-          <Accordion>
-            <Panel header="Add a Tenant" eventKey="1">
-              <label>Email</label>
-              <br />
-              <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
-              <br /><br />
-              <label>Rent Amount</label>
-              <br />
-              <input className="addTenantInput" name="rent" placeholder="1200"></input>
-              <br /><br />
-              <label>Rent Due Date</label>
-              <br />
-              <select name="month">
-                {this.renderMonths()}
-              </select>
-              <select name="day">
-                {this.renderDays()}
-              </select>
-              <select name="year">
-                  {this.renderYears()}
-                </select>
-              <br /><br />
-              <button className="" type="submit">Add Tenant</button>
-            </Panel>
-          </Accordion>
-        </form>
-        <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
-          <TableHeaderColumn dataField='tenant_id' dataSort={ true } isKey={ true } hidden={ true }>ID</TableHeaderColumn>
-          <TableHeaderColumn dataField='tenant_email' dataSort={ true }>Email</TableHeaderColumn>
-          <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
-          <TableHeaderColumn dataField='due_date' dataSort={ true }>Due</TableHeaderColumn>
-        </BootstrapTable>
         <div>
+          <hr />
+          <h2>Tenants</h2>
+          <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
+            <Accordion>
+              <Panel header="Add a Tenant" eventKey="1">
+                <label>Email</label>
+                <br />
+                <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
+                <br /><br />
+                <label>Rent Amount</label>
+                <br />
+                <input className="addTenantInput" name="rent" placeholder="1200"></input>
+                <br /><br />
+                <label>Rent Due Date</label>
+                <br />
+                <select name="month">
+                  {this.renderMonths()}
+                </select>
+                <select name="day">
+                  {this.renderDays()}
+                </select>
+                <select name="year">
+                    {this.renderYears()}
+                  </select>
+                <br /><br />
+                <button className="" type="submit">Add Tenant</button>
+              </Panel>
+            </Accordion>
+          </form>
+          <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
+            <TableHeaderColumn dataField='tenant_id' dataSort={ true } isKey={ true } hidden={ true }>ID</TableHeaderColumn>
+            <TableHeaderColumn dataField='tenant_email' dataSort={ true }>Email</TableHeaderColumn>
+            <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
+            <TableHeaderColumn dataField='due_date' dataSort={ true }>Due</TableHeaderColumn>
+          </BootstrapTable>
+        </div>
+        <div>
+          <hr />
           <Documents landlord_id={this.props.landlord.landlord_id} property_id={this.props.property_id} tenants={this.props.tenants} />
         </div>
       </div>
