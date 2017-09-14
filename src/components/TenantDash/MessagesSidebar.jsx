@@ -11,28 +11,62 @@ class MessagesSidebar extends Component {
 	constructor() {
 		super()
 
+		this.state = {
+			mobile: false
+		}
+	}
+
+	componentDidMount() {
+		var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    var mobile = false
+    if (x < 481) {
+    	mobile = true
+    }
+		this.setState({mobile: mobile})
 	}
 
 	renderPropTenants() {
 		return (
-			<tbody>
+			<div>
 			  {this.props.propertyTenants && this.props.propertyTenants.map((t, i) => {
-			  	return (<tr onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
-			  		<td>{i === 0 ? "Landlord: " + t.user_name: t.user_name}</td></tr>)
+			  	return (<div key={i} onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
+			  		<label className="messageContacts">{i === 0 ? "Landlord: " + t.user_name: t.user_name}</label></div>)
 			  	}
 				)}
-			</tbody>
+			</div>
 		)
 	}
 
 	render() {
 		return (
-			<div id="tenantSidebar">
-			  <h3 className="sidebarTitle">Direct Messages</h3>
-	        <table className="table table-hover">
-	        	{this.renderPropTenants()}
-	        </table>
-			</div>
+			this.state.mobile ?
+				<div className="accordion " id="accordionEx" role="tablist" aria-multiselectable="true">
+			    <div className="card col-sm-12 col-xs-12">
+		        <div className="card-header" role="tab" id="headingOne">
+	            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h4 className="mb-0 mobileSidebarDash">
+                  Direct Messages <i className="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+                </h4>
+	            </a>
+		        </div>
+
+		        <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne">
+	            <div className="card-body">
+	              {this.renderPropTenants()}
+	            </div>
+		        </div>
+			    </div>
+				</div>
+			:
+				<div id="tenantSidebar">
+				  <h3 className="sidebarTitle">Direct Messages</h3>
+		        {this.renderPropTenants()}
+				</div>
 		)
 	}
 }

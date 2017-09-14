@@ -35,14 +35,30 @@ class TenantDashboard extends Component {
 
     this.state = {
       modalIsOpen: true,
-      donutData: []
+      mobile: false,
+      showDonut: true,
+      donutData: [],
+      showMedia: false,
+      paymentAction: "Make Payment"
     }
   }
 
   componentWillMount() {
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;  
+    var mobile = false;
+    if (x < 481) {
+      mobile = true
+    }
     this.props.getBroadcasts(this.props.tenantData.property_id)
     this.setState({
-      donutData: this.props.expenses
+      donutData: this.props.expenses,
+      mobile: mobile,
+      modalIsOpen: true
     })
   }
 
@@ -59,61 +75,102 @@ class TenantDashboard extends Component {
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
+    if (this.state.mobile) {
+      this.setState({modalIsOpen: true, showDonut: false, showMedia: false, paymentAction: "Cancel"});
+    } else {
+      this.setState({modalIsOpen: true, paymentAction: "Cancel"});
+    }
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({modalIsOpen: false, showDonut: true, paymentAction: "Make Payment"});
+  }
+
+  cancelPayment() {
+    this.closeModal()
+    this.setState({paymentAction: "Make Payment"})
+  }
+
+  togglePayment() {
+    this.setState({modalIsOpen: false, showDonut: true, paymentAction: "Make Payment"})
   }
 
   render() {
-  	return (
-      <div>
-        <TenantSidebar tenant_id={this.props.tenantData.tenant_id}/>
+    return (
 
-        <div id="tenantWindow">
-          <h2 className="pageTitle"> Your Dashboard </h2>
-          {this.props.showDonut && <div className="donutGraph">
-            <h3>Expenses</h3>
-            <DonutWindow data = {this.state.donutData}
-            />
-          </div>
-          }
-          {!this.props.showDonut &&           
-            <div className="selectedMedia">
-              <h3> {this.props.media.title} </h3>
-              <p> {this.props.media.media} </p>
-            </div>
-          }
-        </div>
-
-        <div id="centerTenantDash">
-          <p className="tenantMakePayment">
-          <p>Rent Due: {this.props.tenantRentDue}</p>
-            <button className="btn btn-secondary" onClick={this.openModal.bind(this)}> Make Payment </button>
-          </p>
-        </div>
-
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal.bind(this)}
-          style={customStyles}
-          contentLabel="Payment Modal"
-        > 
-          <PaymentForm paymentParams=
-            {
-              {
-                amountDue: this.props.tenantData.rent, 
-                senderId: this.props.user.user_id, 
-                recipientId: this.props.tenantsLandlord.user_id, 
-                merchantId: this.props.tenantsLandlord.merchant_id,
-                paymentType: 'Rent',
-                httpMethod: 'post'
+      <div className="container-fluid">
+        <div className="row">
+          <div  className="col-lg-3 col-md-4 col-sm-6 col-xs-12 messageMargins">
+            <TenantSidebar/>
+          </div>  
+          <div className="col-lg-9 col-md-8 col-sm-7 col-xs-12 messageMargins">
+            <div id="tenantWindow">
+              <h2 className="pageTitle"> Your Dashboard </h2>
+              {this.state.mobile && this.state.modalIsOpen &&
+                <PaymentForm togglePayment={this.togglePayment.bind(this)} 
+                  paymentParams=
+                  {
+                    {
+                      amountDue: this.props.tenantData.rent, 
+                      senderId: this.props.user.user_id, 
+                      recipientId: this.props.tenantsLandlord.user_id, 
+                      merchantId: this.props.tenantsLandlord.merchant_id,
+                      paymentType: 'Rent',
+                      httpMethod: 'post'
+                    }
+                  }/>
               }
-            }/>
-        </Modal>
+              
+              {this.state.showDonut && 
+                <div className="donutGraph">
+                  <h3>Monthly Expenses</h3>
+                  <DonutWindow data = {this.props.expenses}/>
+                </div>
+              }
+
+              {this.state.showMedia &&           
+                <div className="selectedMedia">
+                  <h3> {this.props.media.title} </h3>
+                  <p> {this.props.media.media} </p>
+                </div>
+              }
+
+
+            </div>
+          </div>
+          <div className="col-lg-12">
+            <p className="tenantMakePayment">
+            <p>Rent Due: {this.props.tenantRentDue}</p>
+            { this.state.paymentAction === "Make Payment" ?
+              <button className="btn btn-secondary" onClick={this.openModal.bind(this)}> Make Payment </button>
+              :<button className="btn btn-secondary" onClick={this.cancelPayment.bind(this)}> Cancel </button>
+            }
+            </p>
+            {!this.state.mobile && this.state.modalIsOpen &&
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              onRequestClose={this.closeModal.bind(this)}
+              style={customStyles}
+              contentLabel="Payment Modal"
+            > 
+              <PaymentForm togglePayment={this.togglePayment.bind(this)}
+              paymentParams=
+                {
+                  {
+                    amountDue: this.props.tenantData.rent, 
+                    senderId: this.props.user.user_id, 
+                    recipientId: this.props.tenantsLandlord.user_id, 
+                    merchantId: this.props.tenantsLandlord.merchant_id,
+                    paymentType: 'Rent',
+                    httpMethod: 'post'
+                  }
+                }/>
+            </Modal>
+          }
+          </div>
       </div>
-  	)
+    </div>
+    )
   }
 }
 

@@ -47,6 +47,7 @@ auth
 					output = {user: user, tenant: tenant}
 				}
 			}
+			console.log('body being returned', output)
 			ctx.body = output
 		} // end User Does Not Exist
 	}) //end signup

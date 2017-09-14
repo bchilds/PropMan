@@ -8,11 +8,24 @@ import Documents from '../Landlord/LandlordTenantDocuments.jsx'
 class TenantSideBar extends Component {
 	constructor(props) {
     super(props)
+
+    this.state = {
+    	mobile: false
+    }
 	}
 
 	componentDidMount() {
-		// this.props.getBroadcasts(this.props.userId)
-		// this.props.getDocs(this.props.userId)
+		var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    var mobile = false
+    if (x < 481) {
+    	mobile = true
+    }
+		this.setState({mobile: mobile})
 	}
 
 	renderBroadcasts() {
@@ -25,18 +38,62 @@ class TenantSideBar extends Component {
 			// console.log(bcast)
 			return (
 				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
+			 )
+		  })}
+		  </div>
 			)
-		})
 	}
 
 	render() {
 		return (
-			<div id="tenantSidebar">
-				<h3 className="sidebarTitle"><div onClick={() => this.props.showDonut()}>Expenses</div></h3>
-			  <h3 className="sidebarTitle">Broadcasts</h3>
-	        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
-				<Documents tenant_id={this.props.tenant_id} />
-			</div>
+			this.state.mobile ? 
+					<div className="accordion " id="accordionEx" role="tablist" aria-multiselectable="true">
+				    <div className="card col-sm-12 col-xs-12">
+			        <div className="card-header" role="tab" id="headingOne">
+		            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+	                <h4 className="mb-0 mobileSidebarDash">
+	                  Broadcasts
+	                </h4>
+		            </a>
+			        </div>
+
+			        <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne">
+		            <div className="card-body">
+		              {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
+		            </div>
+			        </div>
+				    </div>
+
+				    <div className="card col-sm-12 col-xs-12">
+			        <div className="card-header" role="tab" id="headingTwo">
+		            <a className="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+	                <h4 className="mb-0 mobileSidebarDash">
+	                  Documents
+	                </h4>
+		            </a>
+			        </div>
+
+			        <div id="collapseTwo" className="collapse" role="tabpanel" aria-labelledby="headingTwo">
+		            <div className="card-body">
+		              <Documents tenant_id={this.props.tenant_id} />
+		            </div>
+			        </div>
+				    </div>
+					</div>
+				:
+					<div id="tenantSidebar">
+						<div className="dashSidebar">
+						  <h3 className="sidebarTitle">Broadcasts</h3>
+				        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
+						</div>
+						<div className="dashSidebar">
+							<Documents tenant_id={this.props.tenant_id} />
+						</div>
+					</div>
+<<<<<<< HEAD
+				</div>g
+=======
+>>>>>>> Most features are flexible and mobile friendly
 		)
 	}
 }

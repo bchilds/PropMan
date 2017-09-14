@@ -32,7 +32,6 @@ const middleware = koaWebpack({
 app.use(middleware)
 app.use(cors())
 app.use(serve(__dirname + 'dist'));
-
 // bodyparser
 // the parsed body will store in ctx.request.body
 // if nothing was parsed, body will be an empty object {}

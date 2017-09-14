@@ -8,17 +8,6 @@ import { bindActionCreators } from 'redux'
 import { logoutUser } from '../../actions/authGetters'
 
 class TenantNavBar extends Component {
-    constructor(props) {
-    super() 
-
-    this.state = {
-      dropdownIsOpen: false
-    }
-  }
-
-  toggleDropdown() {
-    this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen }
-  )}
 
   handleLogout() {
     this.props.logoutUser()
@@ -29,37 +18,45 @@ class TenantNavBar extends Component {
 
   render() {
     return (
-      <Navbar className="navbar" inverse collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand className="brand">
-            <Link to="/tenant">Rentopia</Link>
-          </Navbar.Brand>
-        </Navbar.Header>
-        <Nav>
-          <LinkContainer to='/tenant/payments' className="link">
-            <NavItem>Payments</NavItem>
-          </LinkContainer>
-          <LinkContainer to='/tenant/messages' className="link">
-            <NavItem>Messages</NavItem>
-          </LinkContainer>
-        </Nav>
-        <Nav pullRight>
-          <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)} open={this.state.dropdownIsOpen}>
-            <LinkContainer onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/tenant/profile"> 
-              <NavItem>Your Profile</NavItem>
-            </LinkContainer>
-            <LinkContainer href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" >
-              <NavItem>Logout</NavItem>
-            </LinkContainer>
-          </NavDropdown>
-        </Nav>
-      </Navbar>
+      <div className="navbarColor">
+        <nav className="navbar navbar-expand-lg navbar-dark">
+          <Link className="navbar-brand" id="navbarText" to="/tenant">Rentopia</Link>
+
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
+
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item active">
+                <Link className="nav-link" id="navbarText" to="/tenant/messages">Messages</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" id="navbarText" to="/tenant/payments">Payments</Link>
+              </li>
+            </ul>
+
+           <div className="nav-item dropdown">
+             <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
+             <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+               <Link className="dropdown-item" to="/tenant/profile">Your Profile</Link>
+               <Link className="dropdown-item" onClick={this.handleLogout.bind(this)} to="/" >Log Outta Here</Link>
+             </div>
+           </div>
+          </div>
+        </nav>
+      </div>
     )
   }
 };
+
+function mapStateToProps(state) {
+  return {
+    username: state.user && state.user.user_name
+  }
+}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({logoutUser}, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(withRouter(TenantNavBar))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TenantNavBar))

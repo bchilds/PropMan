@@ -44,7 +44,8 @@ class PaymentForm extends React.Component {
     this.props.tenantPayment(payload, this.props.paymentParams, this.props.paymentParams.httpMethod)
     this.setState({
       showPayRentButton: false
-    })
+    }, () => {setTimeout(()=>{this.props.togglePayment()}, 3000)})
+    
     // send payload aka nonce to server. 
     // server should use nonce with a braintree sdk to charge card
   }

@@ -22,16 +22,20 @@ export class MapContainer extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<SimpleMap google={this.props.google} centerAroundCurrentLocation={true}>
-					{this.state.properties.map(p => {
-						let pos = {
-							lat: p.lat,
-							lng: p.lng
-						}
-						return <Marker key={p.property_id} property={p} position={pos} onDblclick={this.onMarkerDblClicked}/>
-					})}
-				</SimpleMap>
+			<div className="container-fluid">
+        <div className="row">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<SimpleMap style={{border: "2px solid red"}} google={this.props.google} centerAroundCurrentLocation={true}>
+							{this.state.properties.map(p => {
+								let pos = {
+									lat: p.lat,
+									lng: p.lng
+								}
+								return <Marker key={p.property_id} property={p} position={pos} onDblclick={this.onMarkerDblClicked}/>
+							})}
+						</SimpleMap>
+					</div>
+			  </div>
 			</div>
 		)
 	}

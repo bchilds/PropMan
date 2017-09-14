@@ -8,6 +8,11 @@ import App from './components/App.jsx'
 import reducers from './reducers/store.js';
 import promise from 'redux-promise';
 import styles from './styles.css';
+import mdb from './mdb.css';
+import bootstrap from './bootstrap.css';
+import b from '../js/bootstrap.min.js'
+import jq from '../js/jquery-3.1.1.min.js'
+
 // import { loadState, saveState } from './localStorage'
 import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
