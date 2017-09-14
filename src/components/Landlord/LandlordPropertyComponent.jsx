@@ -11,6 +11,7 @@ import BroadcastModal from './BroadcastMessageModal.jsx';
 import { addPropertyTenant, getPropertyTenants2 } from '../../actions/propertyGetters.js'
 import Documents from './LandlordPropertyDocuments.jsx'
 import defaultPropertyPic from '../../images/home.png'
+import { getBroadcasts } from '../../actions/broadcastsGetter.js'
 
 const customStyles = {
   content : {
@@ -21,11 +22,10 @@ const customStyles = {
     marginRight     : '-50%',
     transform       : 'translate(-50%, -50%)',
     maxHeight       : '600px',
-    minHeight       : '400px', // This sets the max height
+    minHeight       : '400px',
     width           : '600px',
-    overflow        : 'scroll', // This tells the modal to scroll
+    overflow        : 'scroll',
     border          : '1px solid black',
-    //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
     borderRadius    : '0px'
   }
 };
@@ -37,12 +37,13 @@ function mapStateToProps(state, match) {
     landlord: state.landlordData,
     property_id: property_id,
     property: state.landlordProperties.filter(property => property.property_id === property_id)[0],
-    tenants: state.propertyTenants2
+    tenants: state.propertyTenants2,
+    broadcasts: state.broadcasts
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addPropertyTenant, getPropertyTenants2}, dispatch)
+  return bindActionCreators({addPropertyTenant, getPropertyTenants2, getBroadcasts}, dispatch)
 }
 
 class Property extends React.Component {
@@ -53,11 +54,11 @@ class Property extends React.Component {
       sendTo: -1
     }
     this.openModal = this.openModal.bind(this)
-
   }
 
   componentWillMount() {
     this.props.getPropertyTenants2(this.props.property_id)
+    this.props.getBroadcasts(this.props.property_id)
   }
 
   openModal() {
@@ -76,15 +77,7 @@ class Property extends React.Component {
       "tenant_email": e.target.tenant_email.value,
       "rent": e.target.rent.value,
       "due_date": `${e.target.day.value}/${monthNum}/${e.target.year.value}`
-    }
-    // , (res, data) => {
-    //   if (res) {
-    //     console.log(res, data)
-    //   } else {
-    //     alert('failure to login upon signup')
-    //   }
-    // }
-    )
+    })
     e.target.tenant_email.value = ''
     e.target.rent.value = ''
   }
@@ -147,41 +140,56 @@ class Property extends React.Component {
               tenants={this.props.tenants} />
           </Modal>  
         }
-        <h2>Tenants</h2>
-        <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
-         <div className="accordion-group">
-           <div className="accordion-heading">
-             <div className="accordion-toggle" data-toggle="collapse" href="#1">
-               Add a Tenant
-             </div>
-             <div id="1" className="accordion-body collapse">
-               <div className="accordion-inner" id="addTenantsPanel">
-                 <label>Email</label>
-                 <br />
-                 <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
-                 <br /><br />
-                 <label>Rent Amount</label>
-                 <br />
-                 <input className="addTenantInput" name="rent" placeholder="1200"></input>
-                 <br /><br />
-                 <label>Rent Due Date</label>
-                 <br />
-                 <select name="month">
-                   {this.renderMonths()}
-                 </select>
-                 <select name="day">
-                   {this.renderDays()}
-                 </select>
-                 <select name="year">
-                     {this.renderYears()}
-                   </select>
-                 <br /><br />
-                 <button className="btn btn-secondary" type="submit">Add</button>
+        <div>
+          <hr />
+          <h3>Broadcasts</h3>
+          {this.props.broadcasts.length===0 ? <p>Currently there are no broadcasts for this property</p> :
+            this.props.broadcasts.map(broadcast => 
+              <div key={broadcast.message_id}>
+                <h5>{broadcast.message_title}</h5>
+                <p>{broadcast.message_content}</p>
+              </div>
+            )
+          }
+        </div>
+        <div>
+          <hr />
+          <h3>Tenants</h3>
+          <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
+           <div className="accordion-group">
+             <div className="accordion-heading">
+               <div className="accordion-toggle" data-toggle="collapse" href="#1">
+                 Add a Tenant
                </div>
-             </div>
+               <div id="1" className="accordion-body collapse">
+                 <div className="accordion-inner" id="addTenantsPanel">
+                   <label>Email</label>
+                   <br />
+                   <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
+                   <br /><br />
+                   <label>Rent Amount</label>
+                   <br />
+                   <input className="addTenantInput" name="rent" placeholder="1200"></input>
+                   <br /><br />
+                   <label>Rent Due Date</label>
+                   <br />
+                   <select name="month">
+                     {this.renderMonths()}
+                   </select>
+                   <select name="day">
+                     {this.renderDays()}
+                   </select>
+                   <select name="year">
+                       {this.renderYears()}
+                     </select>
+                   <br /><br />
+                   <button className="btn btn-secondary" type="submit">Add</button>
+                 </div>
+               </div>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
         <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
           <TableHeaderColumn dataField='tenant_id' dataSort={ true } isKey={ true } hidden={ true }>ID</TableHeaderColumn>
           <TableHeaderColumn dataField='tenant_email' dataSort={ true }>Email</TableHeaderColumn>

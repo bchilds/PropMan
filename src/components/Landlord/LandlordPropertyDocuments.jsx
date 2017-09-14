@@ -44,9 +44,6 @@ class Documents extends React.Component {
      .then((response) => {
         // console.log(response)
         this.getPropertyDocuments(this.props.property_id)
-        // this.setState({
-        //   propertyDocuments: [...this.state.propertyDocuments, response.data]
-        // })
      })
      .catch((err) => {
         console.log(err)
@@ -76,18 +73,14 @@ class Documents extends React.Component {
       Expires: 60,
       ContentType: this.state.fileForUploadToS3.type
     }
-// console.log('params', params)
     s3.getSignedUrl('putObject', params, (err, signedUrl) => {
       if (err) {
         console.log(err)
         return err
       } else {
-// console.log('signedUrl', signedUrl)
-// console.log(this.state.fileForUploadToS3)
         var instance = axios.create()
         instance.put(signedUrl, this.state.fileForUploadToS3, {headers: {'Content-Type': this.state.fileForUploadToS3.type}})
          .then((result) => {
-            // console.log('result', result)
             this.addPropertyDocument(this.props.landlord_id, this.props.property_id)
             this.setState({
               fileForUploadToS3: null
@@ -128,7 +121,7 @@ class Documents extends React.Component {
   render() {
     return (
         <div>
-        <h2>Documents</h2>
+        <h3>Documents</h3>
         {this.state.propertyDocuments.length === 0 ? null :
           <div>
             <ul>

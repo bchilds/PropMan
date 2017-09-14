@@ -44,10 +44,8 @@ class Tenant extends React.Component {
             <p>Due: {tenant.due_date}</p>
           </div>
         </div>
-        <div className="row">
-          <hr />
-          <Documents tenant_id={this.props.tenant_id} />
-        </div>
+        <hr />
+        <Documents tenant_id={this.props.tenant_id} />
       </div>
     )
   }

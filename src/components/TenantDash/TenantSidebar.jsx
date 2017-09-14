@@ -106,7 +106,8 @@ function mapStateToProps(state) {
 		broadcasts: state.broadcasts,
 		docs: state.docs && state.docs.tenantDocs,
 		userId: state.user && state.user.user_id,
-		propId: state.properties && state.properties.propId
+		propId: state.properties && state.properties.propId,
+		tenant_id: state.tenantData.tenant_id
 	}
 }
 
