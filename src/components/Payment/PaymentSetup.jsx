@@ -114,8 +114,8 @@ class PaymentSetup extends React.Component {
   renderBankForm() {
     return (
       <div>
-        <label>Account Number</label><br/><input type="text" className="paymentInput" name="accountNum"></input><br/>
-        <label>Routing Number</label><br/><input type="text" className="paymentInput" name="routingNum"></input><br/>
+        <label>Account Number</label><br/><input type="text" className="paymentInput" name="accountNum"></input>
+        <label>Routing Number</label><br/><input type="text" className="paymentInput" name="routingNum"></input>
       </div>
     )
   }
@@ -123,8 +123,8 @@ class PaymentSetup extends React.Component {
   renderVenmoForm() {
     return (
       <div>
-        <label>Email</label><br/><input className="paymentInput" name="venmoEmail"></input><br/>
-        <label>Phone Number</label><br/><input type="text" className="paymentInput" name="phoneNum"></input><br/>
+        <label>Email</label><br/><input type="text" className="paymentInput" name="venmoEmail"></input>
+        <label>Phone Number</label><br/><input type="text" className="paymentInput" name="phoneNum"></input>
         <h6>* Must have a valid Venmo account</h6>
         <h6>* Please use either the email or phone number associated with your Venmo account</h6>
       </div>
@@ -146,59 +146,77 @@ class PaymentSetup extends React.Component {
         <h2 className="methodTitle">Set up my payment method</h2>
           {this.props.failure.failure && this.renderErrors(this.props.failure.errors)}
           <form className="paymentSetupForm" onSubmit={this.handleSubmit.bind(this)}>
-            <Accordion>
-              <Panel header="1. Personal Information" eventKey="1">
-                <label>Full Name</label><br/><input name="name" className="paymentInput" defaultValue={this.props.user.user_name}></input><br/>
-                <label>E-mail address</label><br/><input name="email" className="paymentInput" defaultValue={this.props.user.email}></input><br/>
-                <label>Birthday</label><br/>
-                <select name="month">
-                  {this.renderMonths()}
-                </select>
-                <select name="day">
-                  {this.renderDays()}
-                </select>
-                <select name="year">
-                  {this.renderYears()}
-                </select>
-              </Panel>
-              <Panel header="2. Address" eventKey="2">
-                <label>Street Address</label><br/><input name="street" className="paymentInput"></input><br/>
-                <label>City</label><br/><input name="city" className="paymentInput"></input><br/>
-                <label>State</label><br/>
-                <select name="state" className="statesSelect">
-                  {this.renderStates()}
-                </select>
-                <br/>
-                <label>Zip Code</label><br/><input name="zip" type="text" className="paymentInput"></input><br/>
-              </Panel>
-              <Panel className="fundingPanel" header="3. Funding Information" eventKey="3">
-                  <h5>Select your desired payment method</h5>
-                  <div className="paymentOption">
-                    <label>
-                      <img src={bank} /><br/>
-                      <input className="paymentOption"
-                        type="radio" 
-                        value="bank" 
-                        checked={this.state.bankIsSelected} 
-                        onChange={this.handleOptionChange.bind(this)}>
-                      </input>
-                    </label>
+           <div className="accordion-group">
+             <div className="accordion-heading">
+               <div className="accordion-toggle paymentSetupAccordionHeader" data-toggle="collapse" href="#1">
+                 1. Personal Information
+               </div>
+                <div id="1" className="accordion-body collapse">
+                  <div className="accordion-inner">
+                    <label>Full Name</label><br/><input type="text" name="name" className="paymentInput" defaultValue={this.props.user.user_name}></input><br/>
+                    <label>E-mail address</label><br/><input type="text" name="email" className="paymentInput" defaultValue={this.props.user.email}></input><br/>
+                    <label>Birthday</label><br/>
+                    <select name="month">
+                      {this.renderMonths()}
+                    </select>
+                    <select name="day">
+                      {this.renderDays()}
+                    </select>
+                    <select name="year">
+                      {this.renderYears()}
+                    </select>
                   </div>
-                  <div className="paymentOption">
-                    <label>
-                      <img className="venmo" src={venmo} /><br/>
-                      <input className="paymentOption"
-                        type="radio" 
-                        value="venmo" 
-                        checked={!this.state.bankIsSelected}
-                        onChange={this.handleOptionChange.bind(this)}>
-                      </input>
-                    </label>
+                </div>
+                <div className="accordion-toggle paymentSetupAccordionHeader" data-toggle="collapse" href="#2">
+                  2. Address
+                </div>
+                <div id="2" className="accordion-body collapse">
+                  <div className="accordion-inner">
+                    <label>Street Address</label><br/><input type="text" name="street" className="paymentInput"></input><br/>
+                    <label>City</label><br/><input type="text" name="city" className="paymentInput"></input><br/>
+                    <label>State</label><br/>
+                    <select name="state" className="statesSelect">
+                      {this.renderStates()}
+                    </select>
+                    <br/>
+                    <label>Zip Code</label><br/><input name="zip" type="text" className="paymentInput"></input><br/>
                   </div>
-                  <div>{this.state.bankIsSelected && this.renderBankForm()}</div>
-                  <div>{!this.state.bankIsSelected && this.renderVenmoForm()}</div>
-              </Panel>
-            </Accordion>
+                </div>
+                <div className="accordion-toggle paymentSetupAccordionHeader" data-toggle="collapse" href="#3">
+                  3. Funding Information
+                </div>
+                <div id="3" className="accordion-body collapse fundingPanel">
+                  <div className="accordion-inner">
+                    <h5>Select your desired payment method</h5>
+                    <div className="paymentOption">
+                      <label>
+                        <img src={bank} /><br/>
+                        <input className="paymentOption"
+                          type="radio" 
+                          value="bank" 
+                          checked={this.state.bankIsSelected} 
+                          onChange={this.handleOptionChange.bind(this)}>
+                        </input>
+                      </label>
+                    </div>
+                    <div className="paymentOption">
+                      <label>
+                        <img className="venmo" src={venmo} /><br/>
+                        <input className="paymentOption"
+                          type="radio" 
+                          value="venmo" 
+                          checked={!this.state.bankIsSelected}
+                          onChange={this.handleOptionChange.bind(this)}>
+                        </input>
+                      </label>
+                    </div>
+                    <div>{this.state.bankIsSelected && this.renderBankForm()}</div>
+                    <div>{!this.state.bankIsSelected && this.renderVenmoForm()}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br/>
             <div className="paymentSetupSubmit">
               <span>By clicking submit, you agree to our <Link target="_blank" to='/termsofservice' className="link">Terms of Service </Link></span>
               <button type="submit"> Submit</button>

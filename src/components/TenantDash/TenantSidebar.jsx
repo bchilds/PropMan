@@ -48,6 +48,13 @@ class TenantSideBar extends Component {
 			this.state.mobile ? 
 					<div className="accordion " id="accordionEx" role="tablist" aria-multiselectable="true">
 				    <div className="card col-sm-12 col-xs-12">
+	            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+	              <h4 className="mb-0 mobileSidebarDash" onClick={() => this.props.showDonut()}>
+	                Expenses
+	              </h4>
+	            </a>
+				    </div>
+				    <div className="card col-sm-12 col-xs-12">
 			        <div className="card-header" role="tab" id="headingOne">
 		            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 	                <h4 className="mb-0 mobileSidebarDash">
@@ -82,6 +89,7 @@ class TenantSideBar extends Component {
 				:
 					<div id="tenantSidebar">
 						<div className="dashSidebar">
+							<h3 className="sidebarTitle"><div onClick={() => this.props.showDonut()}>Expenses</div></h3>
 						  <h3 className="sidebarTitle">Broadcasts</h3>
 				        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
 						</div>

@@ -141,17 +141,23 @@ class Transactions extends React.Component {
     if (this.state.incompleteTransactions.length) {    
       return (
         <div>
-          <h4>Incomplete Transactions</h4>
-          <Accordion>
-            <Panel header="Click to view" eventKey="1">
-              <BootstrapTable options={incompleteOptions} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
-                <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
-                <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
-                <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
-              </BootstrapTable>
-            </Panel>
-          </Accordion>
+          <div className="accordion-group incompleteTransactions">
+            <div className="accordion-heading">
+              <div className="accordion-toggle" data-toggle="collapse" href="#2">
+                <h4>Incomplete Transactions</h4>
+              </div>
+              <div id="2" className="accordion-body collapse">
+                <div>
+                  <BootstrapTable options={incompleteOptions} data={ this.state.incompleteTransactions } striped={ true } hover={ true } condensed={ true }>
+                    <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='created_date' dataSort={ true }>Date</TableHeaderColumn>
+                    <TableHeaderColumn dataField='payment_type' dataSort={ true }>Description</TableHeaderColumn>
+                    <TableHeaderColumn dataField='transaction_amount' dataSort={ true }>Amount</TableHeaderColumn>
+                  </BootstrapTable>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )
     }
@@ -195,14 +201,23 @@ class Transactions extends React.Component {
     }
     return (
       <div className="transactionsTable">
-        <form onSubmit={this.handleBillAdd.bind(this)}>
-          <Accordion className="addBillAccordion">
-            <Panel header="Add bill" eventKey="1">
-              {this.renderBillShareContent()}
-            </Panel>
-          </Accordion>
-        </form>
+        <div className="accordion-group addBillAccordion">
+          <div className="accordion-heading">
+            <div className="accordion-toggle" data-toggle="collapse" href="#1">
+              <div className="addBillHeader">
+                Add a Bill  
+              </div>
+            </div>
+            <div id="1" className="accordion-body collapse">
+              <div className="accordion-inner" id="addPropertiesPanel">
+                {this.renderBillShareContent()}
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
         {this.renderIncompleteTransactions()}
+        <br/>
         <h4>Completed Transactions</h4>
         <BootstrapTable options={completedOptions} data={ this.state.completedTransactions } striped={ true } hover={ true } condensed={ true } pagination>
           <TableHeaderColumn dataField='transaction_id' dataSort={ true } isKey={ true }>Transaction ID</TableHeaderColumn>
