@@ -181,17 +181,48 @@
 }
 
 .navbarColor {
-  background-color: #F9F9F9;
+  background-color: rgba(59,60,61,1);
   font-family: "Open Sans";
   font-size: 18px;
 }
 
+.navbar .navbar-expand-lg .navbar-dark {
+  box-shadow: none;
+}
+
 #navbarText {
-  color: black !important;
+  color: white !important;
+  font-family: 'Roboto Condensed', sans-serif;
+
+}
+
+#navbarDropdownMenuLink {
+  color: white !important;
+  font-family: 'Roboto Condensed', sans-serif;
+
 }
 
 #nav-dropdown {
   color: black !important;
+}
+
+.dropdown-item {
+  font-family: 'Roboto Condensed', sans-serif;
+
+}
+
+.dropdown .dropdown-menu .dropdown-item:hover {
+  font-family: 'Roboto Condensed', sans-serif;
+
+  color: black !important;
+
+}
+
+.navbar-brand {
+  font-family: 'Lobster', cursive !important;
+  font-size: 40px !important;
+  margin: 0px !important;
+  padding: 0px !important;
 }
 
 #tenantWindow {
@@ -370,12 +401,12 @@
 #tenantSidebar {
   /*width: 20%;*/
   height: 100%;
-  border-radius: 5px;
-  padding: 10px !important;
+  /*border-radius: 5px;*/
+  /*padding: 10px !important;*/
   /*margin-right: 10px;*/
   /*display: inline-block;*/
   /*border: 1px solid black;*/
-  background-color: #7882B4;
+  background-color: rgba(108, 122, 137, 1);
   /*vertical-align: top;*/
 }
 
@@ -731,4 +762,41 @@
 
 .tooltip-arrow {
   border-bottom-color: rgba(192, 57, 43,1) !important;
+}
+
+.addBillHeader{
+  font-weight: lighter;
+  color: white;
+  display: inline-block;
+  width: 50%;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgba(52, 152, 219,1.0)
+}
+
+.addBillAccordion {
+  width: 25%;
+  display: inline-block;
+  margin: 10px; 
+  /*float: right;*/
+}
+
+.accordion-inner {
+  margin-top: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#pageDropDown {
+  color: black !important;
+}
+
+.page-item {
+  box-shadow: none;
+}
+
+.page-link {
+  background-color: rgba(52, 152, 219,1.0) !important;
 }

@@ -121,14 +121,14 @@ class TenantDashboard extends Component {
                   }/>
               }
               
-              {this.state.showDonut && 
+              {this.props.showDonut && 
                 <div className="donutGraph">
                   <h3>Monthly Expenses</h3>
                   <DonutWindow data = {this.props.expenses}/>
                 </div>
               }
 
-              {this.state.showMedia &&           
+              {!this.props.showDonut &&           
                 <div className="selectedMedia">
                   <h3> {this.props.media.title} </h3>
                   <p> {this.props.media.media} </p>

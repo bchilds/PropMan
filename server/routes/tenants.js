@@ -28,6 +28,7 @@ const checkForActiveTenant = async (ctx, user, email) => {
 		tenantRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_email = $1 AND is_active = true;`, values)
 	} else {
 		const values = [email]
+		console.log('grrr')
 		tenantRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_email = $1 AND is_active = true;`, values)
 	}
 	return tenantRows.rows[0]
@@ -54,7 +55,7 @@ const createNewTenant = async (ctx, user, property_id) => {
 			tenant = await ctx.db.query(`INSERT INTO tenants (tenant_email, is_active, rent, due_date, property_id) VALUES ($1, true, $2, TO_DATE($3, 'DD/MM/YYYY'), $4) RETURNING *;`, values)
 		} else if (user && !property_id){
 			// created by user signing up with no active tenants for email address
-			const values = [users.user_id, obj.tenant_email]
+			const values = [user.user_id, obj.tenant_email]
 			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active) VALUES ($1, $2, true) RETURNING *;`, values)
 		} else {
 			console.log('error, no tenant created')
