@@ -148,7 +148,6 @@ router
 			tenant = await checkForActiveTenant(ctx, null, obj.tenant_email)
 		}
 		if(tenant && tenant.property_id) {
-			console.log('bylandlord - active tenant with property found')
 				// if tenant is active and is on a property
 				ctx.response.status = 403
 				ctx.body = `This tenant is currently active in another property`				

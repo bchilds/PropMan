@@ -3,7 +3,6 @@ let bcrypt = require('bcrypt-nodejs')
 let Multi = require('../multifactor.js')
 
 const getUserById = async (ctx, user_id) => {
-	if(!ctx.db) return 'failure'
 	let userRows, user
 	const values = [user_id]
 	userRows = await ctx.db.query(`SELECT * FROM users WHERE user_id = $1;`, values)
@@ -57,7 +56,8 @@ exports.checkUserPass = checkUserPass
 
 const updateMerchant = async (ctx, user_id) => {
 	let user, userRows
-	userRows = await ctx.db.query(`UPDATE users SET (merchant_id, payment_set_up) = ('${ctx.request.body.merchant_id}', true) WHERE user_id = ${user_id} RETURNING *;`)
+	const values = [ctx.request.body.merchant_id, user_id]
+	userRows = await ctx.db.query(`UPDATE users SET (merchant_id, payment_set_up) = ($1, true) WHERE user_id = $2 RETURNING *;`, values)
 	user = userRows.rows[0]
 	return user
 }
@@ -106,7 +106,6 @@ router
 				query = query.substring(0, query.length - 2) //kill the last comma and space
 				values = values.substring(0,values.length - 2) //kill the last comma and space
 				query = query + `) = ` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
-				console.log(query)
 				userRows = await ctx.db.query(query, updateAtts)
 				user = userRows.rows[0]
 

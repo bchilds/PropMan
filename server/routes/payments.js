@@ -188,7 +188,3 @@ router
   })
   exports.routes = router
 
-// module.exports = {
-//   routes: router,
-//   getUserTransactions: getUserTransactions,
-// }
