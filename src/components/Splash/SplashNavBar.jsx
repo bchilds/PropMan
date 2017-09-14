@@ -33,10 +33,7 @@ class SplashNavBar extends React.Component {
           </NavItem>
         </Nav>
         <Nav pullRight>
-          <NavDropdown title="Profile/Logout" id="nav-dropdown">
-            <Link className="dropDownMenu" to="/profile"> Your Profile </Link><br/>
-            <Link className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" > Logout </Link>
-          </NavDropdown>
+  
         </Nav>
       </Navbar>
     )

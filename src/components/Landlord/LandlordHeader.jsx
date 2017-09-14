@@ -50,15 +50,14 @@ class Header extends Component {
                 <Link className="nav-link" id="navbarText" to="/proprietor/messages">Messages</Link>
               </li>
             </ul>
-            <ul>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
-                <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                  <Link className="dropdown-item" to="/proprietor/profile">Your Profile</Link>
-                  <Link className="dropdown-item" onClick={this.handleLogout.bind(this)} to="/" >Log Outta Here</Link>
-                </div>
-              </li>
-            </ul>
+            
+            <div className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
+              <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <Link className="dropdown-item" to="/proprietor/profile">Your Profile</Link>
+                <Link className="dropdown-item" onClick={this.handleLogout.bind(this)} to="/" >Log Outta Here</Link>
+              </div>
+            </div>
           </div>
         </nav>
       </div>
@@ -66,8 +65,14 @@ class Header extends Component {
   }
 };
 
+function mapStateToProps(state) {
+  return {
+    username: state.user && state.user.user_name
+  }
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({logoutUser}, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(withRouter(Header))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))

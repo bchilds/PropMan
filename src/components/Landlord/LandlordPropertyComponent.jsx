@@ -147,43 +147,47 @@ class Property extends React.Component {
               tenants={this.props.tenants} />
           </Modal>  
         }
-        <div>
-          <hr />
-          <h2>Tenants</h2>
-          <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
-            <Accordion>
-              <Panel header="Add a Tenant" eventKey="1">
-                <label>Email</label>
-                <br />
-                <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
-                <br /><br />
-                <label>Rent Amount</label>
-                <br />
-                <input className="addTenantInput" name="rent" placeholder="1200"></input>
-                <br /><br />
-                <label>Rent Due Date</label>
-                <br />
-                <select name="month">
-                  {this.renderMonths()}
-                </select>
-                <select name="day">
-                  {this.renderDays()}
-                </select>
-                <select name="year">
-                    {this.renderYears()}
-                  </select>
-                <br /><br />
-                <button className="" type="submit">Add Tenant</button>
-              </Panel>
-            </Accordion>
-          </form>
-          <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
-            <TableHeaderColumn dataField='tenant_id' dataSort={ true } isKey={ true } hidden={ true }>ID</TableHeaderColumn>
-            <TableHeaderColumn dataField='tenant_email' dataSort={ true }>Email</TableHeaderColumn>
-            <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
-            <TableHeaderColumn dataField='due_date' dataSort={ true }>Due</TableHeaderColumn>
-          </BootstrapTable>
-        </div>
+        <h2>Tenants</h2>
+        <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
+         <div className="accordion-group">
+           <div className="accordion-heading">
+             <div className="accordion-toggle" data-toggle="collapse" href="#1">
+               Add a Tenant
+             </div>
+             <div id="1" className="accordion-body collapse">
+               <div className="accordion-inner" id="addTenantsPanel">
+                 <label>Email</label>
+                 <br />
+                 <input className="addTenantInput" name="tenant_email" placeholder="john.doe@gmail.com"></input>
+                 <br /><br />
+                 <label>Rent Amount</label>
+                 <br />
+                 <input className="addTenantInput" name="rent" placeholder="1200"></input>
+                 <br /><br />
+                 <label>Rent Due Date</label>
+                 <br />
+                 <select name="month">
+                   {this.renderMonths()}
+                 </select>
+                 <select name="day">
+                   {this.renderDays()}
+                 </select>
+                 <select name="year">
+                     {this.renderYears()}
+                   </select>
+                 <br /><br />
+                 <button className="btn btn-secondary" type="submit">Add</button>
+               </div>
+             </div>
+            </div>
+          </div>
+        </form>
+        <BootstrapTable className="BootstrapTableFull" data={ this.props.tenants } options={ options } striped={ true } hover={ true } condensed={ true }>
+          <TableHeaderColumn dataField='tenant_id' dataSort={ true } isKey={ true } hidden={ true }>ID</TableHeaderColumn>
+          <TableHeaderColumn dataField='tenant_email' dataSort={ true }>Email</TableHeaderColumn>
+          <TableHeaderColumn dataField='rent' dataSort={ true }>Rent</TableHeaderColumn>
+          <TableHeaderColumn dataField='due_date' dataSort={ true }>Due</TableHeaderColumn>
+        </BootstrapTable>
         <div>
           <hr />
           <Documents landlord_id={this.props.landlord.landlord_id} property_id={this.props.property_id} tenants={this.props.tenants} />

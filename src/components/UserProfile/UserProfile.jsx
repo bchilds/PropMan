@@ -141,29 +141,44 @@ class UserProfile extends Component {
 
 	editForm() {
 		return (
-			<div className="editForm col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<form onSubmit={this.handleSubmit.bind(this)}>
-				  <div>
-					  <label>Name</label>
-					  <a style={{float: "right"}} onClick={this.handleEditPassword}> Edit Password </a>
-				  </div>
-				  <input type="text" className="form-control" name="name" defaultValue={this.props.name}/>
-					<br/>
-				  <label>Email address</label>
-				  <input onKeyPress={this.toggleConfirmEmail.bind(this)} type="email" className="form-control" name="email" defaultValue={this.props.email}/>
-				  <small className="form-text text-muted">We'll never share your email with anyone else.</small>
-					<br/>
-				  <label>Confirm email</label>
-				  <input id="confirmEmail" type="email" className="form-control" name="confirm" defaultValue={this.props.email}/>
-					<br/>
-					{this.state.editingPassword && this.editPassword()}
-					<br/>
-					<button className="paymentForm btn btn-secondary"> Save Changes </button>
-				</form>
-				<br/>
-				<div className="addMulti">
-					<button className="btn btn-secondary" onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</button>
-					{this.props.user.secret_url !== '' && <img src={this.props.user.secret_url}/>}
+			<div className="container-fluid messageMargins">
+        <div className="row ">
+					<div className="editForm col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div className="editFormInner">
+						<form onSubmit={this.handleSubmit.bind(this)}>
+						  <div>
+							  <label className="editFormLables">Name</label>
+						  </div>
+						  <input type="text" className="form-control" name="name" defaultValue={this.props.name}/>
+							<br/>
+						  <label className="editFormLables">Email address</label>
+						  <input onKeyPress={this.toggleConfirmEmail.bind(this)} type="email" className="form-control" name="email" defaultValue={this.props.email}/>
+						  <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+							<br/>
+						  <label className="editFormLables">Confirm email</label>
+						  <input id="confirmEmail" type="email" className="form-control" name="confirm" defaultValue={this.props.email}/>
+							<br/>
+							{this.state.editingPassword && this.editPassword()}
+							<br/>
+							<div>
+							  <button className="btn btn-secondary"> Save Changes </button>
+							</div>
+						</form>
+						<div className="container-fluid messageMargins">
+			        <div className="row ">
+				        <div className="addMulti col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				        	<label className="addCursorPointer" onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</label>
+				        	{this.props.user.secret_url !== '' && <img src={this.props.user.secret_url}/>}
+				        </div>
+
+								<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								  <label className="addCursorPointer" onClick={this.handleEditPassword}> Edit Password </label>
+								</div>
+						  </div>
+						</div>
+						<br/>
+						</div>
+					</div>
 				</div>
 			</div>
 		)
@@ -184,7 +199,7 @@ class UserProfile extends Component {
 	render() {
 		return (
 		<div>
-		  <div className="profileEditButton col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		  <div className="profileEditButton">
 			  <button id="profileEditButton" onClick={this.toggleEdit.bind(this)} type="button" className="btn btn-secondary"> Edit </button>
 			</div>
 				<div className="editForm">

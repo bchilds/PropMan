@@ -10,8 +10,6 @@ class TenantSideBar extends Component {
     super(props)
 
     this.state = {
-    	height: 0,
-    	width: 0,
     	mobile: false
     }
 	}
@@ -27,7 +25,7 @@ class TenantSideBar extends Component {
     if (x < 481) {
     	mobile = true
     }
-		this.setState({height: y, width: x, mobile: mobile})
+		this.setState({mobile: mobile})
 	}
 
 	renderBroadcasts() {
@@ -40,8 +38,10 @@ class TenantSideBar extends Component {
 			// console.log(bcast)
 			return (
 				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
+			 )
+		  })}
+		  </div>
 			)
-		})
 	}
 
 	render() {
@@ -80,15 +80,20 @@ class TenantSideBar extends Component {
 			        </div>
 				    </div>
 					</div>
-				:<div id="tenantSidebar">
-					<div className="dashSidebar">
-					  <h3 className="sidebarTitle">Broadcasts</h3>
-			        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
+				:
+					<div id="tenantSidebar">
+						<div className="dashSidebar">
+						  <h3 className="sidebarTitle">Broadcasts</h3>
+				        {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
+						</div>
+						<div className="dashSidebar">
+							<Documents tenant_id={this.props.tenant_id} />
+						</div>
 					</div>
-					<div className="dashSidebar">
-						<Documents tenant_id={this.props.tenant_id} />
-					</div>
+<<<<<<< HEAD
 				</div>g
+=======
+>>>>>>> Most features are flexible and mobile friendly
 		)
 	}
 }

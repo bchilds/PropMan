@@ -98,7 +98,7 @@ export default class ReactPasswordStrength extends React.Component {
     }
 
     return (
-      <div className={wrapperClasses.join(' ')} style={style}>
+      <div className={wrapperClasses.join(' ')} >
         <input
           type="password"
           {...inputProps}
@@ -106,8 +106,8 @@ export default class ReactPasswordStrength extends React.Component {
           onChange={this.handleChange.bind(this)}
           ref="ReactPasswordStrength-input"
           value={password}
+          placeholder="Choose a new password"
         />
-
         <div className="ReactPasswordStrength-strength-bar" />
         <span className="ReactPasswordStrength-strength-desc">{strengthDesc}</span>
       </div>

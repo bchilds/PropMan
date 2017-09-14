@@ -11,6 +11,23 @@ class MessagesSidebar extends Component {
 	constructor() {
 		super()
 
+		this.state = {
+			mobile: false
+		}
+	}
+
+	componentDidMount() {
+		var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    var mobile = false
+    if (x < 481) {
+    	mobile = true
+    }
+		this.setState({mobile: mobile})
 	}
 
 	renderPropTenants() {
@@ -27,10 +44,29 @@ class MessagesSidebar extends Component {
 
 	render() {
 		return (
-			<div id="tenantSidebar">
-			  <h3 className="sidebarTitle">Direct Messages</h3>
-	        {this.renderPropTenants()}
-			</div>
+			this.state.mobile ?
+				<div className="accordion " id="accordionEx" role="tablist" aria-multiselectable="true">
+			    <div className="card col-sm-12 col-xs-12">
+		        <div className="card-header" role="tab" id="headingOne">
+	            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h4 className="mb-0 mobileSidebarDash">
+                  Direct Messages <i className="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+                </h4>
+	            </a>
+		        </div>
+
+		        <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne">
+	            <div className="card-body">
+	              {this.renderPropTenants()}
+	            </div>
+		        </div>
+			    </div>
+				</div>
+			:
+				<div id="tenantSidebar">
+				  <h3 className="sidebarTitle">Direct Messages</h3>
+		        {this.renderPropTenants()}
+				</div>
 		)
 	}
 }

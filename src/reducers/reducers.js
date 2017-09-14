@@ -14,7 +14,7 @@ export function userData(state = {}, action) {
       return action.payload.data.user
     case SET_PROFILE:
     console.log('set profile reducer', action.payload)
-    	return action.payload.data
+    	return action.payload.data.user
     case SET_MULTI:
     console.log('set multifactor', action.payload)
       return action.payload.data

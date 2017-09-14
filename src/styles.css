@@ -6,6 +6,7 @@
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
+  background-position: 50% 50%;
   -o-background-size: cover;
 }
 
@@ -16,19 +17,6 @@
   text-align: center;
   font-family: 'Lobster', cursive;
   font-size: 100px;
-}
-
-.loginFormParent, .signupFormParent {
-  width: 400px;
-  height: 400px;
-  position: absolute;
-  top:0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
 }
 
 .loginFormChild, .signupFormChild {
@@ -158,13 +146,14 @@
   text-align: center;
 }
 
-.tenantMakePayment {
-  width: 30%;
+.editFormInner {
+  width: 50%;
   margin: 0 auto;
-  bottom: 0px;
-  margin-top: 30px;
-  text-align: center;
-  padding-bottom: 20px;
+}
+
+.editFormLables {
+  font-size: 22px;
+  font-family: "Open Sans";
 }
 
 #profileEditButton {
@@ -174,9 +163,17 @@
 .profileEditButton {
   width: 100%;
   text-align: center;
-  border: 1px solid blue;
+  margin-bottom: 10px;
 }
 
+.tenantMakePayment {
+  width: 30%;
+  margin: 0 auto;
+  bottom: 0px;
+  margin-top: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+}
 
 .braintree-toggle {
   visibility: hidden;
@@ -207,7 +204,6 @@
   /*padding: 0px 10px;*/
 }
 
-
 .sidebarTitle {
   text-align: center;
   color: white;
@@ -228,6 +224,7 @@
   width: 80%;
   height: 50px;
   font-size: 18px;
+  border-bottom: 0px !important;
 }
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
@@ -244,6 +241,33 @@
     font-size: 18px;
     padding: 5px;
     margin: 5px;
+  }
+
+  .landlordMap {
+    width: 50vh;
+    height: 55vh;
+  }
+
+  .loginFormParent, .signupFormParent {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .splash h1 {
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 60px;
   }
 }
 
@@ -264,6 +288,33 @@
     padding: 5px;
     margin: 5px;
   }
+  .landlordMap {
+    width: 60vh;
+    height: 65vh;
+  }
+
+  .loginFormParent, .signupFormParent {
+    width: 375px;
+    height: 375px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .splash h1 {
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 80px;
+  }
+
 }
 
 /* Small Devices, Tablets */
@@ -282,6 +333,33 @@
     height: 50px;
     font-size: 18px;
     padding: 5px;
+  }
+
+  .landlordMap {
+    width: 70vh;
+    height: 75vh;
+  }
+
+  .loginFormParent, .signupFormParent {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .splash h1 {
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    font-size: 100px;
   }
 }
 
@@ -528,11 +606,10 @@
 }
 
 .ReactPasswordStrength {
-  border: 1px solid #c6c6c6;
   /*box-sizing: border-box;*/
-  border-radius: 5px;
+  /*border-radius: 5px;*/
   color: #090809;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1;
   position: relative;
@@ -540,15 +617,14 @@
 
 .ReactPasswordStrength-input {
   border: none;
-  box-sizing: border-box;
   font-size: 14px;
   padding: 14px 0 12px 14px;
   width: calc(85% - 28px);
   height: 30px;
 }
 
-.ReactPasswordStrength-input:not(:focus).is-password-invalid { color: #D1462F; }
-.ReactPasswordStrength-input:focus { outline: none; }
+.ReactPasswordStrength-input.is-password-invalid { color: #D1462F; }
+.ReactPasswordStrength-input {}
 
 .ReactPasswordStrength-strength-desc {
   color: transparent;
@@ -569,21 +645,21 @@
 .ReactPasswordStrength.is-strength-4 .ReactPasswordStrength-strength-desc { color: #2FBF71; }
 
 .ReactPasswordStrength-strength-bar {
-  box-sizing: border-box;
   height: 2px;
-  position: relative; top: 1px; right: 1px;
+  position: relative; top: 1px;
   transition: width 300ms ease-out;
+  margin: 3px;
   width: 0;
 }
 
 .ReactPasswordStrength.is-strength-0 .ReactPasswordStrength-strength-bar {
   background: #D1462F;
-  width: 20%;
+  width: 10%;
 }
 
 .ReactPasswordStrength.is-strength-1 .ReactPasswordStrength-strength-bar {
   background: #D1462F;
-  width: 40%;
+  width: 33%;
 }
 
 .ReactPasswordStrength.is-strength-2 .ReactPasswordStrength-strength-bar {
@@ -598,7 +674,7 @@
 
 .ReactPasswordStrength.is-strength-4 .ReactPasswordStrength-strength-bar {
   background: #2FBF71;
-  width: calc(100% + 2px);
+  width: calc(100%);
 }
 
 .addBillAccordion{

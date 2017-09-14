@@ -107,7 +107,7 @@ class Tenants extends React.Component {
         this.props.history.push(`/proprietor/properties/${row.property_id}/${row.tenant_id}`);
       }
     }
-
+    
     return (
       <div>
       <h2 className="pageTitle">Tenants</h2>

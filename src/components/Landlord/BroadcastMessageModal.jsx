@@ -22,7 +22,7 @@ class BroadcastModal extends Component {
   sendMessage() {
   	var obj = {
       property_id: this.props.propertyId,
-	  	title: document.getElementById('broadcastTitle').value,
+	  	message_title: document.getElementById('broadcastTitle').value,
 	  	message_content: document.getElementById('messageTextInput').value
     }
   	this.props.sendBroadcast(obj)
