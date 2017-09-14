@@ -32,6 +32,7 @@ class Documents extends React.Component {
   }
 
   addPropertyDocument(landlord_id = null, property_id = null) {
+console.log(this.state.fileForUploadToS3.name)
     const propertyDocsRequest = axios.post(`${ROOT_URL}/api/docs/add/rawtext`,
     {
       "doc_type": "rawtext", 
@@ -128,7 +129,7 @@ class Documents extends React.Component {
   render() {
     return (
         <div>
-        <h2>Documents</h2>
+        <h3>Documents</h3>
         {this.state.propertyDocuments.length === 0 ? null :
           <div>
             <ul>
