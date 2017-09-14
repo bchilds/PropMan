@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { userData, tenantData, otherTenants, tenantsLandlord, landlordData, messages, docs, isLoggedIn, loginFailure} from './reducers'
 import { landlordProperties, landlordTenants } from './landlordReducer'
-import { selectedTenantMedia, setCurrentConvo, messageRecipient, convoPersonsName } from './tenantReducer'
+import { selectedTenantMedia, setCurrentConvo, messageRecipient, convoPersonsName, showDonut } from './tenantReducer'
 import { tenantPaidRent, receivedTransactions, sentTransactions, expenses, submerchantCreationFailure } from './paymentReducer'
 import { broadcasts } from './broadcastsReducer'
 import { sortedMessages } from './sortMesgsReducer'
@@ -36,7 +36,8 @@ const appReducer = combineReducers({
   sentTransactions,
   expenses,
   loginFailure,
-  submerchantCreationFailure
+  submerchantCreationFailure,
+  showDonut
 });
 
 const rootReducer = (state, action) => {

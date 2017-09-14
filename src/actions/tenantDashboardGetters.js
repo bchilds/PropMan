@@ -4,6 +4,7 @@ export const FETCH_RENT = 'fetch_rent_total_due';
 export const FETCH_MESSAGES = 'fetch_messages_for_tenant_user';
 export const FETCH_DOCS = 'fetch_docs_for_tenant_user';
 export const FETCH_SELECTED_MEDIA = 'fetch_selected_media';
+export const SHOW_DONUT = 'show_donut'
 
 const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
 
@@ -39,12 +40,18 @@ export function getDocs(userId) {
 }
 
 export function selectedMedia(title = '', media) {
-
 	return {
 		type: FETCH_SELECTED_MEDIA,
 		payload: {
 			title: title,
 			media: media
 		}
+	}
+}
+
+export function showDonut() {
+	return {
+		type: SHOW_DONUT,
+		payload: true
 	}
 }
