@@ -98,7 +98,7 @@ class TenantMessages extends Component {
                 </div>
                 <div className="newMessage">
                   <form onSubmit={this.handleSendTo.bind(this)}>
-                    <input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+                    <input id="fuckingWork" className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
                   </form>
                 </div>
               </div>

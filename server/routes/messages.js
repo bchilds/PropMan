@@ -27,7 +27,7 @@ const makeMessage = async (ctx) => {
 	obj = ctx.request.body
 	if(obj.property_id && !obj.sender_id && !obj.recipient_id) {
 		//it is a broadcast 
-		const values = [obj.message_content, 'broadcast', obj.property_id, obj.title]
+		const values = [obj.message_content, 'broadcast', obj.property_id, obj.message_title]
 		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id, message_title) VALUES ($1, $2, $3, $4) RETURNING *;`, values)
 		message = messageRows.rows[0]
 		return message
