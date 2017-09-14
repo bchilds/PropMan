@@ -51,8 +51,7 @@ class Property extends React.Component {
     super()
     this.state = {
       modalIsOpen: false,
-      sendTo: -1,
-      broadcastModal: false
+      sendTo: -1
     }
     this.openModal = this.openModal.bind(this)
   }
