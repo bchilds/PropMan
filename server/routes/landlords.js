@@ -7,9 +7,9 @@ let Promise = require('bluebird')
 let email = require('../emailService.js')
 
 const createLandlord = async (ctx, user) => {
-	console.log(`creating landlord.........`)
 	let ll, llRows
-	llRows = await ctx.db.query(`INSERT INTO landlords (user_id) VALUES (${user.user_id}) RETURNING *`)
+	const values = [user.user_id]
+	llRows = await ctx.db.query(`INSERT INTO landlords (user_id) VALUES ($1) RETURNING *;`, values)
 	ll = llRows.rows[0]
 	return ll
 }
@@ -17,18 +17,17 @@ exports.createLandlord = createLandlord
 
 const getLandlord = async (ctx, user_id) => {
 	let ll, llRows
-	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name FROM landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlords.user_id = ${user_id};`)
+	const values = [user_id]
+	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name FROM landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlords.user_id = $1;`, values)
 	ll = llRows.rows[0]
 	return ll
 }
 exports.getLandlord = getLandlord
 
 const getLandlordById = async (ctx, landlord_id) => {
-	// =========================
-	// MIGHT NOT BE WORKING
-	// =========================
 	let ll, llRows
-	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name FROM landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = ${landlord_id};`)
+	const values = [landlord_id]
+	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name FROM landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = $1;`, values)
 	ll = llRows.rows[0]
 	return ll
 }
@@ -36,7 +35,8 @@ exports.getLandlordById = getLandlordById
 
 const getLandlordByPropId = async (ctx, prop_id) => {
 	let ll, llRows
-	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name from landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = ${prop_id};`)
+	const values = [prop_id]
+	llRows = await ctx.db.query(`SELECT landlords.*, users.user_name from landlords FULL OUTER JOIN users ON landlords.user_id = users.user_id WHERE landlord_id = $1;`, values)
 	ll = llRows.rows[0]
 	return ll
 }
@@ -72,7 +72,6 @@ router
 		}
 	})
 	.post('/', async (ctx, next) => {
-		//ctx.request.body = {user}
 		let ll
 		if(ctx.request.body.user) ll = await createLandlord(ctx, ctx.request.body.user)
 		if(ll) {
@@ -85,7 +84,6 @@ router
 	})
 	.post('/data', async (ctx, next) => {
 		let data
-		// ctx.request.body = {user}
 		if(ctx.request.body.user) data = await getLandlordData(ctx, ctx.request.body.user)
 		if(data) {
 			ctx.response.status = 302

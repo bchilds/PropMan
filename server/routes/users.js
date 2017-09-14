@@ -1,12 +1,12 @@
 let router = require('koa-router')()
 let bcrypt = require('bcrypt-nodejs')
 let Multi = require('../multifactor.js')
-//responds to /users, /users/:email
 
 const getUserById = async (ctx, user_id) => {
 	if(!ctx.db) return 'failure'
 	let userRows, user
-	userRows = await ctx.db.query(`SELECT * FROM users WHERE user_id = ${user_id};`)
+	const values = [user_id]
+	userRows = await ctx.db.query(`SELECT * FROM users WHERE user_id = $1;`, values)
 	user = userRows.rows[0]
 	return user
 }
@@ -15,19 +15,20 @@ exports.getUserById = getUserById
 const getUserByEmail = async (ctx, email) => {
 	let userRows, user
 	if(!email && ctx.request.body.email) email = ctx.request.body.email
-	userRows = await ctx.db.query(`SELECT * FROM users WHERE email = '${email}';`)
+	const values = [email]
+	userRows = await ctx.db.query(`SELECT * FROM users WHERE email = $1;`, values)
 	user = userRows.rows[0]
 	return user
 }
 exports.getUserByEmail = getUserByEmail
 
 const createUser = async (ctx, password) => {
-	//ctx.request.body = {user_name, email, user_password, isLandlord}
 	let userRows, user
 	let bcryptPass
 	if(!password && ctx.request.body.password) password = ctx.request.body.password
 	bcryptPass = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-	userRows = await ctx.db.query(`INSERT INTO users (user_name, email, user_password, is_landlord) VALUES ('${ctx.request.body.user_name}', '${ctx.request.body.email}', '${bcryptPass}', ${ctx.request.body.isLandlord}) RETURNING *;`)
+	const values = [ctx.request.body.user_name, ctx.request.body.email, bcryptPass, ctx.request.body.isLandlord]
+	userRows = await ctx.db.query(`INSERT INTO users (user_name, email, user_password, is_landlord) VALUES ($1, $2, $3, $4) RETURNING *;`, values)
 	user = userRows.rows[0]
 	return user
 }
@@ -40,7 +41,8 @@ const checkUserPass = async (ctx, email, password, user) => {
 	if(!user) {
 		if(!email && ctx.request.body.email) email = ctx.request.body.email
 		if(!password && ctx.request.body.password) password = ctx.request.body.password
-		userRows = await ctx.db.query(`SELECT user_password FROM users WHERE email = '${email}';`)
+		const values = [email]
+		userRows = await ctx.db.query(`SELECT user_password FROM users WHERE email = $1;`, values)
 		storedPassword = userRows.rows[0].user_password
 	} else {
 		storedPassword = user.user_password
@@ -72,16 +74,16 @@ router
 		ctx.body = user
 	})
 	.put('/:id', async (ctx, next) => {
-		// ==================   user_password IS A REQUIRED CONTEXT FIELD
 		// ctx.request.body  {user_name, email, user_password, new_password, creditcard}
-		let user, userRows, req, query, values, count, match
-		console.log('ctx', ctx.request.body)
-		user = await ctx.db.query(`SELECT * FROM users where user_id = ${ctx.params.id};`)
+		let user, userRows, req, query, values, count, match, updateAtts
+		const val = [ctx.params.id]
+		user = await ctx.db.query(`SELECT * FROM users where user_id = $1;`, val)
 		user = user.rows[0]
 		//if user found with this id
-		if(user && ctx.request.body.user_password) {
+		if(user) {
 			//check password
-			match = await checkUserPass(ctx, null, ctx.request.body.user_password, user)
+			match = true
+			if(ctx.request.body.user_password) match = await checkUserPass(ctx, null, ctx.request.body.user_password, user)
 				//if password checks out, set new fields on user object
 			if(match) {
 				//change this user object to have new fields
@@ -91,19 +93,21 @@ router
 				if(ctx.request.body.new_password) user.user_password = bcrypt.hashSync(ctx.request.body.new_password, bcrypt.genSaltSync(10))
 				query = `UPDATE users SET (`
 				values = `(`
+				updateAtts = []
+				count = 0
 				for(let attr in ctx.request.body){
 					if(user[attr] !== undefined){
 						count++
 						query += `${attr}, `
-						values += `'${user[attr]}', `
+						updateAtts.push(user[attr])
+						values += '$' + count + ', '
 					}
 				}
 				query = query.substring(0, query.length - 2) //kill the last comma and space
 				values = values.substring(0,values.length - 2) //kill the last comma and space
-				query = query + `) =` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
+				query = query + `) = ` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
 				console.log(query)
-				userRows = await ctx.db.query(query)
-				// userRows = await ctx.db.query(`UPDATE users SET (user_name, email, user_password, creditcard) = ('${req.user_name}', '${req.email}', '${req.user_password}', '${req.creditcard}') WHERE user_id = ${ctx.params.id} RETURNING *;`)
+				userRows = await ctx.db.query(query, updateAtts)
 				user = userRows.rows[0]
 
 				ctx.response.status = 201
@@ -111,7 +115,8 @@ router
 
 				//if user is a tenant, update the emails of all tenants pointing to this user
 				if(!user.is_landlord) {
-					let tenant = await ctx.db.query(`UPDATE tenants SET (tenant_email) = ('${user.email}') WHERE user_id = ${user.user_id} AND is_active = true RETURNING *;`)
+					const values3 = [user.email, user.user_id]
+					let tenant = await ctx.db.query(`UPDATE tenants SET (tenant_email) = ($1) WHERE user_id = $2 AND is_active = true RETURNING *;`, values3)
 					ctx.body.tenant = tenant.rows[0]
 					ctx.body.tenant.user_name = user.user_name
 				}

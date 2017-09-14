@@ -13,12 +13,14 @@ let gateway = braintree.connect({
 })
 
 const getSenderTransactions = async (ctx, tenantOrLandlord) => {
-  let results = await ctx.db.query(`SELECT * FROM transactions WHERE sender_id = ${tenantOrLandlord.user_id};`)
+  const values = [tenantOrLandlord.user_id]
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE sender_id = $1;`, values)
   return results.rows
 }
 
 const getRecipientTransactions = async (ctx, tenantOrLandlord) => {
-  let results = await ctx.db.query(`SELECT * FROM transactions WHERE recipient_id = ${tenantOrLandlord.user_id};`)
+  const values = [tenantOrLandlord.user_id]
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE recipient_id = $1;`, values)
   return results.rows
 }
 
@@ -38,21 +40,24 @@ const getUserTransactions = async (ctx, tenantOrLandlord) => {
 exports.getUserTransactions = getUserTransactions
 
 const createTransaction = async (ctx, paymentIdentifier, is_completed = true) => {
-  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed, split_amount) VALUES ('${paymentIdentifier}', ${ctx.request.body.transaction_amount}, ${ctx.request.body.sender_id}, ${ctx.request.body.recipient_id}, '${ctx.request.body.payment_type}', ${is_completed}, ${ctx.request.body.split_amount}) RETURNING *;`)
+  const values = [paymentIdentifier, ctx.request.body.transaction_amount, ctx.request.body.sender_id, ctx.request.body.recipient_id, ctx.request.body.payment_type, is_completed, ctx.request.body.split_amount ]
+  let results = await ctx.db.query(`INSERT INTO transactions (payment_identifier, transaction_amount, sender_id, recipient_id, payment_type, is_completed, split_amount) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, values)
   results = results.rows[0]
   return results
 }
 exports.createTransaction = createTransaction
 
 const getTransactionById = async (ctx, transaction_id) => {
-  let results = await ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = ${transaction_id};`)
+  const values = [transaction_id]
+  let results = await ctx.db.query(`SELECT * FROM transactions WHERE transaction_id = $1;`, values)
   results = results.rows[0]
   return results
 }
 exports.getTransactionById = getTransactionById
 
 const getUserExpenses = async (ctx, user_id) => {
-  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id=${user_id} AND is_completed=true GROUP BY payment_type ORDER BY SUM(split_amount) DESC LIMIT 5;`)
+  const values = [user_id]
+  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id = $1 AND is_completed = true GROUP BY payment_type ORDER BY SUM(split_amount) DESC LIMIT 5;`)
   transactionData = transactionData.rows
   return transactionData
 }
@@ -95,7 +100,8 @@ router
   .put('/billShare', async ctx => {
     let nonceFromClient = ctx.request.body.nonce
     let results = await getTransactionById(ctx, ctx.request.body.transaction_id)
-    let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = ${results.recipient_id};`)
+    const values = [results.recipient_id]
+    let merchantId = await ctx.db.query(`SELECT merchant_id FROM users WHERE user_id = $1;`, values)
     merchantId = merchantId.rows[0].merchant_id
     if (merchantId) {    
       let result = await gateway.transaction.sale({
@@ -110,8 +116,8 @@ router
       let paymentIdentifier = result.transaction.id
       if (result.success) {
         //create transaction record here
-        console.log('updating transaction in DB')
-        let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ('${paymentIdentifier}', true) WHERE transaction_id = ${results.transaction_id} RETURNING *;`)
+        const values2 = [paymentIdentifier, results.transaction_id]
+        let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ($1, true) WHERE transaction_id = $2 RETURNING *;`, values2)
         transaction = transaction.rows[0]
         let user = await Users.getUserById(ctx, results.sender_id)
         console.log(1)
