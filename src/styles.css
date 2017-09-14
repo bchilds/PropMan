@@ -350,6 +350,12 @@ body {
   text-align: center;
 }
 
+.LandlordMap {
+  margin: 0 auto;
+  width: 90%;
+  height: 90%;
+}
+
 .BootstrapTableFull {
   width: 98%;
   margin: 0 auto;
