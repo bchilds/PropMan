@@ -88,7 +88,7 @@ class TenantSideBar extends Component {
 					<div className="dashSidebar">
 						<Documents tenant_id={this.props.tenant_id} />
 					</div>
-				</div>
+				</div>g
 		)
 	}
 }
