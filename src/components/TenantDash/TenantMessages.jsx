@@ -21,12 +21,11 @@ class TenantMessages extends Component {
   }
 
   setScrollToBottom() {
-    var myDiv = document.getElementById('tenantWindow');
+    var myDiv = document.getElementById('messagesWindow');
     myDiv.scrollTop = myDiv.scrollHeight;
   }
 
   componentDidMount() {
-    console.log('mounting', this.props.currentConvo)
     this.props.sortMessages(this.props.messages, this.props.userId)
     this.setScrollToBottom()
     this.setState({
@@ -62,31 +61,14 @@ class TenantMessages extends Component {
     }
   }
 
-  messageContent(content, date, side, sideFull, style) {
+  messageContent(content, date, side, sideFull, style, i) {
     if (date === "Invalid Date") {
       date = ''
     }
     return (
-      <div className={sideFull}>
+      <div id={sideFull} key={i}>
         <div className={style}>{date}</div>
         <div className={side}>{content}</div>
-      </div>
-    )
-  }
-
-  renderConvo() {
-    // *** Sender_id needs to be the actual sender. That will be set up with a get request
-    return (
-      <div>
-        {this.props.currentConvo.map(v => {
-            var date = new Date(v.created_date).toLocaleDateString()
-            if (v.sender_id === this.props.userId) { 
-              return this.messageContent(v.message_content, date, 'mesRight', 'messageRight', 'mesRight dateStyle')
-            } else {
-              return this.messageContent(v.message_content, date, 'mesLeft', 'messageLeft', 'mesLeft dateStyle')
-            }
-          }
-        )}
       </div>
     )
   }
@@ -99,12 +81,20 @@ class TenantMessages extends Component {
                 <MessageSidebar/>
               </div>
               <div className="col-lg-9 col-md-8 col-sm-7 col-xs-12 messageMargins">
-                <div id="tenantMessagesWindow">
                 <div className="convoPersName"><h3>{this.props.convoPersonsName}</h3></div>
+                <div id="messagesWindow">
                   { this.props.currentConvo.length === 0 &&
-                    <h3 className="pickAConvo">Choose a conversation on the left!</h3>
+                    <h3 className="pickAConvo">Choose a conversation</h3>
                   }
-                  <div>{this.renderConvo()}</div>
+                  {this.props.currentConvo.map((v, i) => {
+                      var date = new Date(v.created_date).toLocaleDateString()
+                      if (v.sender_id === this.props.userId) { 
+                        return this.messageContent(v.message_content, date, 'mesRight', 'messageRight', 'mesRight dateStyle', i)
+                      } else {
+                        return this.messageContent(v.message_content, date, 'mesLeft', 'messageLeft', 'mesLeft dateStyle', i)
+                      }
+                    }
+                  )}
                 </div>
                 <div className="newMessage">
                   <form onSubmit={this.handleSendTo.bind(this)}>

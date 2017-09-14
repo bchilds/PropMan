@@ -4,10 +4,38 @@ import Donut from './Donut.jsx'
 import DonutLegend from './DonutLegend.jsx'
 
 class DonutWindow extends React.Component {
+    constructor(props) {
+      super()
+
+      this.state = {
+        height: 0,
+        width: 0
+      }
+    }
+
+  componentWillMount() {
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    this.setState({height: y, width: x})
+  }
 
   render() {
-    let width = 400
-    let height = 400
+
+    let width = 425
+    let height = 425
+
+    if (this.state.width < 400 && this.state.width > 350) {
+      width = 350
+      height = 350
+    } else if (this.state.width <= 350) {
+      width = 300
+      height = 300
+    }
+
     let minViewportSize = Math.min(width, height);
     // This sets the radius of the pie chart to fit within
     // the current window size, with some additional padding

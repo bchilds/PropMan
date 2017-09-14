@@ -15,13 +15,13 @@ class MessagesSidebar extends Component {
 
 	renderPropTenants() {
 		return (
-			<tbody>
+			<div>
 			  {this.props.propertyTenants && this.props.propertyTenants.map((t, i) => {
-			  	return (<tr onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
-			  		<td>{i === 0 ? "Landlord: " + t.user_name: t.user_name}</td></tr>)
+			  	return (<div key={i} onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
+			  		<label className="messageContacts">{i === 0 ? "Landlord: " + t.user_name: t.user_name}</label></div>)
 			  	}
 				)}
-			</tbody>
+			</div>
 		)
 	}
 
@@ -29,9 +29,7 @@ class MessagesSidebar extends Component {
 		return (
 			<div id="tenantSidebar">
 			  <h3 className="sidebarTitle">Direct Messages</h3>
-	        <table className="table table-hover">
-	        	{this.renderPropTenants()}
-	        </table>
+	        {this.renderPropTenants()}
 			</div>
 		)
 	}

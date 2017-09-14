@@ -141,7 +141,7 @@ class UserProfile extends Component {
 
 	editForm() {
 		return (
-			<div className="editForm">
+			<div className="editForm col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<form onSubmit={this.handleSubmit.bind(this)}>
 				  <div>
 					  <label>Name</label>
@@ -158,11 +158,11 @@ class UserProfile extends Component {
 					<br/>
 					{this.state.editingPassword && this.editPassword()}
 					<br/>
-					<button className="paymentForm"> Save Changes </button>
+					<button className="paymentForm btn btn-secondary"> Save Changes </button>
 				</form>
 				<br/>
 				<div className="addMulti">
-					<button onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</button>
+					<button className="btn btn-secondary" onClick={this.handleMultiClick.bind(this)}>{this.state.multiText}</button>
 					{this.props.user.secret_url !== '' && <img src={this.props.user.secret_url}/>}
 				</div>
 			</div>
@@ -184,7 +184,9 @@ class UserProfile extends Component {
 	render() {
 		return (
 		<div>
-			<button id="profileEditButton" onClick={this.toggleEdit.bind(this)} type="button" className="btn btn-secondary"> Edit </button>
+		  <div className="profileEditButton col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			  <button id="profileEditButton" onClick={this.toggleEdit.bind(this)} type="button" className="btn btn-secondary"> Edit </button>
+			</div>
 				<div className="editForm">
 					{!this.state.editing ?
 						<div className="editForm">

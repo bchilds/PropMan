@@ -19,36 +19,35 @@ class TenantNavBar extends Component {
   render() {
     return (
       <div className="navbarColor">
-      <nav className="navbar navbar-expand-lg navbar-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark">
 
-          <Link className="navbar-brand" id="navbarText" to="/tenant">Rentopia</Link>
+            <Link className="navbar-brand" id="navbarText" to="/tenant">Rentopia</Link>
 
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
 
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
-              <ul className="navbar-nav mr-auto">
-                  <li className="nav-item active">
-                    <Link className="nav-link" id="navbarText" to="/tenant/messages">Messages<span className="sr-only">(current)</span></Link>
-                  </li>
-                  <li className="nav-item">
-                      <Link className="nav-link" id="navbarText" to="/tenant/payments">Payments</Link>
-                  </li>
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item active">
+                      <Link className="nav-link" id="navbarText" to="/tenant/messages">Messages</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" id="navbarText" to="/tenant/payments">Payments</Link>
+                    </li>
 
-              </ul>
-              <ul>
-                <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
-                    <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                        <Link className="dropdown-item" to="/tenant/profile">Your Profile</Link>
-                        <Link className="dropdown-item" onClick={this.handleLogout.bind(this)} to="/" >Log Outta Here</Link>
-                    </div>
-                </li>
                 </ul>
-          </div>
-
-      </nav>
+                <ul>
+                  <li className="nav-item dropdown">
+                      <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
+                      <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                          <Link className="dropdown-item" to="/tenant/profile">Your Profile</Link>
+                          <Link className="dropdown-item" onClick={this.handleLogout.bind(this)} to="/" >Log Outta Here</Link>
+                      </div>
+                  </li>
+                  </ul>
+            </div>
+        </nav>
       </div>
     )
   }

@@ -155,9 +155,7 @@
 }
 
 .editForm {
-  width: 50%;
-  margin: 0 auto;
-  margin-top: 30px;
+  text-align: center;
 }
 
 .tenantMakePayment {
@@ -166,10 +164,17 @@
   bottom: 0px;
   margin-top: 30px;
   text-align: center;
+  padding-bottom: 20px;
 }
 
 #profileEditButton {
-  margin-left: 60%;
+  max-width: 40%;
+}
+
+.profileEditButton {
+  width: 100%;
+  text-align: center;
+  border: 1px solid blue;
 }
 
 
@@ -197,27 +202,86 @@
   height: 75vh;
   /*margin: 10px;*/
   /*display: inline-block;*/
-  border: 1px solid black;
   /*vertical-align: top;*/
   overflow: scroll;
   /*padding: 0px 10px;*/
 }
 
-#tenantMessagesWindow {
-  height: 75vh;
-  /*border: 2px solid lightgray;*/
-  overflow: scroll;
-}
 
 .sidebarTitle {
   text-align: center;
   color: white;
 }
 
-@media only screen and (min-width : 768px)  {
-  .messageMargins {
-    margin: 0% !important;
-    padding: 0 !important;
+.messageMargins {
+  margin: 0% !important;
+  padding: 5px !important;
+}
+
+#messagesWindow {
+  height: 75vh;
+  /*border: 2px solid lightgray;*/
+  overflow: scroll;
+}
+
+.centerMessage {
+  width: 80%;
+  height: 50px;
+  font-size: 18px;
+}
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+  #messagesWindow {
+    height: 55vh;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+    overflow: scroll;
+  }
+
+  .centerMessage {
+    width: 80%;
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+  }
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+  #messagesWindow {
+    height: 55vh;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+    bottom: 0;
+    overflow: scroll;
+  }
+
+  .centerMessage {
+    width: 80%;
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  #messagesWindow {
+    height: 65vh;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+    bottom: 0;
+    overflow: scroll;
+  }
+
+  .centerMessage {
+    margin: 5px;
+    height: 50px;
+    font-size: 18px;
+    padding: 5px;
   }
 }
 
@@ -225,11 +289,34 @@
   /*width: 20%;*/
   height: 100%;
   border-radius: 5px;
+  padding: 10px !important;
   /*margin-right: 10px;*/
   /*display: inline-block;*/
   /*border: 1px solid black;*/
   background-color: #7882B4;
   /*vertical-align: top;*/
+}
+
+.dashSidebar {
+  height: 50%;
+  overflow: scroll;
+}
+
+.mobileSidebarDash {
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 22px;
+  color: black;
+}
+
+.accordion-toggle {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+#addPropertiesPanel, #addTenantsPanel {
+  background-color: white !important;
 }
 
 /*#tenantDashFooter {
@@ -263,35 +350,42 @@
 
 .pickAConvo {
   font-family: "Open Sans";
-  float: center;
+  text-align: center;
 }
 
 .convoPersName {
   font-family: "Open Sans";
-  text-align: center;
+  text-align: left;
+  padding: 10px;
 }
 
 .mesRight {
-  width: 70%;
+  width: 50%;
+  margin-right: 15px;
   float: right;
   word-wrap: break-word;
+  border-radius: 5px;
+  padding-right: 20px;
+  background-color: #DFE3E9;
 }
 
 .mesLeft {
-  width: 70%;
-  margin-right: 30px;
+  width: 50%;
+  margin-left: 15px;
   float: left;
   word-wrap: break-word;
+  border-radius: 5px;
+  padding-left: 20px;
+  background-color: #F9F9F9;
 }
 
-.messageLeft {
-  margin-left: 20px;
+#messageLeft {
   font-size: 18px;
   text-align: left;
 }
 
-.messageRight {
-  margin-right: 20px;
+#messageRight {
+  margin-right: 30px;
   font-size: 18px;
   text-align: right;
 }
@@ -299,6 +393,7 @@
 .dateStyle{
   font-size: 12px;
   margin-top: 10px;
+  background-color: white !important;
 }
 
 .newMessage {
@@ -309,16 +404,34 @@
   border-radius: 5px;
 }
 
-.centerMessage {
-  width: 80%;
-  height: 50px;
-  font-size: 18px;
-}
-
 .messageInput {
   width: 100%;
   margin-right: 10px;
   height: 100%;
+}
+
+.messageContacts {
+  width: 100%;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: "Open Sans";
+  text-align: center;
+  border-bottom: 1px double lightgray;
+}
+
+.accordion-inner {
+  background-color: #F9F9F9;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.tenantContactFont {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.addCursorPointer {
+  cursor: pointer;
 }
 
 .paymentSetupWarning {

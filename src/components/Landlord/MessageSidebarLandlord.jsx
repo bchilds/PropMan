@@ -13,23 +13,21 @@ class MessagesSidebarLandlord extends Component {
 	}
 
 	tenantClicked(tenant) {
-		console.log(tenant, this.props.sortedMesgs)
 		this.props.setCurrentConvo(this.props.sortedMesgs[tenant.user_id], tenant.user_id, tenant.user_name)
 	}
 
-	renderPropTenants(propertyId) {
+	renderPropTenants(propertyId, i) {
 		return (
-			<table className="table table-hover">
-				<tbody>
-		    {this.props.sortedTenByProp[propertyId] && this.props.sortedTenByProp[propertyId].map(t => {
-		    	return (
-	    			<tr onClick={() => {this.tenantClicked(t)}}>
-				      <td>{t.user_name}</td>
-	    			</tr>
-		      )
-		     })}	
-		    </tbody>
-	    </table>
+			<div id={i} className="accordion-body collapse">
+	    {this.props.sortedTenByProp[propertyId] && this.props.sortedTenByProp[propertyId].map((t, i) => {
+	    	return (
+    			<div key={i} className="accordion-inner" onClick={() => {this.tenantClicked(t)}}>
+			      <label className="addCursorPointer tenantContactFont">{t.user_name}</label>
+    			</div>
+
+	      )
+	     })}	
+	    </div>
 		)
 	}
 
@@ -37,15 +35,20 @@ class MessagesSidebarLandlord extends Component {
 		return (
 			<div id="tenantSidebar">
 				<h3 className="sidebarTitle">Direct Messages</h3>
-	      <Accordion>
+	      <div className="accordion" id="accordion2">
 				  {this.props.landlordProperties.map((v, i) => {
 				  	return (
-				  		<Panel header={v.property_name} eventKey={i}>
-				  			{this.renderPropTenants(v.property_id)}
-				  		</Panel>
+				  		<div key={i} className="accordion-group">
+				  		  <div className="accordion-heading">
+				  		    <div className="accordion-toggle messageContacts" data-toggle="collapse" href={`#${i}`}>
+				  		      {v.property_name}
+				  		    </div>
+				  		  </div>
+				  			  {this.renderPropTenants(v.property_id, i)}
+				  		</div>
 			  		)
 					})}
-	      </Accordion>
+	      </div>
 			</div>
 		)
 	}

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, NavItem, NavDropdown } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { connect} from 'react-redux'
@@ -28,37 +27,41 @@ class Header extends Component {
   }
   render() {
     return (
-      <Navbar className="navbar" inverse collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand className="brand">
-            <Link to="/proprietor">Rentopia</Link>
-          </Navbar.Brand>
-        </Navbar.Header>
-        <Nav>
-          <LinkContainer to='/proprietor/properties' className="link">
-            <NavItem>Properties</NavItem>
-          </LinkContainer>
-          <LinkContainer to='/proprietor/tenants' className="link">
-            <NavItem>Tenants</NavItem>
-          </LinkContainer>
-          <LinkContainer to='/proprietor/payments' className="link">
-            <NavItem>Payments</NavItem>
-          </LinkContainer>
-          <LinkContainer to='/proprietor/messages' className="link">
-            <NavItem>Messages</NavItem>
-          </LinkContainer>
-        </Nav>
-        <Nav pullRight>
-          <NavDropdown title="Profile/Logout" id="nav-dropdown" onToggle={this.toggleDropdown.bind(this)} open={this.state.dropdownIsOpen}>
-            <LinkContainer onClick={this.toggleDropdown.bind(this)} className="dropDownMenu" to="/proprietor/profile"> 
-              <NavItem>Your Profile</NavItem>
-            </LinkContainer>
-            <LinkContainer href="javascript:void(0)" className="dropDownMenu" onClick={this.handleLogout.bind(this)} to="/" >
-              <NavItem>Logout</NavItem>
-            </LinkContainer>
-          </NavDropdown>
-        </Nav>
-      </Navbar>
+      <div className="navbarColor">
+        <nav className="navbar navbar-expand-lg navbar-dark">
+
+          <Link className="navbar-brand" id="navbarText" to="/proprietor">Rentopia</Link>
+
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
+
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item active">
+                <Link className="nav-link" id="navbarText" to="/proprietor/properties">Properties<span className="sr-only">(current)</span></Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link" id="navbarText" to="/proprietor/tenants">Tenants</Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link" id="navbarText" to="/proprietor/payments">Payments</Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link" id="navbarText" to="/proprietor/messages">Messages</Link>
+              </li>
+            </ul>
+            <ul>
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
+                <div className="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                  <Link className="dropdown-item" to="/proprietor/profile">Your Profile</Link>
+                  <Link className="dropdown-item" onClick={this.handleLogout.bind(this)} to="/" >Log Outta Here</Link>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     )
   }
 };

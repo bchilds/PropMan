@@ -35,14 +35,30 @@ class TenantDashboard extends Component {
 
     this.state = {
       modalIsOpen: true,
-      donutData: []
+      mobile: false,
+      showDonut: true,
+      donutData: [],
+      showMedia: false,
+      paymentAction: "Make Payment"
     }
   }
 
   componentWillMount() {
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;  
+    var mobile = false;
+    if (x < 481) {
+      mobile = true
+    }
     this.props.getBroadcasts(this.props.tenantData.property_id)
     this.setState({
-      donutData: this.props.expenses
+      donutData: this.props.expenses,
+      mobile: mobile,
+      modalIsOpen: true
     })
   }
 
@@ -59,11 +75,24 @@ class TenantDashboard extends Component {
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
+    if (this.state.mobile) {
+      this.setState({modalIsOpen: true, showDonut: false, showMedia: false, paymentAction: "Cancel"});
+    } else {
+      this.setState({modalIsOpen: true, paymentAction: "Cancel"});
+    }
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({modalIsOpen: false, showDonut: true, paymentAction: "Make Payment"});
+  }
+
+  cancelPayment() {
+    this.closeModal()
+    this.setState({paymentAction: "Make Payment"})
+  }
+
+  togglePayment() {
+    this.setState({modalIsOpen: false, showDonut: true, paymentAction: "Make Payment"})
   }
 
   render() {

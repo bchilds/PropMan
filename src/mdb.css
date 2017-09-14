@@ -1651,7 +1651,7 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-.z-depth-1-half, .btn:hover, .btn:active, .btn:focus, .modal-dialog .modal-content, .modal-dialog.cascading-modal .modal-header, ul.instagram-photos li img, .media .media-left img {
+.z-depth-1-half, .btn:hover, .btn:focus, .modal-dialog .modal-content, .modal-dialog.cascading-modal .modal-header, ul.instagram-photos li img, .media .media-left img {
   box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
 }
 
@@ -5462,7 +5462,7 @@ button:focus {
   cursor: pointer;
 }
 
-.btn:hover, .btn:active, .btn:focus {
+.btn:hover, .btn:focus {
   outline: 0;
 }
 
@@ -5530,11 +5530,6 @@ button:focus {
 .btn[class*="btn-outline-"].btn-lg {
   padding-top: .9rem;
   padding-bottom: .9rem;
-}
-
-.btn-secondary.disabled, .btn-secondary:disabled {
-  background-color: #b579d2 !important;
-  border-color: #b579d2 !important;
 }
 
 .btn-group .btn {
@@ -5729,31 +5724,31 @@ button:focus {
 }
 
 .btn-secondary {
-  background-color: #aa66cc;
+  background-color: #FDFDFD;
 }
 
-.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active {
-  background-color: #b579d2 !important;
+.btn-secondary:hover, .btn-secondary:focus, {
+  background-color: #FDFDFD !important;
 }
 
 .btn-secondary.dropdown-toggle {
-  background-color: #aa66cc !important;
+  background-color: #FDFDFD !important;
 }
 
 .btn-secondary.dropdown-toggle:hover, .btn-secondary.dropdown-toggle:focus {
-  background-color: #b579d2 !important;
+  background-color: #FDFDFD !important;
 }
 
 .btn-outline-secondary {
-  border: 2px solid #aa66cc;
-  color: #aa66cc !important;
+  border: 2px solid gray;
+  color: #FDFDFD !important;
   background-color: transparent;
 }
 
 .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary:active:focus, .btn-outline-secondary.active {
   background-color: transparent;
-  color: #aa66cc;
-  border-color: #aa66cc;
+  color: #FDFDFD;
+  border-color: #FDFDFD;
 }
 
 .btn-elegant {

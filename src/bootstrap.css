@@ -1880,8 +1880,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
   .btn.disabled, .btn:disabled {
     opacity: .65; }
-  .btn:active, .btn.active {
-    background-image: none; }
+ 
 
 a.btn.disabled,
 fieldset[disabled] a.btn {
@@ -1921,7 +1920,6 @@ fieldset[disabled] a.btn {
   .btn-secondary.disabled, .btn-secondary:disabled {
     background-color: #868e96;
     border-color: #868e96; }
-  .btn-secondary:active, .btn-secondary.active,
   .show > .btn-secondary.dropdown-toggle {
     background-color: #727b84;
     background-image: none;
