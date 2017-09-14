@@ -63,7 +63,6 @@ export class SimpleMap extends React.Component {
 		if(map) {
 			let center = new maps.LatLng(cur.lat, cur.lng)
 			map.panTo(center)
-			console.log('recenter!')
 		}
 	}
 

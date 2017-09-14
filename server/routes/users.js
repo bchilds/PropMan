@@ -74,17 +74,16 @@ router
 		ctx.body = user
 	})
 	.put('/:id', async (ctx, next) => {
-		// ==================   user_password IS A REQUIRED CONTEXT FIELD
 		// ctx.request.body  {user_name, email, user_password, new_password, creditcard}
-		let user, userRows, req, query, values, count, match
-		console.log('ctx', ctx.request.body)
-		const values = [ctx.params.id]
-		user = await ctx.db.query(`SELECT * FROM users where user_id = $1;`, values)
+		let user, userRows, req, query, values, count, match, updateAtts
+		const val = [ctx.params.id]
+		user = await ctx.db.query(`SELECT * FROM users where user_id = $1;`, val)
 		user = user.rows[0]
 		//if user found with this id
-		if(user && ctx.request.body.user_password) {
+		if(user) {
 			//check password
-			match = await checkUserPass(ctx, null, ctx.request.body.user_password, user)
+			match = true
+			if(ctx.request.body.user_password) match = await checkUserPass(ctx, null, ctx.request.body.user_password, user)
 				//if password checks out, set new fields on user object
 			if(match) {
 				//change this user object to have new fields
@@ -94,17 +93,21 @@ router
 				if(ctx.request.body.new_password) user.user_password = bcrypt.hashSync(ctx.request.body.new_password, bcrypt.genSaltSync(10))
 				query = `UPDATE users SET (`
 				values = `(`
+				updateAtts = []
+				count = 0
 				for(let attr in ctx.request.body){
 					if(user[attr] !== undefined){
 						count++
 						query += `${attr}, `
-						values += `'${user[attr]}', `
+						updateAtts.push(user[attr])
+						values += '$' + count + ', '
 					}
 				}
 				query = query.substring(0, query.length - 2) //kill the last comma and space
 				values = values.substring(0,values.length - 2) //kill the last comma and space
-				query = query + `) =` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
-				userRows = await ctx.db.query(query)
+				query = query + `) = ` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
+				console.log(query)
+				userRows = await ctx.db.query(query, updateAtts)
 				user = userRows.rows[0]
 
 				ctx.response.status = 201

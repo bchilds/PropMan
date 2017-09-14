@@ -39,10 +39,9 @@ class TenantSideBar extends Component {
 			return (
 				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
 			 )
-		  })}
-		  </div>
-			)
+		})
 	}
+
 
 	render() {
 		return (
@@ -90,10 +89,6 @@ class TenantSideBar extends Component {
 							<Documents tenant_id={this.props.tenant_id} />
 						</div>
 					</div>
-<<<<<<< HEAD
-				</div>g
-=======
->>>>>>> Most features are flexible and mobile friendly
 		)
 	}
 }

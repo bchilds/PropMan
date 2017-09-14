@@ -31,10 +31,11 @@ exports.addProperty = addProperty
 const getPropertyTenants = async (ctx, property_id, tenant_id) => {
 	//gets active tenants
 	let tenantsRows, tenants
-	const values = [property_id, tenant_id]
 	if(tenant_id) {
+		const values = [property_id, tenant_id]
 		tenantsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id WHERE tenants.property_id = $1 AND tenants.is_active = true AND tenants.tenant_id <> $2;`, values)
 	} else {
+		const values = [property_id]
 		tenantsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id WHERE tenants.property_id = $1 AND tenants.is_active = true;`, values)
 	}
 	tenants = tenantsRows.rows
