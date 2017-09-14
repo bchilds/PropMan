@@ -15,7 +15,7 @@ class Documents extends React.Component {
   }
 
   componentWillMount() {
-    // this.getTenantDocuments(this.props.tenant_id)
+    this.getTenantDocuments(this.props.tenant_id)
   }
 
   getTenantDocuments(tenant_id) {
