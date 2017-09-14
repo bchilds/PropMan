@@ -26,12 +26,14 @@ const makeMessage = async (ctx) => {
 	if(obj.property_id && !obj.sender_id && !obj.recipient_id) {
 		//it is a broadcast 
 		// ctx.request.body = {message_content, message_type, property_id, importance, sender_id, sender_name, recipient_id, recipient_name}
-		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id, message_title) VALUES ('${obj.message_content}', 'broadcast', ${obj.property_id}, '${obj.title}') RETURNING *;`)
+		const values = [obj.message_content, obj.property_id, obj.message_title]
+		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id, message_title) VALUES ($1, 'broadcast', $2, $3) RETURNING *;`, values)
 		message = messageRows.rows[0]
 		return message
 	} else if(!obj.property_id && obj.sender_id && obj.recipient_id) {
 		//it is a DM
-		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, sender_id, sender_name, recipient_id, recipient_name) VALUES ('${obj.message_content}', 'direct', ${obj.sender_id}, '${obj.sender_name}', ${obj.recipient_id}, '${obj.recipient_name}') RETURNING *;`)
+		const values = [obj.message_content, obj.sender_id, obj.sender_name, obj.recipient_id, obj.recipient_name]
+		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, sender_id, sender_name, recipient_id, recipient_name) VALUES ($1, 'direct', $2, $3, $4, $5) RETURNING *;`, values)
 		message = messageRows.rows[0]
 		return message
 	} else {

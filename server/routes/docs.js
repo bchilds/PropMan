@@ -45,8 +45,8 @@ const createRawtext = async (ctx) => {
 	// if there is no id, give it a null value
 	obj.tenant_id = obj.tenant_id || null
 	obj.landlord_id = obj.landlord_id || null
-	// doc = await ctx.db.query(`INSERT INTO documents (landlord_id, doc_type, tenant_id, property_id, doc_body) VALUES (${obj.landlord_id},'${obj.doc_type}', ${obj.tenant_id}, ${obj.property_id}, '${obj.doc_body}') RETURNING *;`)
-	doc = await ctx.db.query(`INSERT INTO documents (landlord_id, doc_type, tenant_id, property_id, doc_body, doc_url) VALUES (${obj.landlord_id},'${obj.doc_type}', ${obj.tenant_id}, ${obj.property_id}, '${obj.doc_body}', '${obj.doc_url}') RETURNING *;`)
+	const values = [obj.landlord_id, obj.doc_type, obj.tenant_id, obj.property_id, obj,doc_body, obj.doc_url]
+	doc = await ctx.db.query(`INSERT INTO documents (landlord_id, doc_type, tenant_id, property_id, doc_body, doc_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`, values)
 	return doc.rows[0]
 }
 exports.createRawtext = createRawtext
@@ -71,7 +71,6 @@ router
 	.post('/add/:type', async (ctx, next) => {
 		//types are lease, image, other, rawtext
 		//ctx.request.body ->  {user_id, doc_type, landlord_id, tenant_id?, property_id, doc_body?, doc_url?}
-		console.log(ctx.params)
 		if(ctx.params.type === 'rawtext') {
 			ctx.body = await createRawtext(ctx)
 		} else if(ctx.params.type === 'image') {
