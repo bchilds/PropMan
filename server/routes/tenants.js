@@ -12,9 +12,11 @@ const updateTenant = async (ctx, user, tenant_id, property_id, rent, date) => {
 	console.log(tenant_id, property_id)
 	let tenantRows
 	if(user) {
-		tenantRows = await ctx.db.query(`UPDATE tenants SET user_id = ${user.user_id} WHERE tenant_email = '${user.email}' AND is_active = true RETURNING *;`)
+		const values = [user.user_id, user.email]
+		tenantRows = await ctx.db.query(`UPDATE tenants SET user_id = $1 WHERE tenant_email = $2 AND is_active = true RETURNING *;`, values)
 	} else {
-		tenantRows = await ctx.db.query(`UPDATE tenants SET (property_id, rent, due_date) = (${property_id}, ${rent}, TO_DATE('${date})', 'DD/MM/YYYY')) WHERE tenant_id = ${tenant_id} RETURNING *;`)
+		const values = [property_id, rent, due_date, tenant_id]
+		tenantRows = await ctx.db.query(`UPDATE tenants SET (property_id, rent, due_date) = ($1, $2, TO_DATE($3, 'DD/MM/YYYY')) WHERE tenant_id = $4 RETURNING *;`, values)
 	}
 	return tenantRows.rows[0]
 }	
@@ -23,9 +25,11 @@ exports.updateTenant = updateTenant
 const checkForActiveTenant = async (ctx, user, email) => {
 	let tenantRows
 	if(user) {
-		tenantRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_email = '${user.email}' AND is_active = true;`)
+		const values = [user.email]
+		tenantRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_email = $1 AND is_active = true;`, values)
 	} else {
-		tenantRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_email = '${email}' AND is_active = true;`)
+		const values = [email]
+		tenantRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_email = $1 AND is_active = true;`, values)
 	}
 	return tenantRows.rows[0]
 }
@@ -33,6 +37,7 @@ exports.checkForActiveTenant = checkForActiveTenant
 
 const createNewTenant = async (ctx, user, property_id) => {
 	let tenant
+	let obj = ctx.request.body	
 	if(ctx.request.body.email) ctx.request.body.tenant_email = ctx.request.body.email
 	if(ctx.request.body.tenant_email) {
 		if(user && property_id) {
@@ -42,13 +47,16 @@ const createNewTenant = async (ctx, user, property_id) => {
 				//if he does and it has no prop_id, update that
 				//if he does and it has prop_id, return error
 				//if he doesn't, create
-			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active, rent, due_date, property_id) VALUES (${user.user_id}, '${ctx.request.body.tenant_email}', true, ${ctx.request.body.rent}, TO_DATE('${ctx.request.body.due_date}', 'DD/MM/YYYY'), ${property_id}) RETURNING *;`)
+			const values = [user.user_id, obj.tenant_email, obj.rent, obj.due_date, obj.property_id]	
+			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active, rent, due_date, property_id) VALUES ($1, $2, true, $3, TO_DATE($4, 'DD/MM/YYYY'), $5) RETURNING *;`, values)
 		} else if (!user && property_id) {
 			// Tenant has no user, so we create a tenant record for them to claim
-			tenant = await ctx.db.query(`INSERT INTO tenants (tenant_email, is_active, rent, due_date, property_id) VALUES ('${ctx.request.body.tenant_email}', true, ${ctx.request.body.rent}, TO_DATE('${ctx.request.body.due_date}', 'DD/MM/YYYY'), ${property_id}) RETURNING *;`)
+			const values = [obj.tenant_email, obj.rent, obj.due_date, obj.property_id]	
+			tenant = await ctx.db.query(`INSERT INTO tenants (tenant_email, is_active, rent, due_date, property_id) VALUES ($1, true, $2, TO_DATE($3, 'DD/MM/YYYY'), $4) RETURNING *;`, values)
 		} else if (user && !property_id){
 			// created by user signing up with no active tenants for email address
-			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active) VALUES ('${user.user_id}', '${user.email}', true) RETURNING *;`)
+			const values = [users.user_id, obj.tenant_email]
+			tenant = await ctx.db.query(`INSERT INTO tenants (user_id, tenant_email, is_active) VALUES ($1, $2, true) RETURNING *;`, values)
 		} else {
 			console.log('error, no tenant created')
 		}
@@ -66,13 +74,16 @@ const getLandlordTenants = async (ctx, landlord_id, condition) => {
 	//condition will be: all, act, in
 	let resultsRows, results
 	if(condition === 'all') {
-		resultsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id FULL OUTER JOIN properties ON tenants.property_id = properties.property_id WHERE properties.landlord_id = ${landlord_id}`)
+		const values = [landlord_id]
+		resultsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id FULL OUTER JOIN properties ON tenants.property_id = properties.property_id WHERE properties.landlord_id = $1`, values)
 		results = resultsRows.rows
 	} else if (condition === 'in') {
-		resultsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id FULL OUTER JOIN properties ON tenants.property_id = properties.property_id WHERE properties.landlord_id = ${landlord_id} AND tenants.is_active = false`)
+		const values = [landlord_id]
+		resultsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id FULL OUTER JOIN properties ON tenants.property_id = properties.property_id WHERE properties.landlord_id = $1 AND tenants.is_active = false`, values)
 		results = resultsRows.rows
 	} else if (condition === 'act') {
-		resultsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id FULL OUTER JOIN properties ON tenants.property_id = properties.property_id WHERE properties.landlord_id = ${landlord_id} AND tenants.is_active = true;`)
+		const values = [landlord_id]
+		resultsRows = await ctx.db.query(`SELECT tenants.*, users.user_name FROM tenants FULL OUTER JOIN users ON tenants.user_id = users.user_id FULL OUTER JOIN properties ON tenants.property_id = properties.property_id WHERE properties.landlord_id = $1 AND tenants.is_active = true;`, values)
 		results = resultsRows.rows
 	} else {
 		return null
@@ -111,7 +122,8 @@ exports.retrieveActiveTenantData = retrieveActiveTenantData
 router
 	.get('/:id', async (ctx, next) => {
 		let userRows
-		userRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_id = ${ctx.params.id};`)
+		const values = [ctx.params.id]
+		userRows = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_id = $1;`, values)
 		ctx.body = userRows.rows[0]
 	})
 	.get('/property/:property_id', async (ctx, next) => {
@@ -169,7 +181,8 @@ router
 	})
 	.get('/activedata/:tenant_id', async (ctx, next) => {
 		let tenant
-		tenant = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_id = ${ctx.params.tenant_id};`)
+		const values = [ctx.params.tenant_id]
+		tenant = await ctx.db.query(`SELECT * FROM tenants WHERE tenant_id = $1;`, values)
 		tenant = tenant.rows[0]
 		ctx.body = await retrieveActiveTenantData(ctx, tenant)
 	})

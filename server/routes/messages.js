@@ -6,7 +6,8 @@ let Tenants = require('./tenants.js')
 const getUserMessages = async (ctx, user_id) => {
 	let messageRows
 	if(!user_id) user_id = null
-	messageRows = await ctx.db.query(`SELECT * FROM messages WHERE recipient_id = ${user_id} OR sender_id = ${user_id} AND property_id IS NULL;`)
+	const values = [user_id]
+	messageRows = await ctx.db.query(`SELECT * FROM messages WHERE recipient_id = $1 OR sender_id = $1 AND property_id IS NULL;`, values)
 	// returns array of messages
 	return messageRows.rows
 }
@@ -14,7 +15,8 @@ exports.getUserMessages = getUserMessages
 
 const getPropertyBroadcasts = async (ctx, property_id) => {
 	let broadcastsRows, broadcasts
-	broadcastsRows = await ctx.db.query(`SELECT * FROM messages WHERE property_id = ${property_id} AND sender_id IS NULL AND recipient_id IS NULL;`)
+	const values = [property_id]
+	broadcastsRows = await ctx.db.query(`SELECT * FROM messages WHERE property_id = $1 AND sender_id IS NULL AND recipient_id IS NULL;`, values)
 	broadcasts = broadcastsRows.rows
 	return broadcasts
 }
@@ -26,8 +28,9 @@ const makeMessage = async (ctx) => {
 	if(obj.property_id && !obj.sender_id && !obj.recipient_id) {
 		//it is a broadcast 
 		// ctx.request.body = {message_content, message_type, property_id, importance, sender_id, sender_name, recipient_id, recipient_name}
-		const values = [obj.message_content, obj.property_id, obj.title]
-		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id, message_title) VALUES ($1, 'broadcast', $2, $3) RETURNING *;`, values)
+
+		const values = [obj.message_content, 'broadcast', obj.property_id, obj.title]
+		messageRows = await ctx.db.query(`INSERT INTO messages (message_content, message_type, property_id, message_title) VALUES ($1, $2, $3, $4) RETURNING *;`, values)
 		message = messageRows.rows[0]
 		return message
 	} else if(!obj.property_id && obj.sender_id && obj.recipient_id) {
@@ -46,7 +49,8 @@ exports.makeMessage = makeMessage
 
 const updateViewed = async (ctx, message_id) => {
 	let message, messageRows
-	messageRows = ctx.db.query(`UPDATE messages SET is_read = NOT is_read WHERE message_id = ${message_id} RETURNING *;`)
+	const values = [message_id]
+	messageRows = ctx.db.query(`UPDATE messages SET is_read = NOT is_read WHERE message_id = $1 RETURNING *;`, values)
 	message = messageRows.rows[0]
 	return message
 }
@@ -54,7 +58,8 @@ const updateViewed = async (ctx, message_id) => {
 router
 	.get('/:message_id', async (ctx, next) => {
 		let messageRows
-		messageRows = await ctx.db.query(`SELECT * FROM messages WHERE message_id = ${ctx.params.message_id};`)
+		const values = [ctx.params.message_id]
+		messageRows = await ctx.db.query(`SELECT * FROM messages WHERE message_id = $1;`, values)
 		ctx.body = messageRows.rows[0]
 	})
 	.get('/broadcasts/:property_id', async (ctx, next) => {

@@ -48,7 +48,7 @@ const authFunc = async (ctx, next) => {
 	console.log(ctx.session)
 	ctx.session.isLoggedIn = ctx.session.isLoggedIn || false
 	if (!ctx.session.isLoggedIn) {
-	  //redirToIndex(ctx, next) 
+	  redirToIndex(ctx, next) 
 	}
 	  await next()
 }

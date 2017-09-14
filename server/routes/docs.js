@@ -6,16 +6,19 @@ const getUserDocs = async (ctx, tenantOrLandlord, isLandlord = false, property_i
 	output = {}
 	// get the tenant documents where user_id contains the user's active tenant record's id
 	if(isLandlord) {
-		docRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = ${tenantOrLandlord.landlord_id};`)
+		const values = [tenantOrLandlord.landlord_id]
+		docRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = $1;`, values)
 		output.allLandlordDocs = docRows.rows
 	} else {
-		docRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = ${tenantOrLandlord.tenant_id};`)
+		const values = [tenantOrLandlord.tenant_id]
+		docRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = $1;`, values)
 		output.tenantDocs = docRows.rows
 	}
 
 	if(tenantOrLandlord.property_id) {
 		// this returns all property-wide documents that are not tied to individual tenants
-		docRows = await ctx.db.query(`SELECT * FROM documents WHERE property_id = ${tenantOrLandlord.property_id} AND tenant_id IS NULL;`)
+		const values = [tenantOrLandlord.property_id]
+		docRows = await ctx.db.query(`SELECT * FROM documents WHERE property_id = $1 AND tenant_id IS NULL;`, values)
 		output.propertyDocs = docRows.rows
 	}
 	
@@ -25,7 +28,8 @@ exports.getUserDocs = getUserDocs
 
 const getPropertyDocuments = async (ctx, property_id) => {
   let documentRows, docs
-  documentRows = await ctx.db.query(`SELECT * FROM documents WHERE property_id = ${property_id};`)
+  const values = [property_id]
+  documentRows = await ctx.db.query(`SELECT * FROM documents WHERE property_id = $1;`, values)
   docs = documentRows.rows
   return docs
 }
@@ -33,7 +37,8 @@ exports.getPropertyDocuments = getPropertyDocuments
 
 const getTenantDocuments = async (ctx, tenant_id) => {
   let documentRows, docs
-  documentRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = ${tenant_id};`)
+  const values = [tenant_id]
+  documentRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = $1;`, values)
   docs = documentRows.rows
   return docs
 }
@@ -59,7 +64,8 @@ router
   })
 	.get('/:id', async (ctx, next) => {
 		let docRows
-		docRows = await ctx.db.query(`SELECT * FROM documents WHERE document_id = ${ctx.params.id};`)
+		const values = [ctx.params.id]
+		docRows = await ctx.db.query(`SELECT * FROM documents WHERE document_id = $1;`, values)
 		ctx.body = docRows.rows[0]
 	})
 	.get('/property/:property_id', async (ctx, next) => {

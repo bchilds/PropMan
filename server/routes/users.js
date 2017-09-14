@@ -6,7 +6,8 @@ let Multi = require('../multifactor.js')
 const getUserById = async (ctx, user_id) => {
 	if(!ctx.db) return 'failure'
 	let userRows, user
-	userRows = await ctx.db.query(`SELECT * FROM users WHERE user_id = ${user_id};`)
+	const values = [user_id]
+	userRows = await ctx.db.query(`SELECT * FROM users WHERE user_id = $1;`, values)
 	user = userRows.rows[0]
 	return user
 }
@@ -15,7 +16,8 @@ exports.getUserById = getUserById
 const getUserByEmail = async (ctx, email) => {
 	let userRows, user
 	if(!email && ctx.request.body.email) email = ctx.request.body.email
-	userRows = await ctx.db.query(`SELECT * FROM users WHERE email = '${email}';`)
+	const values = [email]
+	userRows = await ctx.db.query(`SELECT * FROM users WHERE email = $1;`, values)
 	user = userRows.rows[0]
 	return user
 }
@@ -27,7 +29,8 @@ const createUser = async (ctx, password) => {
 	let bcryptPass
 	if(!password && ctx.request.body.password) password = ctx.request.body.password
 	bcryptPass = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-	userRows = await ctx.db.query(`INSERT INTO users (user_name, email, user_password, is_landlord) VALUES ('${ctx.request.body.user_name}', '${ctx.request.body.email}', '${bcryptPass}', ${ctx.request.body.isLandlord}) RETURNING *;`)
+	const values = [ctx.request.body.user_name, ctx.request.body.email, bcryptPass, ctx.request.body.isLandlord]
+	userRows = await ctx.db.query(`INSERT INTO users (user_name, email, user_password, is_landlord) VALUES ($1, $2, $3, $4) RETURNING *;`, values)
 	user = userRows.rows[0]
 	return user
 }
@@ -40,7 +43,8 @@ const checkUserPass = async (ctx, email, password, user) => {
 	if(!user) {
 		if(!email && ctx.request.body.email) email = ctx.request.body.email
 		if(!password && ctx.request.body.password) password = ctx.request.body.password
-		userRows = await ctx.db.query(`SELECT user_password FROM users WHERE email = '${email}';`)
+		const values = [email]
+		userRows = await ctx.db.query(`SELECT user_password FROM users WHERE email = $1;`, values)
 		storedPassword = userRows.rows[0].user_password
 	} else {
 		storedPassword = user.user_password

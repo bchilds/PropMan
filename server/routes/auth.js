@@ -37,13 +37,13 @@ auth
 					console.log(`tenant found, tenant_id:  ${tenant.tenant_id}`)
 					// retrieve the tenant data for this tenant
 					output = await tenants.retrieveActiveTenantData(ctx, tenant)
-					//NEED TO FIX THIS TO NOT DISPLAY PASSWORDS
+					delete user.user_password
 					output.user = user
 				} else {
 					// if not, create new tenant user not associated to a property
 					tenant = await tenants.createNewTenant(ctx, user)
 					console.log(`tenant created, tenant_id:  ${tenant.tenant_id}`)
-					//NEED TO FIX THIS TO NOT DISPLAY PASSWORDS
+					delete user.user_password
 					output = {user: user, tenant: tenant}
 				}
 			}
@@ -94,6 +94,7 @@ auth
 
 			if(user && user.is_landlord && passwordCheck) {
 				output = await landlords.getLandlordData(ctx, user)
+				delete user.user_password
 				output.user = user
 
 				ctx.session.isLoggedIn = true
@@ -104,6 +105,7 @@ auth
 				if(tenant) {
 					//all gucci
 					output = await tenants.retrieveActiveTenantData(ctx, tenant)
+					delete user.user_password
 					output.user = user
 					
 					ctx.session.isLoggedIn = true
