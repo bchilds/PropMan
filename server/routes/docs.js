@@ -7,7 +7,7 @@ const getUserDocs = async (ctx, tenantOrLandlord, isLandlord = false, property_i
 	// get the tenant documents where user_id contains the user's active tenant record's id
 	if(isLandlord) {
 		const values = [tenantOrLandlord.landlord_id]
-		docRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = $1;`, values)
+		docRows = await ctx.db.query(`SELECT * FROM documents WHERE landlord_id = $1;`, values)
 		output.allLandlordDocs = docRows.rows
 	} else {
 		const values = [tenantOrLandlord.tenant_id]
@@ -37,9 +37,12 @@ exports.getPropertyDocuments = getPropertyDocuments
 
 const getTenantDocuments = async (ctx, tenant_id) => {
   let documentRows, docs
-  const values = [tenant_id]
-  documentRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = $1;`, values)
-  docs = documentRows.rows
+  docs = []
+  if(tenant_id) {
+	  const values = [tenant_id]
+	  documentRows = await ctx.db.query(`SELECT * FROM documents WHERE tenant_id = $1;`, values)
+	  docs = documentRows.rows
+  }
   return docs
 }
 exports.getTenantDocuments = getTenantDocuments
@@ -72,7 +75,12 @@ router
     ctx.body = await getPropertyDocuments(ctx, ctx.params.property_id)
   })
 	.get('/tenant/:tenant_id', async (ctx, next) => {
-    ctx.body = await getTenantDocuments(ctx, ctx.params.tenant_id)
+		if(ctx.params.tenant_id !== undefined) {
+    	ctx.body = await getTenantDocuments(ctx, ctx.params.tenant_id)
+		} else {
+			ctx.response.status = 404
+			ctx.body = 'Error: tenant ID not provided'
+		}
   })
 	.post('/add/:type', async (ctx, next) => {
 		//types are lease, image, other, rawtext

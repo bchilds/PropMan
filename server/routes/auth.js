@@ -24,7 +24,7 @@ auth
 				// if it's a landlord, create it
 				const landlordOut = await landlords.createLandlord(ctx, user)
 				// return the user that was created and the landlord that was created
-				//NEED TO FIX THIS TO NOT DISPLAY PASSWORDS	
+				delete user.user_password
 				output = {user: user, landlord: landlordOut}
 			} else {
 				// see if there is an active tenant, via email
@@ -84,7 +84,6 @@ auth
 
 			//now check password
 			if (multiPass) passwordCheck = await Users.checkUserPass(ctx)
-
 			if(user && user.is_landlord && passwordCheck) {
 				output = await landlords.getLandlordData(ctx, user)
 				delete user.user_password
@@ -118,7 +117,6 @@ auth
 
 	.get('/logout', async (ctx, next) => {
 		ctx.session = null
-		// console.log(ctx.session)
 		ctx.response.status = 202
 		ctx.body = 'Successful signout'
 	})
