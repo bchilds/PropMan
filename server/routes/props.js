@@ -53,7 +53,6 @@ router
 		ctx.body = await Messages.getPropertyBroadcasts(ctx, ctx.params.property_id)
 	})
 	.post('/', async (ctx, next) => {
-		// {landlord_id, property_name, address, city, state_abbrv}
 		ctx.body = await addProperty(ctx, ctx.request.body.landlord_id)
 	})
 exports.routes = router

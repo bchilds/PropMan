@@ -116,7 +116,6 @@ router
       let paymentIdentifier = result.transaction.id
       if (result.success) {
         //create transaction record here
-        console.log('updating transaction in DB')
         const values2 = [paymentIdentifier, results.transaction_id]
         let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ($1, true) WHERE transaction_id = $2 RETURNING *;`, values2)
         transaction = transaction.rows[0]

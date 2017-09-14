@@ -7,7 +7,6 @@ let Promise = require('bluebird')
 let email = require('../emailService.js')
 
 const createLandlord = async (ctx, user) => {
-	console.log(`creating landlord.........`)
 	let ll, llRows
 	const values = [user.user_id]
 	llRows = await ctx.db.query(`INSERT INTO landlords (user_id) VALUES ($1) RETURNING *;`, values)
@@ -73,7 +72,6 @@ router
 		}
 	})
 	.post('/', async (ctx, next) => {
-		//ctx.request.body = {user}
 		let ll
 		if(ctx.request.body.user) ll = await createLandlord(ctx, ctx.request.body.user)
 		if(ll) {
@@ -86,7 +84,6 @@ router
 	})
 	.post('/data', async (ctx, next) => {
 		let data
-		// ctx.request.body = {user}
 		if(ctx.request.body.user) data = await getLandlordData(ctx, ctx.request.body.user)
 		if(data) {
 			ctx.response.status = 302

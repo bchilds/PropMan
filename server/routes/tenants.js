@@ -9,7 +9,6 @@ let Promise = require('bluebird')
 
 
 const updateTenant = async (ctx, user, tenant_id, property_id, rent, date) => {
-	console.log(tenant_id, property_id)
 	let tenantRows
 	if(user) {
 		const values = [user.user_id, user.email]
@@ -97,7 +96,6 @@ const retrieveActiveTenantData = async (ctx, tenant) => {
 	property = await props.getProperty(ctx, tenant.property_id)
 	if(property) {
 		[broadcasts, otherTenants, landlord] = await Promise.all([
-		//[broadcasts, otherTenants] = await Promise.all([
 			Messages.getPropertyBroadcasts(ctx, property.property_id),
 			props.getPropertyTenants(ctx, property.property_id, tenant.tenant_id),
 			Landlords.getLandlordById(ctx, property.landlord_id)
@@ -110,11 +108,7 @@ const retrieveActiveTenantData = async (ctx, tenant) => {
 		payments.getUserTransactions(ctx, tenant),
 		payments.getUserExpenses(ctx, tenant.user_id)
 	])
-	// docArray = await docs.getUserDocs(ctx, tenant)
-	// messagesArray = await Messages.getUserMessages(ctx, tenant.user_id)
-	// transactions = await payments.getUserTransactions(ctx, tenant)
 	output = { tenant: tenant, property: property, messages: messagesArray, docs: docArray, otherTenants: otherTenants, landlord: landlord, transactions: transactions, expenses: expenses }
-	//console.log(output)
 	return output
 }
 exports.retrieveActiveTenantData = retrieveActiveTenantData
@@ -139,7 +133,6 @@ router
 	})
 	.post('/bylandlord/create', async (ctx, next) => {
 		// ctx.request.body = {property_id, tenant_email, rent, due_date}
-		// console.log('made it to bylandlord')
 		let obj, user, tenant
 		obj = ctx.request.body
 		// needs to check if tenant has a user
@@ -151,7 +144,6 @@ router
 			tenant = await checkForActiveTenant(ctx, user)
 		} else {
 			//has no user, but still need to check if it has an active tenant to prevent conflicts
-			console.log('no active user')
 			tenant = await checkForActiveTenant(ctx, null, obj.tenant_email)
 		}
 		if(tenant && tenant.property_id) {
@@ -161,14 +153,11 @@ router
 				ctx.body = `This tenant is currently active in another property`				
 			} else if(tenant && !tenant.property_id) {
 				// if tenant is active but has no property, update
-				console.log('bylandlord - updating tenant')
 				tenant = await updateTenant(ctx, null, tenant.tenant_id, obj.property_id, obj.rent, obj.due_date)
-				console.log('10ant', tenant)
 				ctx.response.status = 202
 				ctx.body = tenant
 			} else {
 				// if no active tenant, create tenant and return it
-				console.log('bylandlord - creating tenant')
 				tenant = await createNewTenant(ctx, user, obj.property_id)
 				if(tenant){
 					ctx.response.status = 201

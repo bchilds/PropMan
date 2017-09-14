@@ -1,7 +1,6 @@
 let router = require('koa-router')()
 let bcrypt = require('bcrypt-nodejs')
 let Multi = require('../multifactor.js')
-//responds to /users, /users/:email
 
 const getUserById = async (ctx, user_id) => {
 	if(!ctx.db) return 'failure'
@@ -24,7 +23,6 @@ const getUserByEmail = async (ctx, email) => {
 exports.getUserByEmail = getUserByEmail
 
 const createUser = async (ctx, password) => {
-	//ctx.request.body = {user_name, email, user_password, isLandlord}
 	let userRows, user
 	let bcryptPass
 	if(!password && ctx.request.body.password) password = ctx.request.body.password
@@ -80,7 +78,8 @@ router
 		// ctx.request.body  {user_name, email, user_password, new_password, creditcard}
 		let user, userRows, req, query, values, count, match
 		console.log('ctx', ctx.request.body)
-		user = await ctx.db.query(`SELECT * FROM users where user_id = ${ctx.params.id};`)
+		const values = [ctx.params.id]
+		user = await ctx.db.query(`SELECT * FROM users where user_id = $1;`, values)
 		user = user.rows[0]
 		//if user found with this id
 		if(user && ctx.request.body.user_password) {
@@ -105,9 +104,7 @@ router
 				query = query.substring(0, query.length - 2) //kill the last comma and space
 				values = values.substring(0,values.length - 2) //kill the last comma and space
 				query = query + `) =` + values + `) WHERE user_id = ${ctx.params.id} RETURNING *;`
-				console.log(query)
 				userRows = await ctx.db.query(query)
-				// userRows = await ctx.db.query(`UPDATE users SET (user_name, email, user_password, creditcard) = ('${req.user_name}', '${req.email}', '${req.user_password}', '${req.creditcard}') WHERE user_id = ${ctx.params.id} RETURNING *;`)
 				user = userRows.rows[0]
 
 				ctx.response.status = 201
@@ -115,7 +112,8 @@ router
 
 				//if user is a tenant, update the emails of all tenants pointing to this user
 				if(!user.is_landlord) {
-					let tenant = await ctx.db.query(`UPDATE tenants SET (tenant_email) = ('${user.email}') WHERE user_id = ${user.user_id} AND is_active = true RETURNING *;`)
+					const values3 = [user.email, user.user_id]
+					let tenant = await ctx.db.query(`UPDATE tenants SET (tenant_email) = ($1) WHERE user_id = $2 AND is_active = true RETURNING *;`, values3)
 					ctx.body.tenant = tenant.rows[0]
 					ctx.body.tenant.user_name = user.user_name
 				}

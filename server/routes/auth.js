@@ -18,13 +18,11 @@ auth
 		} else {
 			// create new user record here
 			user = await Users.createUser(ctx)
-			console.log(`User created:  ${user}`)
 			const isLandlord = ctx.request.body.isLandlord
 			// we created a user. Now we want to make a matching landlord record OR tenant record for them.
 			if(isLandlord){
 				// if it's a landlord, create it
 				const landlordOut = await landlords.createLandlord(ctx, user)
-				console.log(`Landlord created, user_id:  ${landlordOut.user_id}`)
 				// return the user that was created and the landlord that was created
 				//NEED TO FIX THIS TO NOT DISPLAY PASSWORDS	
 				output = {user: user, landlord: landlordOut}
@@ -34,7 +32,6 @@ auth
 				if(tenant) {
 					// if yes, link tenant to user and return user, tenant, and property
 					tenant = await tenants.updateTenant(ctx, user, tenant)
-					console.log(`tenant found, tenant_id:  ${tenant.tenant_id}`)
 					// retrieve the tenant data for this tenant
 					output = await tenants.retrieveActiveTenantData(ctx, tenant)
 					delete user.user_password
@@ -42,7 +39,6 @@ auth
 				} else {
 					// if not, create new tenant user not associated to a property
 					tenant = await tenants.createNewTenant(ctx, user)
-					console.log(`tenant created, tenant_id:  ${tenant.tenant_id}`)
 					delete user.user_password
 					output = {user: user, tenant: tenant}
 				}
@@ -59,7 +55,6 @@ auth
 		let user, tenant, landlord, properties, output, passwordCheck
 		user = await Users.getUserByEmail(ctx)
 		if(!user) {
-			console.log('User does not exist')
 			ctx.response.status = 403
 			ctx.body = 'No user exists'
 		} else {
@@ -76,7 +71,6 @@ auth
 				multiPass = true
 				if(await Multi.validateToken(ctx, ctx.request.body.multi, user.twofactor_auth)) {
 					//if it does, modify use_twofactor on the user record
-					console.log('should update multifactor')
 					user = await Multi.updateUserMulti(ctx, user)
 				} else {
 					//if it does not, add attribute to user to notify client but continue
