@@ -35,8 +35,7 @@ class TenantDashboard extends Component {
 
     this.state = {
       modalIsOpen: true,
-      showDonut: true,
-      donutData: [],
+      donutData: []
     }
   }
 
@@ -57,12 +56,6 @@ class TenantDashboard extends Component {
     this.setState({
       donutData: nextProps.expenses
     })
-
-    if (nextProps.media) {
-      this.setState({
-        showDonut: false
-      })
-    }
   }
 
   openModal() {
@@ -73,26 +66,20 @@ class TenantDashboard extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  showDonut() {
-    this.setState({
-      showDonut: true
-    })
-  }
-
   render() {
   	return (
       <div>
-        <TenantSidebar tenant_id={this.props.tenantData.tenant_id} showDonut={this.showDonut.bind(this)} />
+        <TenantSidebar tenant_id={this.props.tenantData.tenant_id}/>
 
         <div id="tenantWindow">
           <h2 className="pageTitle"> Your Dashboard </h2>
-          {this.state.showDonut && <div className="donutGraph">
+          {this.props.showDonut && <div className="donutGraph">
             <h3>Expenses</h3>
             <DonutWindow data = {this.state.donutData}
             />
           </div>
           }
-          {!this.state.showDonut &&           
+          {!this.props.showDonut &&           
             <div className="selectedMedia">
               <h3> {this.props.media.title} </h3>
               <p> {this.props.media.media} </p>
@@ -137,7 +124,8 @@ function mapStateToProps(state) {
     tenantData: state.tenantData,
     user: state.user,
     tenantsLandlord: state.tenantsLandlord,
-    expenses: state.expenses
+    expenses: state.expenses,
+    showDonut: state.showDonut
 	}
 }
 

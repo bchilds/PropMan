@@ -1,13 +1,15 @@
-import { FETCH_SELECTED_MEDIA } from '../actions/tenantDashboardGetters.js';
+import { FETCH_SELECTED_MEDIA, SHOW_DONUT } from '../actions/tenantDashboardGetters.js';
 import { CURRENT_CONVO } from '../actions/sortMessages'
 import { USER_LOGOUT, USER_LOGIN } from '../actions/authGetters'
 import { FETCH_BROADCASTS } from '../actions/broadcastsGetter'
+import { REHYDRATE } from 'redux-persist/constants'
 
 export function selectedTenantMedia(state = {}, action) {
 	switch(action.type) {
 		case FETCH_SELECTED_MEDIA:
 		  return action.payload;
-
+		case REHYDRATE:
+			return {}
 		default:
 			return state;
 	}
@@ -45,5 +47,18 @@ export function convoPersonsName(state = '', action) {
 
 	  default:
 	  	return state;
+	}
+}
+
+export function showDonut(state = true, action) {
+	switch(action.type) {
+		case SHOW_DONUT:
+			return true
+		case REHYDRATE:
+			return true
+		case FETCH_SELECTED_MEDIA:
+			return false
+		default:
+			return state
 	}
 }
