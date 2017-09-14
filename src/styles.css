@@ -268,11 +268,20 @@
   }
 
   .centerMessage {
-    width: 80%;
+    width: 70%;
     font-size: 18px;
     padding: 5px;
     margin: 5px;
+    border-bottom: 0px;
   }
+
+  #fuckingWork {
+    text-align:left;
+    overflow:scroll;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
 
   .landlordMap {
     width: 50vh;
@@ -322,6 +331,7 @@
     font-size: 18px;
     padding: 5px;
     margin: 5px;
+    border-bottom: 0px;
   }
   .landlordMap {
     width: 60vh;
@@ -368,6 +378,7 @@
     height: 50px;
     font-size: 18px;
     padding: 5px;
+    border-bottom: 0px;
   }
 
   .landlordMap {
@@ -510,6 +521,8 @@
 }
 
 .newMessage {
+  width: 95%;
+  overflow: scroll;
   bottom: 0;
   text-align: center;
   margin: 0 auto;
