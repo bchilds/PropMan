@@ -39,7 +39,6 @@ export function getDocs(userId) {
 }
 
 export function selectedMedia(title = '', media) {
-
 	return {
 		type: FETCH_SELECTED_MEDIA,
 		payload: {

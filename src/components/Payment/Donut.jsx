@@ -14,7 +14,7 @@ class Donut extends React.Component {
     return (
       <Slice key={i}
              outerRadius={this.props.radius}
-             innerRadius={this.props.radius * .70}
+             innerRadius={this.props.radius * .75}
              value={value}
              label={value.data.payment_type}
              fill={this.props.colorScale[i]} 
