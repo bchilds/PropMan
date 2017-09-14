@@ -57,7 +57,7 @@ exports.getTransactionById = getTransactionById
 
 const getUserExpenses = async (ctx, user_id) => {
   const values = [user_id]
-  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id = $1 AND is_completed = true GROUP BY payment_type ORDER BY SUM(split_amount) DESC LIMIT 5;`)
+  let transactionData = await ctx.db.query(`SELECT payment_type, SUM(split_amount) from transactions where sender_id = $1 AND is_completed = true GROUP BY payment_type ORDER BY SUM(split_amount) DESC LIMIT 5;`, values)
   transactionData = transactionData.rows
   return transactionData
 }
