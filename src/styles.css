@@ -1,6 +1,6 @@
 .splash {
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../src/images/splash.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../src/images/splash.jpg');
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -425,10 +425,6 @@
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
-
-  html {
-    overflow: hidden;
-  }
 
   #messagesWindow {
     height: 65vh;
