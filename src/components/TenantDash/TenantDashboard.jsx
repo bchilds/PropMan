@@ -54,7 +54,6 @@ class TenantDashboard extends Component {
     if (x < 481) {
       mobile = true
     }
-    // this.props.getBroadcasts(this.props.tenantData.property_id)
     this.setState({
       donutData: this.props.expenses,
       mobile: mobile,
@@ -69,6 +68,7 @@ class TenantDashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    !!this.props.tenantData.property_id ? this.props.getBroadcasts(this.props.tenantData.property_id) : null
     this.setState({
       donutData: nextProps.expenses
     })
