@@ -39,7 +39,8 @@ const config = {
         TOKENIZATION_KEY: JSON.stringify(process.env.TOKENIZATION_KEY),
         MERCHANT_ACCOUNT_ID: JSON.stringify(process.env.MERCHANT_ACCOUNT_ID),
         AWS_ACCESSKEYID: JSON.stringify(process.env.AWS_ACCESSKEYID),
-        AWS_SECRETACCESSKEY: JSON.stringify(process.env.AWS_SECRETACCESSKEY)
+        AWS_SECRETACCESSKEY: JSON.stringify(process.env.AWS_SECRETACCESSKEY),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       },
     }),
     new webpack.ProvidePlugin({
