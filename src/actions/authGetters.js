@@ -4,8 +4,7 @@ export const USER_LOGIN = 'user_login'
 export const USER_LOGOUT = 'user_logout'
 export const CHECK_SESSION = 'check_session'
 export const LOGIN_FAILURE = 'login_failure'
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-console.log('process.env.AWS_SECRETACCESSKEY', process.env.AWS_SECRETACCESSKEY)
+
 const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 export function signupUser(credentials, cb) {
