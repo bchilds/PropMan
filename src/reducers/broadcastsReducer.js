@@ -19,6 +19,12 @@ export function broadcasts(state = [], action) {
 	  	}
 	  case USER_LOGOUT: 
 	    return []
+    case USER_LOGIN:
+      if (action.payload.data.broadcasts) {
+        return action.payload.data.broadcasts
+      } else {
+        return state
+      }
     default:
       return state;
   }

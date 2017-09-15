@@ -42,7 +42,6 @@ class Documents extends React.Component {
       "doc_url": `https://s3.us-east-2.amazonaws.com/rentopia/${this.state.fileForUploadToS3.name}`
     })
      .then((response) => {
-        // console.log(response)
         this.getTenantDocuments(this.props.tenant_id)
         // this.setState({
         //   tenantDocuments: [...this.state.tenantDocuments, response.data]

@@ -39,7 +39,6 @@ const makeMessage = async (ctx) => {
 		return message
 	} else {
 		//ERROR
-		console.log('Not a valid message type')
 		return null
 	}
 }

@@ -8,7 +8,7 @@ let Landlords = require('./landlords.js')
 let Promise = require('bluebird')
 
 
-const updateTenant = async (ctx, user, tenant_id, property_id, rent, date) => {
+const updateTenant = async (ctx, user, tenant_id, property_id, rent, due_date) => {
 	let tenantRows
 	if(user) {
 		const values = [user.user_id, user.email]
@@ -109,7 +109,7 @@ const retrieveActiveTenantData = async (ctx, tenant) => {
 		payments.getUserTransactions(ctx, tenant),
 		payments.getUserExpenses(ctx, tenant.user_id)
 	])
-	output = { tenant: tenant, property: property, messages: messagesArray, docs: docArray, otherTenants: otherTenants, landlord: landlord, transactions: transactions, expenses: expenses }
+	output = { tenant: tenant, property: property, messages: messagesArray, broadcasts: broadcasts, docs: docArray, otherTenants: otherTenants, landlord: landlord, transactions: transactions, expenses: expenses }
 	return output
 }
 exports.retrieveActiveTenantData = retrieveActiveTenantData
@@ -137,8 +137,6 @@ router
 		let obj, user, tenant
 		obj = ctx.request.body
 		// needs to check if tenant has a user
-		console.log(obj.tenant_email)
-		console.log(obj)
 		user = await Users.getUserByEmail(ctx, obj.tenant_email)
 		if(user) {
 			// if it does, check if user has active tenant
@@ -148,7 +146,6 @@ router
 			tenant = await checkForActiveTenant(ctx, null, obj.tenant_email)
 		}
 		if(tenant && tenant.property_id) {
-			console.log('bylandlord - active tenant with property found')
 				// if tenant is active and is on a property
 				ctx.response.status = 403
 				ctx.body = `This tenant is currently active in another property`				
