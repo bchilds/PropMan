@@ -117,7 +117,7 @@ class Tenants extends React.Component {
             <div className="accordion-toggle addTenantHeader" data-toggle="collapse" href="#1">
               Add a Tenant
             </div>
-            <div id="1" className="accordion-body collapse">
+            <div id="1" className="accordion-body collapse addTenantBody">
             <div className="accordion-inner" id="addTenantsPanel">
               <label>Email</label>
               <br />

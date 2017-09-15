@@ -36,7 +36,7 @@ class TenantSideBar extends Component {
 		return reversedBroadcasts.map((bcast, i) => {
 			console.log(bcast)
 			return (
-				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
+				<div className="mobileFont" id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
 			 )
 		})
 	}
@@ -63,7 +63,7 @@ class TenantSideBar extends Component {
 			        </div>
 
 			        <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne">
-		            <div className="card-body mobileFont">
+		            <div className="card-body">
 		              {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
 		            </div>
 			        </div>
@@ -79,7 +79,7 @@ class TenantSideBar extends Component {
 			        </div>
 
 			        <div id="collapseTwo" className="collapse" role="tabpanel" aria-labelledby="headingTwo">
-		            <div className="card-body mobileFont">
+		            <div className="card-body">
 		              <Documents tenant_id={this.props.tenant_id} />
 		            </div>
 			        </div>
