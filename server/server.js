@@ -53,7 +53,7 @@ const authFunc = async (ctx, next) => {
 	  await next()
 }
 app.use(authFunc)
-
+``
 
 // routing
 api.use('/api/users', users.routes.routes())
