@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone'
 import aws from 'aws-sdk'
 import axios from 'axios'
 
-const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 class Documents extends React.Component {
   constructor(props) {

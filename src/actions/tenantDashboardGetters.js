@@ -6,7 +6,7 @@ export const FETCH_DOCS = 'fetch_docs_for_tenant_user';
 export const FETCH_SELECTED_MEDIA = 'fetch_selected_media';
 export const SHOW_DONUT = 'show_donut'
 
-const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 export function getRentDue(userId) {
 	// get current rent due by retrieving the tenant. Tenant 

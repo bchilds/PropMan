@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const DIRECT_MESSAGES = 'direct_messages'
 
-const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 export function sendMessage(info) {
 	console.log(info, info.sender_id)

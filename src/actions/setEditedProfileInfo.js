@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 export const SET_PROFILE = 'set_profile'
 
