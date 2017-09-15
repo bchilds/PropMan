@@ -45,8 +45,9 @@ class MessagesSidebar extends Component {
 	render() {
 		return (
 			this.state.mobile ?
+			<div id="tenantSidebar">
 				<div className="accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
-			    <div className="card col-xs-12">
+			    <div id="tenantSidebar" className="card col-xs-12">
 		        <div className="card-header" role="tab" id="headingOne">
 	            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 <h4 className="mb-0 mobileSidebarDash">
@@ -62,6 +63,7 @@ class MessagesSidebar extends Component {
 		        </div>
 			    </div>
 				</div>
+			</div>
 			:
 				<div id="tenantSidebar">
 				  <h3 className="sidebarTitle">Direct Messages</h3>

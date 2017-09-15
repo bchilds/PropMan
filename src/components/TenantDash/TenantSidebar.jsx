@@ -46,40 +46,40 @@ class TenantSideBar extends Component {
 		return (
 			this.state.mobile ? 
 					<div className="accordion " id="accordionEx" role="tablist" aria-multiselectable="true">
-				    <div className="card col-sm-12 col-xs-12">
-	            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				    <div id="tenantSidebar" className="col-sm-12 col-xs-12">
+	            <a>
 	              <h4 className="mb-0 mobileSidebarDash" onClick={() => this.props.showDonut()}>
 	                Expenses
 	              </h4>
 	            </a>
 				    </div>
-				    <div className="card col-sm-12 col-xs-12">
+				    <div id="tenantSidebar" className="card col-sm-12 col-xs-12">
 			        <div className="card-header" role="tab" id="headingOne">
 		            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 	                <h4 className="mb-0 mobileSidebarDash">
-	                  Broadcasts
+	                  Broadcasts <i className="fa fa-caret-down fa-fw" aria-hidden="true"></i>
 	                </h4>
 		            </a>
 			        </div>
 
 			        <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne">
-		            <div className="card-body">
+		            <div className="card-body mobileFont">
 		              {this.props.broadcasts ? this.renderBroadcasts(): 'No Broadcasts'}
 		            </div>
 			        </div>
 				    </div>
 
-				    <div className="card col-sm-12 col-xs-12">
+				    <div id="tenantSidebar" className="card col-sm-12 col-xs-12">
 			        <div className="card-header" role="tab" id="headingTwo">
 		            <a className="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 	                <h4 className="mb-0 mobileSidebarDash">
-	                  Documents
+	                  Documents <i className="fa fa-caret-down fa-fw" aria-hidden="true"></i>
 	                </h4>
 		            </a>
 			        </div>
 
 			        <div id="collapseTwo" className="collapse" role="tabpanel" aria-labelledby="headingTwo">
-		            <div className="card-body">
+		            <div className="card-body mobileFont">
 		              <Documents tenant_id={this.props.tenant_id} />
 		            </div>
 			        </div>

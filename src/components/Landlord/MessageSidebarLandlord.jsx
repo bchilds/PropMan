@@ -41,7 +41,7 @@ class MessagesSidebarLandlord extends Component {
 				  		<div key={i} className="accordion-group">
 				  		  <div className="accordion-heading">
 				  		    <div className="accordion-toggle messageContacts" data-toggle="collapse" href={`#${i}`}>
-				  		      {v.property_name}
+				  		      {v.property_name} <i className="fa fa-caret-down fa-fw" aria-hidden="true"></i>
 				  		    </div>
 				  		  </div>
 				  			  {this.renderPropTenants(v.property_id, i)}

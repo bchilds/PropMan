@@ -249,6 +249,7 @@
 .messageMargins {
   margin: 0% !important;
   padding: 5px !important;
+  width: 100% !important;
 }
 
 #messagesWindow {
@@ -327,6 +328,19 @@
   .addPropertyHeader, .addTenantHeader {
     width: 50%;
   }
+
+  #tenantSidebar {
+    background-color: rgba(108, 122, 137, 1);
+  }
+
+  .mobileFont {
+    color: white;
+  }
+}
+
+.mobileFont {
+  color: white;
+  background-color: black;
 }
 
 /* Extra Small Devices, Phones */ 
@@ -394,10 +408,18 @@
     width: 50%;
   }
 
+  #tenantSidebar {
+    background-color: rgba(108, 122, 137, 1);
+  }
+
+  .mobileFont {
+    color: white;
+  }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
+
   html {
     overflow: hidden;
   }
