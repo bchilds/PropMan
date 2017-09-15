@@ -28,8 +28,7 @@ class TenantSideBar extends Component {
 		this.setState({mobile: mobile})
 	}
 
-	renderBroadcasts() {
-		// console.log(this.props.broadcasts)
+	renderBroadcasts(props) {
 		let reversedBroadcasts = this.props.broadcasts.sort((a,b) => { 
 			return b.message_id - a.message_id 
 		})
