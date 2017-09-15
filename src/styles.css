@@ -248,7 +248,8 @@
 
 .messageMargins {
   margin: 0% !important;
-  padding: 0px !important;
+  padding: 5px !important;
+  width: 100% !important;
 }
 
 #messagesWindow {
@@ -263,8 +264,10 @@
   font-size: 18px;
   border-bottom: 0px !important;
 }
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
+
   #messagesWindow {
     height: 55vh;
     width: 100%;
@@ -280,14 +283,6 @@
     margin: 5px;
     border-bottom: 0px;
   }
-
-  #fuckingWork {
-    text-align:left;
-    overflow:scroll;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
 
   .landlordMap {
     width: 50vh;
@@ -324,15 +319,28 @@
     width: 100%
   }
 
+  .addTenantBody {
+    text-align: left;
+  }
 
   .addPropertyForm, .addTenantForm {
-    width: 75%;
+    width: 95%;
     margin: 5px;
+    text-align: right;
   }
 
   .addPropertyHeader, .addTenantHeader {
     width: 50%;
   }
+
+  #tenantSidebar {
+    background-color: rgba(108, 122, 137, 1);
+  }
+
+  .mobileFont {
+    color: #FCFCFC;
+  }
+
 }
 
 /* Extra Small Devices, Phones */ 
@@ -392,18 +400,32 @@
     width: 100%
   }
 
+  .addTenantBody, .addPropertyBody{
+    text-align: left;
+  }
+
   .addPropertyForm, .addTenantForm {
-    width: 75%;
+    width: 95%;
+    margin: 5px;
+    text-align: right;
   }
 
   .addPropertyHeader, .addTenantHeader {
     width: 50%;
   }
 
+  #tenantSidebar {
+    background-color: rgba(108, 122, 137, 1);
+  }
+
+ .mobileFont {
+   color: #FCFCFC;
+ }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
+
   html {
     overflow: hidden;
   }
@@ -454,6 +476,8 @@
 
   #tenantSidebar {
     height: 100vh !important;
+    background-color: rgba(108, 122, 137, 1);
+    max-width: 300px !important;
   }
 
   .addBillAccordion {
@@ -474,12 +498,6 @@
   .addBillHeader {
     width: 100%
   }
-}
-
-#tenantSidebar {
-  /*height: 100vh !important;*/
-  background-color: rgba(108, 122, 137, 1);
-  max-width: 300px !important;
 }
 
 .dashSidebar {
@@ -604,20 +622,13 @@
   font-size: 20px;
   font-family: "Roboto Condensed", sans-serif !important;
   text-align: center;
-  border-bottom: 1px double lightgray;
 }
 
-.accordion-inner {
-  background-color: #F9F9F9;
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.tenantContactFont {
+/*.tenantContactFont {
   padding-left: 10px;
   padding-right: 10px;
 }
-
+*/
 .addCursorPointer {
   cursor: pointer;
 }
@@ -865,13 +876,6 @@
   display: inline-block;
   margin: 10px; 
   /*float: right;*/
-}
-
-.accordion-inner {
-  margin-top: 5px;
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 10px;
 }
 
 #pageDropDown {

@@ -34,7 +34,7 @@ class MessagesSidebar extends Component {
 		return (
 			<div>
 			  {this.props.propertyTenants && this.props.propertyTenants.map((t, i) => {
-			  	return (<div key={i} onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
+			  	return (<div className="mobileFont" key={i} onClick={() => {this.props.setCurrentConvo(this.props.sortedMesgs[t.user_id], t.user_id, t.user_name)}}>
 			  		<label className="messageContacts">{i === 0 ? "Landlord: " + t.user_name: t.user_name}</label></div>)
 			  	}
 				)}
@@ -45,8 +45,9 @@ class MessagesSidebar extends Component {
 	render() {
 		return (
 			this.state.mobile ?
-				<div className="accordion " id="accordionEx" role="tablist" aria-multiselectable="true">
-			    <div className="card col-sm-12 col-xs-12">
+			<div id="tenantSidebar">
+				<div className="accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+			    <div id="tenantSidebar" className="card">
 		        <div className="card-header" role="tab" id="headingOne">
 	            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 <h4 className="mb-0 mobileSidebarDash">
@@ -62,6 +63,7 @@ class MessagesSidebar extends Component {
 		        </div>
 			    </div>
 				</div>
+			</div>
 			:
 				<div id="tenantSidebar">
 				  <h3 className="sidebarTitle">Direct Messages</h3>

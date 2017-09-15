@@ -77,10 +77,10 @@ class TenantMessages extends Component {
   	return (
         <div className="container-fluid messageMargins">
             <div className="row ">
-              <div  className="col-lg-3 col-md-4 col-sm-6 col-xs-12 messageMargins">
+              <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 messageMargins">
                 <MessageSidebar/>
               </div>
-              <div className="col-lg-9 col-md-8 col-sm-7 col-xs-12 messageMargins">
+              <div className="col-lg-9 col-md-8 col-sm-12 col-xs-12 messageMargins">
                 <div className="convoPersName"><h3>{this.props.convoPersonsName}</h3></div>
                 <div id="messagesWindow">
                   { this.props.currentConvo.length === 0 &&
@@ -98,7 +98,7 @@ class TenantMessages extends Component {
                 </div>
                 <div className="newMessage">
                   <form onSubmit={this.handleSendTo.bind(this)}>
-                    <input id="fuckingWork" className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
+                    <input className="centerMessage" type="text" name="message" placeholder="Type in me!"/>
                   </form>
                 </div>
               </div>

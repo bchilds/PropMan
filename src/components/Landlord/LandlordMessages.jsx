@@ -75,10 +75,10 @@ class LandlordMessages extends Component {
     return (
         <div className="container-fluid messageMargins">
             <div className="row ">
-              <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 messageMargins">
+              <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 messageMargins">
                 <MessagesSidebarLandlord/>
               </div>
-              <div className="col-lg-9 col-md-8 col-sm-7 col-xs-12 messageMargins">
+              <div className="col-lg-9 col-md-8 col-sm-12 col-xs-12 messageMargins">
                 <div className="convoPersName"><h3>{this.props.convoPersonsName}</h3></div>
                 <div id="messagesWindow">
                   { this.props.currentConvo.length === 0 &&
