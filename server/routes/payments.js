@@ -133,14 +133,12 @@ router
     }
   })
   .post('/addBill', async ctx => {
-    console.log('1')
     ctx.request.body.sender_id = ctx.request.body.requester_userId
     let newTransactions = []
     ctx.request.body.recipient_id = null
     let splitAmount = (ctx.request.body.transaction_amount / (ctx.request.body.sharers.length+1)).toFixed(2)  
     ctx.request.body.split_amount = splitAmount
     let transaction = await createTransaction(ctx, null)
-    console.log('2')
     newTransactions.push(transaction)
     if(transaction) {
       // split the amount amongst all the users (bill sharer creator plus all sharers)
