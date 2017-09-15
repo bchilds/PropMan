@@ -28,14 +28,13 @@ class TenantSideBar extends Component {
 		this.setState({mobile: mobile})
 	}
 
-	renderBroadcasts() {
-		// console.log(this.props.broadcasts)
+	renderBroadcasts(props) {
 		let reversedBroadcasts = this.props.broadcasts.sort((a,b) => { 
 			return b.message_id - a.message_id 
 		})
-		// console.log(reversedBroadcasts)
+		console.log(reversedBroadcasts)
 		return reversedBroadcasts.map((bcast, i) => {
-			// console.log(bcast)
+			console.log(bcast)
 			return (
 				<div id="truncate" key={i} onClick={() => this.props.selectedMedia(bcast.message_title, bcast.message_content)}> {bcast.message_title} </div>
 			 )

@@ -114,7 +114,7 @@ class Tenants extends React.Component {
       <form className="addTenantForm" onSubmit={this.addTenantButton.bind(this)}>
         <div className="accordion-group">
           <div className="accordion-heading">
-            <div className="accordion-toggle" data-toggle="collapse" href="#1">
+            <div className="accordion-toggle addTenantHeader" data-toggle="collapse" href="#1">
               Add a Tenant
             </div>
             <div id="1" className="accordion-body collapse">

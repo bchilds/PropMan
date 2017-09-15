@@ -105,7 +105,6 @@ class TenantDashboard extends Component {
           </div>  
           <div className="col-lg-9 col-md-8 col-sm-7 col-xs-12 messageMargins">
             <div id="tenantWindow">
-              <h2 className="pageTitle"> Your Dashboard </h2>
               {this.state.mobile && this.state.modalIsOpen &&
                 <PaymentForm togglePayment={this.togglePayment.bind(this)} 
                   paymentParams=
@@ -130,43 +129,44 @@ class TenantDashboard extends Component {
 
               {!this.props.showDonut &&           
                 <div className="selectedMedia">
-                  <h3> {this.props.media.title} </h3>
+                  <h3 className="broadcastTitle">Broadcasts</h3>
+                  <h2> {this.props.media.title} </h2>
                   <p> {this.props.media.media} </p>
                 </div>
               }
 
+              <div className="col-lg-12">
+                <p className="tenantMakePayment">
+                <p>Rent Due: {this.props.tenantRentDue}</p>
+                { this.state.paymentAction === "Make Payment" ?
+                  <button className="btn btn-secondary" onClick={this.openModal.bind(this)}> Make Payment </button>
+                  :<button className="btn btn-secondary" onClick={this.cancelPayment.bind(this)}> Cancel </button>
+                }
+                </p>
+                {!this.state.mobile && this.state.modalIsOpen &&
+                <Modal
+                  isOpen={this.state.modalIsOpen}
+                  onRequestClose={this.closeModal.bind(this)}
+                  style={customStyles}
+                  contentLabel="Payment Modal"
+                > 
+                  <PaymentForm togglePayment={this.togglePayment.bind(this)}
+                  paymentParams=
+                    {
+                      {
+                        amountDue: this.props.tenantData.rent, 
+                        senderId: this.props.user.user_id, 
+                        recipientId: this.props.tenantsLandlord.user_id, 
+                        merchantId: this.props.tenantsLandlord.merchant_id,
+                        paymentType: 'Rent',
+                        httpMethod: 'post'
+                      }
+                    }/>
+                </Modal>
+              }
+              </div>
 
             </div>
-          </div>
-          <div className="col-lg-12">
-            <p className="tenantMakePayment">
-            <p>Rent Due: {this.props.tenantRentDue}</p>
-            { this.state.paymentAction === "Make Payment" ?
-              <button className="btn btn-secondary" onClick={this.openModal.bind(this)}> Make Payment </button>
-              :<button className="btn btn-secondary" onClick={this.cancelPayment.bind(this)}> Cancel </button>
-            }
-            </p>
-            {!this.state.mobile && this.state.modalIsOpen &&
-            <Modal
-              isOpen={this.state.modalIsOpen}
-              onRequestClose={this.closeModal.bind(this)}
-              style={customStyles}
-              contentLabel="Payment Modal"
-            > 
-              <PaymentForm togglePayment={this.togglePayment.bind(this)}
-              paymentParams=
-                {
-                  {
-                    amountDue: this.props.tenantData.rent, 
-                    senderId: this.props.user.user_id, 
-                    recipientId: this.props.tenantsLandlord.user_id, 
-                    merchantId: this.props.tenantsLandlord.merchant_id,
-                    paymentType: 'Rent',
-                    httpMethod: 'post'
-                  }
-                }/>
-            </Modal>
-          }
           </div>
       </div>
     </div>
