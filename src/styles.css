@@ -813,3 +813,7 @@
 .page-link {
   background-color: rgba(52, 152, 219,1.0) !important;
 }
+
+.paymentSetupAccordionHeader {
+  border-bottom: 1px solid black;
+}
