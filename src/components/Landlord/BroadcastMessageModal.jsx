@@ -49,7 +49,7 @@ class BroadcastModal extends Component {
         <br/>
         <label> Title </label>
         <br/>
-        <input type="text" id="broadcastTitle"/><br/>
+        <input id="broadcastTitle"/><br/>
     		<textarea onKeyPress={this.keyPress} id="messageTextInput" className="messageInput" rows="15" cols="60" />
       </div>
   	)

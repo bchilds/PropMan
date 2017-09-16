@@ -54,7 +54,6 @@ const authFunc = async (ctx, next) => {
 }
 app.use(authFunc)
 
-
 // routing
 api.use('/api/users', users.routes.routes())
 api.use('/api/tenants', tenants.routes.routes())

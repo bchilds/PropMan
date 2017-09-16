@@ -170,13 +170,15 @@ class Transactions extends React.Component {
     if (this.props.user.merchant_id) {
       return (
         <div>
-          <label>Bill Name</label><br/><input name="name" className="paymentInput"></input><br/>
-          <label>Amount</label><br/><input name="amount" className="paymentInput"></input><br/>
-          <label>Split (optional)</label>
-          <fieldset>
-            {this.renderRoommates()}
-          </fieldset>
-          <button type="submit">Submit</button>
+          <form onSubmit={this.handleBillAdd.bind(this)}>
+            <label>Bill Name</label><br/><input name="name" className="paymentInput"></input><br/>
+            <label>Amount</label><br/><input name="amount" className="paymentInput"></input><br/>
+            <label>Split (optional)</label>
+            <fieldset>
+              {this.renderRoommates()}
+            </fieldset>
+            <button type="submit">Submit</button>
+          </form>
         </div>
       )
     } else {

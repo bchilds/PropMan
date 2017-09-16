@@ -18,11 +18,11 @@ class MessagesSidebarLandlord extends Component {
 
 	renderPropTenants(propertyId, i) {
 		return (
-			<div id={i} className="accordion-body collapse">
+			<div id={i} className="accordion-body collapse mobileFont">
 	    {this.props.sortedTenByProp[propertyId] && this.props.sortedTenByProp[propertyId].map((t, i) => {
 	    	return (
     			<div key={i} className="accordion-inner" onClick={() => {this.tenantClicked(t)}}>
-			      <label className="addCursorPointer tenantContactFont">{t.user_name}</label>
+			      <label className="addCursorPointer messageContacts">{t.user_name}</label>
     			</div>
 
 	      )
@@ -41,7 +41,7 @@ class MessagesSidebarLandlord extends Component {
 				  		<div key={i} className="accordion-group">
 				  		  <div className="accordion-heading">
 				  		    <div className="accordion-toggle messageContacts" data-toggle="collapse" href={`#${i}`}>
-				  		      {v.property_name}
+				  		      {v.property_name} <i className="fa fa-caret-down fa-fw" aria-hidden="true"></i>
 				  		    </div>
 				  		  </div>
 				  			  {this.renderPropTenants(v.property_id, i)}

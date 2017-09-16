@@ -4,7 +4,7 @@ export const ADD_LL_PROPERTY = 'add_landlord_property'
 export const FETCH_LL_TENANTS = 'fetch_landlord_tenants'
 export const ADD_LL_TENANT = 'add_landlord_tenant'
 
-const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 export function addProperty(propDetails, cb) {
   const createdProp = axios.post(`${ROOT_URL}/api/props/`, {

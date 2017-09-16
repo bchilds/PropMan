@@ -107,7 +107,7 @@ CREATE TABLE transactions (
 	recipient_id         integer  ,
 	payment_type				 text 		,
 	is_completed				 bool DEFAULT true ,
-	split_amount				 integer  ,
+	split_amount				 numeric  ,
 	created_date         date DEFAULT current_date ,
 	CONSTRAINT pk_transactions PRIMARY KEY ( transaction_id )
  );

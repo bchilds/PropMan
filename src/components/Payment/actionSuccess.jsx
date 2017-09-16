@@ -28,12 +28,24 @@ class ActionSuccess extends React.Component {
 
     this.state = {
       modalIsOpen: true,
+      mobile: false
     }
   }
 
   componentDidMount() {
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    var mobile = false
+    if (x < 481) {
+      mobile = true
+    }
     this.setState({
-      modalIsOpen: true
+      modalIsOpen: true,
+      mobile: mobile
     })
   }
 

@@ -1,8 +1,6 @@
-
-
 .splash {
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../src/images/splash.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../src/images/splash.jpg');
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -39,7 +37,7 @@
 }
 
 /*.bothHeaderNavBars {
-  font-family: "Open Sans";
+  font-family: "Roboto Condensed";
 }*/
 
 .splash ::-webkit-input-placeholder {
@@ -153,7 +151,7 @@
 
 .editFormLables {
   font-size: 22px;
-  font-family: "Open Sans";
+  font-family: "Roboto Condensed" !important;
 }
 
 #profileEditButton {
@@ -167,12 +165,16 @@
 }
 
 .tenantMakePayment {
-  width: 30%;
   margin: 0 auto;
-  bottom: 0px;
-  margin-top: 30px;
+  margin-top: 10px;
   text-align: center;
   padding-bottom: 20px;
+  bottom: 0;
+}
+
+.tenantMakePayment > .btn, .btn-secondary {
+  background-color: rgba(52, 152, 219,1.0);
+  border: none;
 }
 
 .braintree-toggle {
@@ -182,7 +184,7 @@
 
 .navbarColor {
   background-color: rgba(59,60,61,1);
-  font-family: "Open Sans";
+  font-family: "Roboto Condensed" !important;
   font-size: 18px;
 }
 
@@ -206,6 +208,10 @@
   color: black !important;
 }
 
+.nav-link {
+  margin: 0 25px;
+}
+
 .dropdown-item {
   font-family: 'Roboto Condensed', sans-serif;
 
@@ -227,11 +233,11 @@
 
 #tenantWindow {
   /*width: 70%;*/
-  height: 75vh;
+  height: 100vh;
   /*margin: 10px;*/
   /*display: inline-block;*/
   /*vertical-align: top;*/
-  overflow: scroll;
+  overflow: scroll !important;
   /*padding: 0px 10px;*/
 }
 
@@ -243,6 +249,7 @@
 .messageMargins {
   margin: 0% !important;
   padding: 5px !important;
+  width: 100% !important;
 }
 
 #messagesWindow {
@@ -257,8 +264,10 @@
   font-size: 18px;
   border-bottom: 0px !important;
 }
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
+
   #messagesWindow {
     height: 55vh;
     width: 100%;
@@ -274,14 +283,6 @@
     margin: 5px;
     border-bottom: 0px;
   }
-
-  #fuckingWork {
-    text-align:left;
-    overflow:scroll;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
 
   .landlordMap {
     width: 50vh;
@@ -309,6 +310,37 @@
     font-family: 'Lobster', cursive;
     font-size: 60px;
   }
+
+  .addBillAccordion {
+    width: 50%;
+  }
+
+  .addBillHeader {
+    width: 100%
+  }
+
+  .addTenantBody {
+    text-align: left;
+  }
+
+  .addPropertyForm, .addTenantForm {
+    width: 95%;
+    margin: 5px;
+    text-align: right;
+  }
+
+  .addPropertyHeader, .addTenantHeader {
+    width: 50%;
+  }
+
+  #tenantSidebar {
+    background-color: rgba(108, 122, 137, 1);
+  }
+
+  .mobileFont {
+    color: #FCFCFC;
+  }
+
 }
 
 /* Extra Small Devices, Phones */ 
@@ -360,10 +392,40 @@
     font-size: 80px;
   }
 
+  .addBillAccordion {
+    width: 50%;
+  }
+
+  .addBillHeader {
+    width: 100%
+  }
+
+  .addTenantBody, .addPropertyBody{
+    text-align: left;
+  }
+
+  .addPropertyForm, .addTenantForm {
+    width: 95%;
+    margin: 5px;
+    text-align: right;
+  }
+
+  .addPropertyHeader, .addTenantHeader {
+    width: 50%;
+  }
+
+  #tenantSidebar {
+    background-color: rgba(108, 122, 137, 1);
+  }
+
+ .mobileFont {
+   color: #FCFCFC;
+ }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
+
   #messagesWindow {
     height: 65vh;
     width: 100%;
@@ -407,18 +469,31 @@
     font-family: 'Lobster', cursive;
     font-size: 100px;
   }
-}
 
-#tenantSidebar {
-  /*width: 20%;*/
-  height: 100%;
-  /*border-radius: 5px;*/
-  /*padding: 10px !important;*/
-  /*margin-right: 10px;*/
-  /*display: inline-block;*/
-  /*border: 1px solid black;*/
-  background-color: rgba(108, 122, 137, 1);
-  /*vertical-align: top;*/
+  #tenantSidebar {
+    height: 100vh !important;
+    background-color: rgba(108, 122, 137, 1);
+    max-width: 300px !important;
+  }
+
+  .addBillAccordion {
+    width: 25%;
+  }
+
+  .addPropertyForm, .addTenantForm {
+    text-align: center;
+    margin: 0px auto;
+    width: 50%
+  }
+
+  .addPropertyHeader, .addTenantHeader {
+    width: 25%;
+    text-align: center;
+  }
+
+  .addBillHeader {
+    width: 100%
+  }
 }
 
 .dashSidebar {
@@ -441,6 +516,7 @@
 
 #addPropertiesPanel, #addTenantsPanel {
   background-color: white !important;
+  margin-bottom: 5px;
 }
 
 /*#tenantDashFooter {
@@ -473,12 +549,12 @@
 }
 
 .pickAConvo {
-  font-family: "Open Sans";
+  font-family: "Roboto Condensed", sans-serif !important;
   text-align: center;
 }
 
 .convoPersName {
-  font-family: "Open Sans";
+  font-family: "Roboto Condensed", sans-serif !important;
   text-align: left;
   padding: 10px;
 }
@@ -540,22 +616,15 @@
   width: 100%;
   cursor: pointer;
   font-size: 20px;
-  font-family: "Open Sans";
+  font-family: "Roboto Condensed", sans-serif !important;
   text-align: center;
-  border-bottom: 1px double lightgray;
 }
 
-.accordion-inner {
-  background-color: #F9F9F9;
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.tenantContactFont {
+/*.tenantContactFont {
   padding-left: 10px;
   padding-right: 10px;
 }
-
+*/
 .addCursorPointer {
   cursor: pointer;
 }
@@ -605,12 +674,12 @@
   background-color: white;
 }
 
-.addPropertyForm, .addTenantForm {
-  /*background-color: blue;*/
+/*.addPropertyForm, .addTenantForm {
+  background-color: blue;
   width: 50%;
   margin: 0 auto;
   text-align: center;
-}
+}*/
 
 .addPropertyInput, .addTenantInput {
   width: 80%;
@@ -623,6 +692,10 @@
 
 .pageTitle {
   text-align: center;
+}
+
+.tenantDashTitle {
+  text-align: left;
 }
 
 .LandlordMap {
@@ -657,7 +730,7 @@
   /*box-sizing: border-box;*/
   /*border-radius: 5px;*/
   color: #090809;
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1;
   position: relative;
@@ -725,19 +798,19 @@
   width: calc(100%);
 }
 
-.addBillAccordion{
-  width: 25%;
-}
-
 .sidebarContainer {
   height: 600px;
+}
+
+.selectedMedia, .donutGraph {
+  height: 70%
 }
 
 .donutWindow {
   width: 100%;
 }
 
-.donutGraph {
+.donutGraph, .broadcastTitle {
   text-align: center;
 }
 .donut {
@@ -777,29 +850,28 @@
   border-bottom-color: rgba(192, 57, 43,1) !important;
 }
 
-.addBillHeader{
+
+.addBillHeader, .addPropertyHeader, .addTenantHeader {
   font-weight: lighter;
   color: white;
   display: inline-block;
-  width: 50%;
+  /*width: 50%;*/
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
   background-color: rgba(52, 152, 219,1.0)
 }
 
+.addPropertyHeader, .addTenantHeader {
+  /*width: 25%;*/
+  background-color: rgba(44, 62, 80,1);
+  margin-bottom: 5px;
+}
+
 .addBillAccordion {
-  width: 25%;
   display: inline-block;
   margin: 10px; 
   /*float: right;*/
-}
-
-.accordion-inner {
-  margin-top: 5px;
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 10px;
 }
 
 #pageDropDown {
@@ -812,4 +884,8 @@
 
 .page-link {
   background-color: rgba(52, 152, 219,1.0) !important;
+}
+
+.paymentSetupAccordionHeader {
+  border-bottom: 1px solid black;
 }

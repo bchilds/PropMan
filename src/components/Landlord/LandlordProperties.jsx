@@ -83,10 +83,10 @@ class Properties extends React.Component {
       <form className="addPropertyForm" onSubmit={this.addPropertyButton.bind(this)}>
        <div className="accordion-group">
          <div className="accordion-heading">
-           <div className="accordion-toggle" data-toggle="collapse" href="#1">
+           <div className="accordion-toggle addPropertyHeader" data-toggle="collapse" href="#1">
              Add a Property
            </div>
-           <div id="1" className="accordion-body collapse">
+           <div id="1" className="accordion-body collapse addPropertyBody">
            <div className="accordion-inner" id="addPropertiesPanel">
               <label>Name</label>
               <br />

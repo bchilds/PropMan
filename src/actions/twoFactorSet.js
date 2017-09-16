@@ -3,7 +3,7 @@ import axios from 'axios'
 export const SET_MULTI = 'set_multi'
 export const REMOVE_MULTI = 'remove_multi'
 
-const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://myrentopia.com': 'http://localhost:8000'
+const ROOT_URL = process.env.NODE_ENV === 'production' ? 'http://www.myrentopia.com': 'http://localhost:8000'
 
 export function setMulti(user_id) {
   const request = axios.get(`${ROOT_URL}/api/users/multiset/${user_id}`)

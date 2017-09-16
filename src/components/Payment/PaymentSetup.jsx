@@ -10,14 +10,30 @@ import { bindActionCreators } from 'redux';
 import PaymentSetupSuccess from './actionSuccess.jsx'
 import venmo from '../../images/venmo_logo.png'
 import bank from '../../images/bank-icon.png'
+import checkMark from '../../images/checkMark.png'
 
 class PaymentSetup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       bankIsSelected: true,
-      user: {}
+      user: {},
+      mobile: false
     }
+  }
+
+  componentDidMount() {
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    var mobile = false
+    if (x < 481) {
+      mobile = true
+    }
+    this.setState({mobile: mobile})
   }
 
   handleSubmit(e) {
@@ -142,6 +158,18 @@ class PaymentSetup extends React.Component {
 
   render() {
     return (
+      this.state.mobile && this.props.user.payment_set_up ?
+      <div>
+        <div className="actionSuccessUpper">
+          <img src={checkMark}/>
+        </div>
+        <div className="actionSuccessLower">
+          <h4>Great!</h4>
+          <h6>You successfully set up your payment information.</h6>
+          <Link to='/'>Return to dashboard</Link>
+        </div>
+      </div>
+      :
       <div className="paymentSetup">
         <h2 className="methodTitle">Set up my payment method</h2>
           {this.props.failure.failure && this.renderErrors(this.props.failure.errors)}
@@ -224,6 +252,7 @@ class PaymentSetup extends React.Component {
           </form>
           {this.props.user.payment_set_up && <PaymentSetupSuccess message={'You successfully set up your payment information.'} redirectLink={'/'} />}
       </div>
+      
     )
   }
 }

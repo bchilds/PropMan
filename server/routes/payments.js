@@ -120,11 +120,8 @@ router
         let transaction = await ctx.db.query(`UPDATE transactions SET (payment_identifier, is_completed) = ($1, true) WHERE transaction_id = $2 RETURNING *;`, values2)
         transaction = transaction.rows[0]
         let user = await Users.getUserById(ctx, results.sender_id)
-        console.log(1)
         let allTransactions = await getUserTransactions(ctx, user)
-        console.log(2)
         let newExpenses = await getUserExpenses(ctx, transaction.sender_id)
-        console.log(3)
         if(transaction) {
           ctx.response.status = 201
           ctx.body = {allTransactions: allTransactions, newExpenses: newExpenses}
