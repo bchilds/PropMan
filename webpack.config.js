@@ -3,6 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 // import CleanWebpackPlugin from 'clean-webpack-plugin'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
 
 const config = {
@@ -43,6 +44,7 @@ const config = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       },
     }),
+    new UglifyJSPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',

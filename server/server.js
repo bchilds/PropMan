@@ -25,11 +25,11 @@ let cors = require('koa-cors')
 app.context.db = db
 
 // middleware
-let koaWebpack = require('koa-webpack')
-const middleware = koaWebpack({
-  config: config
-})
-app.use(middleware)
+// let koaWebpack = require('koa-webpack')
+// const middleware = koaWebpack({
+//   config: config
+// })
+// app.use(middleware)
 app.use(cors())
 app.use(serve(__dirname + 'dist'));
 // bodyparser
@@ -42,19 +42,38 @@ app.use(session(app))
 
 const redirToIndex = async (ctx, next) => {
 	ctx.redirect('/') 
+	//make this serve /index.html
+	//webpack makes a new html file, so need to modify the existing one
+}
+
+const sendIndex = async (ctx, next) => {
+	console.log(ctx.path)
+	await send(ctx, 'index.html', { root: 'dist' })
+}
+
+const sendBundle = async (ctx, next) => {
+	await send(ctx, 'bundle.js', { root: 'dist' })
 }
 
 const authFunc = async (ctx, next) => {
 	console.log(ctx.session)
 	ctx.session.isLoggedIn = ctx.session.isLoggedIn || false
 	if (!ctx.session.isLoggedIn) {
-	  redirToIndex(ctx, next) 
+	  sendIndex(ctx, next) 
 	}
 	  await next()
 }
 app.use(authFunc)
 
 // routing
+
+api
+	.get('/', sendIndex)
+	.get('/bundle.js', sendBundle)
+	.get('/29584446bf7624d2f1bc24cf4874959f.png', async (ctx) => {
+		await send(ctx, '29584446bf7624d2f1bc24cf4874959f.png', { root: 'dist' })
+	})
+
 api.use('/api/users', users.routes.routes())
 api.use('/api/tenants', tenants.routes.routes())
 api.use('/api/docs', docs.routes.routes())
@@ -71,9 +90,7 @@ app
 
 const port = process.env.PORT || 8000
 
-app.use(async (ctx) => { 
-  await send(ctx, '/index.html', { root: 'dist' }) 
-})
+// app.use(sendIndex)
 
 app.listen(port, () => {
 	console.log('Listening on port: ', port)
