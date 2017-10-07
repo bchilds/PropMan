@@ -11,7 +11,7 @@ import Login from '../Splash/Login.jsx'
 import Tenants  from './LandlordTenants.jsx'
 import PaymentSetup from '../Payment/PaymentSetup.jsx'
 import Transactions from './LandlordTransactions.jsx'
-import TermsOfService from '../Payment/termsOfService.jsx'
+import TermsOfService from '../Payment/TermsOfService.jsx'
 
 class LandlordMain extends React.Component {
 
