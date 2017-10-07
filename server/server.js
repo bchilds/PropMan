@@ -70,8 +70,8 @@ app.use(authFunc)
 api
 	.get('/', sendIndex)
 	.get('/bundle.js', sendBundle)
-	.get('/29584446bf7624d2f1bc24cf4874959f.png', async (ctx) => {
-		await send(ctx, '29584446bf7624d2f1bc24cf4874959f.png', { root: 'dist' })
+	.get('/29584446bf7624d2f1bc24cf4874959f.jpg', async (ctx) => {
+		await send(ctx, '29584446bf7624d2f1bc24cf4874959f.jpg', { root: 'dist' })
 	})
 
 api.use('/api/users', users.routes.routes())
